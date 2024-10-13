@@ -83,7 +83,10 @@ export default function BookingCalendar() {
           </div>
 
           <div className="flex space-x-2">
-            <Select onValueChange={(view: View) => toolbar.onView(view)}>
+            <Select
+              onValueChange={(view: View) => toolbar.onView(view)}
+              defaultValue="month"
+            >
               <SelectTrigger className="w-24 capitalize">
                 <SelectValue placeholder={toolbar.view} />
               </SelectTrigger>
@@ -155,7 +158,7 @@ export default function BookingCalendar() {
       <div className="h-[calc(100vh-2rem)] pb-8">
         <Calendar
           localizer={localizer}
-          defaultView={"week"}
+          defaultView={"month"}
           views={["week", "day", "month"]}
           components={{
             toolbar: CustomToolbar,
