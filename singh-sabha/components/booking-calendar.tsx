@@ -15,7 +15,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 
-import type { ToolbarProps, View } from "react-big-calendar";
+import type { ToolbarProps } from "react-big-calendar";
 
 const monthNames = [
   "January",
@@ -32,83 +32,66 @@ const monthNames = [
   "December",
 ];
 
-export default function BookingCalendar() {
+const BookingCalendar = () => {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
-  const CustomToolbar = (toolbar: ToolbarProps) => {
-    const date = new Date(toolbar.date);
+  const CustomToolbar = ({ date, onNavigate, onView }: ToolbarProps) => {
     const startOfWeek = moment(date).startOf("week");
     const endOfWeek = moment(date).endOf("week");
-
-    let weekDisplay;
-    if (startOfWeek.month() === endOfWeek.month()) {
-      weekDisplay = `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${endOfWeek.date()}, ${startOfWeek.year()}`;
-    } else {
-      weekDisplay = `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${monthNames[endOfWeek.month()]} ${endOfWeek.date()}, ${startOfWeek.year()}`;
-    }
+    const weekDisplay =
+      startOfWeek.month() === endOfWeek.month()
+        ? `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${endOfWeek.date()}, ${startOfWeek.year()}`
+        : `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${monthNames[endOfWeek.month()]} ${endOfWeek.date()}, ${startOfWeek.year()}`;
 
     return (
-      <>
-        <div className="flex justify-between pb-4">
-          <div className="relative flex h-full w-[35rem] flex-grow-0 items-center justify-center">
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => toolbar.onNavigate("PREV")}
-              className="absolute left-0"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
+      <div className="flex justify-between pb-4">
+        <div className="relative flex items-center justify-center w-[35rem]">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => onNavigate("PREV")}
+            className="absolute left-0"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-            <h1 className="text-2xl font-bold">
-              {toolbar.view === "week" ? (
-                <span>{weekDisplay}</span>
-              ) : (
-                <span>
-                  {monthNames[date.getMonth()]} {date.getDate()},{" "}
-                  {date.getFullYear()}
-                </span>
-              )}
-            </h1>
+          <h1 className="text-2xl font-bold">
+            {toolbar.view === "week"
+              ? weekDisplay
+              : `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
+          </h1>
 
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => toolbar.onNavigate("NEXT")}
-              className="absolute right-0"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="flex space-x-2">
-            <Select
-              onValueChange={(view: View) => toolbar.onView(view)}
-              defaultValue="month"
-            >
-              <SelectTrigger className="w-24 capitalize">
-                <SelectValue placeholder={toolbar.view} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>View</SelectLabel>
-                  <SelectItem value="month">Month</SelectItem>
-                  <SelectItem value="week">Week</SelectItem>
-                  <SelectItem value="day">Day</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-
-            <Button
-              variant="outline"
-              onClick={() => toolbar.onNavigate("TODAY")}
-            >
-              Today
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => onNavigate("NEXT")}
+            className="absolute right-0"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
-      </>
+
+        <div className="flex space-x-2">
+          <Select onValueChange={onView} defaultValue="month">
+            <SelectTrigger className="w-24 capitalize">
+              <SelectValue placeholder={toolbar.view} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>View</SelectLabel>
+                <SelectItem value="month">Month</SelectItem>
+                <SelectItem value="week">Week</SelectItem>
+                <SelectItem value="day">Day</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Button variant="outline" onClick={() => onNavigate("TODAY")}>
+            Today
+          </Button>
+        </div>
+      </div>
     );
   };
 
@@ -120,14 +103,11 @@ export default function BookingCalendar() {
     return (
       <div className="flex items-center justify-between">
         <div>{dayOfWeek}</div>
-
         <div className="ml-1">
           {isToday ? (
-            <>
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
-                <span className="text-background">{dayOfMonth}</span>
-              </div>
-            </>
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
+              <span className="text-background">{dayOfMonth}</span>
+            </div>
           ) : (
             <span>{dayOfMonth}</span>
           )}
@@ -154,23 +134,19 @@ export default function BookingCalendar() {
   };
 
   return (
-    <>
-      <div className="h-[calc(100vh-2rem)] pb-8">
-        <Calendar
-          localizer={localizer}
-          defaultView={"month"}
-          views={["week", "day", "month"]}
-          components={{
-            toolbar: CustomToolbar,
-            week: {
-              header: CustomHeader,
-            },
-            month: {
-              dateHeader: CustomDateHeader,
-            },
-          }}
-        />
-      </div>
-    </>
+    <div className="h-[calc(100vh-2rem)] pb-8">
+      <Calendar
+        localizer={localizer}
+        defaultView="month"
+        views={["week", "day", "month"]}
+        components={{
+          toolbar: CustomToolbar,
+          week: { header: CustomHeader },
+          month: { dateHeader: CustomDateHeader },
+        }}
+      />
+    </div>
   );
-}
+};
+
+export default BookingCalendar;
