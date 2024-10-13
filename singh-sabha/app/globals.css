@@ -139,3 +139,11 @@ code {
 .rbc-today {
   @apply bg-transparent !important;
 }
+
+.rbc-off-range {
+  @apply text-foreground/50 !important;
+}
+
+.rbc-off-range-bg {
+  @apply bg-transparent !important;
+}
