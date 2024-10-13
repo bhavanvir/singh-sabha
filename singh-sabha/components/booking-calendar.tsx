@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 
 import type { ToolbarProps } from "react-big-calendar";
@@ -36,7 +36,7 @@ const BookingCalendar = () => {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
-  const CustomToolbar = ({ date, onNavigate, onView }: ToolbarProps) => {
+  const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const startOfWeek = moment(date).startOf("week");
     const endOfWeek = moment(date).endOf("week");
     const weekDisplay =
@@ -57,7 +57,7 @@ const BookingCalendar = () => {
           </Button>
 
           <h1 className="text-2xl font-bold">
-            {toolbar.view === "week"
+            {view === "week"
               ? weekDisplay
               : `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
           </h1>
@@ -73,9 +73,12 @@ const BookingCalendar = () => {
         </div>
 
         <div className="flex space-x-2">
-          <Select onValueChange={onView} defaultValue="month">
+          <Select
+            onValueChange={(value) => onView(value as View)}
+            defaultValue="month"
+          >
             <SelectTrigger className="w-24 capitalize">
-              <SelectValue placeholder={toolbar.view} />
+              <SelectValue placeholder={view} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
