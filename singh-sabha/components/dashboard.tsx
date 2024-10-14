@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Activity,
@@ -39,8 +41,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { logout } from "@/components/actions/logout-action";
 
-export function Dashboard() {
+// Add a proper type for the user
+export function Dashboard({ user }: any) {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -152,12 +156,14 @@ export function Dashboard() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={async () => await logout()}>
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

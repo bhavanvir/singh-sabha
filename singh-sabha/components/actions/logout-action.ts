@@ -4,7 +4,7 @@ import { lucia, validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-export default async function logout() {
+export async function logout() {
   const { session } = await validateRequest();
   if (!session) {
     return {
