@@ -2,26 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "GeistVF";
-  src: url("/fonts/geistvf.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "GeistMonoVF";
-  src: url("/fonts/geistmonovf.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
-  font-family: "GeistVF", Arial, Helvetica, sans-serif;
-}
-
-code {
-  font-family: "GeistMonoVF", monospace;
+  font-family: Inter, sans-serif;
 }
 
 @layer utilities {

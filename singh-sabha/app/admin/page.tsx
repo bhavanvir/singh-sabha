@@ -1,5 +1,14 @@
-function AdminDashboard() {
-  return <h1>Yo</h1>;
-}
+import { validateRequest } from "@/lib/auth";
+import LoginForm from "@/components/login";
 
-export default AdminDashboard;
+export default async function Page() {
+  const { user } = await validateRequest();
+  if (!user) {
+    return <LoginForm />;
+  }
+  return (
+    <>
+      <h1>Hi, {user.fullname}!</h1>
+    </>
+  );
+}
