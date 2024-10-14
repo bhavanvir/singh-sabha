@@ -32,7 +32,7 @@ const monthNames = [
   "December",
 ];
 
-const BookingCalendar = () => {
+export default function BookingCalendar() {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
@@ -150,6 +150,4 @@ const BookingCalendar = () => {
       />
     </div>
   );
-};
-
-export default BookingCalendar;
+}
