@@ -95,7 +95,7 @@ code {
   }
 }
 
-/* React-Big-Calendar styling */
+/* React-Big-Calendar Styling */
 .rbc-time-view {
   @apply rounded-md border !important;
 }
@@ -124,7 +124,7 @@ code {
   @apply h-0.5 bg-foreground !important;
 
   &::before {
-    @apply -ml-3 -mt-1.5 mb-3 inline-block h-3 w-3 rounded-[50%] bg-foreground content-[""] !important;
+    @apply -ml-3 -mt-1.5 mb-3 inline-block h-3 w-3 rounded-full bg-foreground content-[""] !important;
   }
 }
 
