@@ -17,7 +17,7 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      fullname: attributes.fullName,
+      fullName: attributes.fullName,
       email: attributes.email,
     };
   },
@@ -59,7 +59,7 @@ export const validateRequest = cache(
   },
 );
 
-interface DatabaseUser {
+export interface DatabaseUser {
   fullName: string;
   email: string;
 }
