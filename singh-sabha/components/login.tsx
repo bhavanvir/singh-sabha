@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { login } from "@/components/actions/login-action";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -39,7 +40,12 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    await login({ email: data.email, password: data.password });
+    const error = await login({ email: data.email, password: data.password });
+    if (error) {
+      toast.error(error.error);
+    } else {
+      toast.success("Hooray! Logging you in...");
+    }
   };
 
   return (
