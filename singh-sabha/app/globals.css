@@ -82,6 +82,10 @@ body {
   @apply rounded-md border !important;
 }
 
+.rbc-month-view {
+  @apply rounded-md border !important;
+}
+
 .rbc-calendar * {
   @apply border-border !important;
 }
@@ -120,6 +124,9 @@ body {
 
 .rbc-today {
   @apply bg-transparent !important;
+}
+.rbc-today.rbc-selected-cell {
+  @apply bg-[#0000001a] !important;
 }
 
 .rbc-off-range {
