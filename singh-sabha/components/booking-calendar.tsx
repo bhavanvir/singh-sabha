@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Select,
   SelectContent,
@@ -9,6 +10,14 @@ import {
   SelectLabel,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -16,6 +25,7 @@ import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 
 import type { ToolbarProps } from "react-big-calendar";
+import type { SlotInfo } from "react-big-calendar";
 
 const monthNames = [
   "January",
@@ -137,9 +147,19 @@ export default function BookingCalendar({ events }: any) {
     );
   };
 
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
+
+  const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
+    setSelectedSlot(slotInfo);
+    setIsDialogOpen(true);
+  }, []);
+
   return (
     <div className="h-screen">
       <Calendar
+        selectable
+        onSelectSlot={onSelectSlot}
         localizer={localizer}
         events={events}
         defaultView="month"
@@ -150,6 +170,36 @@ export default function BookingCalendar({ events }: any) {
           month: { dateHeader: CustomDateHeader },
         }}
       />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              {selectedSlot ? (
+                <div className="space-y-2">
+                  <p>
+                    <strong>Start:</strong>{" "}
+                    {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
+                  </p>
+                  <p>
+                    <strong>End:</strong>{" "}
+                    {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
+                  </p>
+                  <p>
+                    <strong>All Day:</strong>{" "}
+                    {selectedSlot.action === "select" ? "Yes" : "No"}
+                  </p>
+                </div>
+              ) : (
+                <p>No slot selected.</p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="submit">Confirm</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
