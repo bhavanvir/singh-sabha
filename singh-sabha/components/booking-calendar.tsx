@@ -19,6 +19,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -171,32 +173,39 @@ export default function BookingCalendar({ events }: any) {
         }}
       />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-xl">
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogTitle>Create event</DialogTitle>
             <DialogDescription>
-              {selectedSlot ? (
-                <div className="space-y-2">
-                  <p>
-                    <strong>Start:</strong>{" "}
-                    {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
-                  </p>
-                  <p>
-                    <strong>End:</strong>{" "}
-                    {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
-                  </p>
-                  <p>
-                    <strong>All Day:</strong>{" "}
-                    {selectedSlot.action === "select" ? "Yes" : "No"}
-                  </p>
-                </div>
-              ) : (
-                <p>No slot selected.</p>
-              )}
+              Parameters based on your selections. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
+          {selectedSlot ? (
+            <div className="py-4 grid grid-flow-row auto-rows-fr">
+              <div className="flex items-center space-x-4">
+                <div className="border-2 p-2 rounded-md">
+                  {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
+                </div>
+                <span>to</span>
+                <div className="border-2 p-2 rounded-md">
+                  {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 ">
+                <Checkbox
+                  id="all-day"
+                  checked={selectedSlot?.action === "select"}
+                />
+                <Label htmlFor="all-day">All day event</Label>
+              </div>
+            </div>
+          ) : (
+            <p>No slot selected.</p>
+          )}
           <DialogFooter>
-            <Button type="submit">Confirm</Button>
+            <Button type="submit">Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
