@@ -182,8 +182,8 @@ export default function BookingCalendar({ events }: any) {
             </DialogDescription>
           </DialogHeader>
           {selectedSlot ? (
-            <div className="py-4 grid grid-flow-row auto-rows-fr">
-              <div className="flex items-center space-x-4">
+            <div className="py-4 grid grid-flow-row gap-4">
+              <div className="flex items-center space-x-2">
                 <div className="border-2 p-2 rounded-md">
                   {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
                 </div>
