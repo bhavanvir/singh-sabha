@@ -1,6 +1,6 @@
 import { validateRequest } from "@/lib/auth";
 import LoginForm from "@/components/login";
-import { Dashboard } from "@/components/dashboard";
+import { AdminPanel } from "@/components/admin-panel";
 
 export default async function Page() {
   const { user } = await validateRequest();
@@ -9,7 +9,7 @@ export default async function Page() {
   }
   return (
     <>
-      <Dashboard user={user} />
+      <AdminPanel user={user} />
     </>
   );
 }

@@ -32,7 +32,8 @@ const monthNames = [
   "December",
 ];
 
-export default function BookingCalendar() {
+// TODO: Add proper types for params
+export default function BookingCalendar({ events }: any) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
@@ -137,9 +138,10 @@ export default function BookingCalendar() {
   };
 
   return (
-    <div className="h-[calc(100vh-2rem)] pb-8">
+    <div className="h-screen">
       <Calendar
         localizer={localizer}
+        events={events}
         defaultView="month"
         views={["week", "day", "month"]}
         components={{

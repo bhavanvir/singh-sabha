@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CircleUser, Menu, Package2, Bell } from "lucide-react";
+import { CircleUser, Menu, Package2 } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,22 +14,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "@/components/actions/logout-action";
+import Bookings from "@/components/bookings";
 
 const PAGES = {
-  DASHBOARD: "dashboard",
-  ANALYTICS: "analytics",
+  BOOKINGS: "bookings",
+  NOTIFICATIONS: "analytics",
+  SETTINGS: "settings",
 };
 
-// Add a proper type for the user
-export function Dashboard({ user }: any) {
-  const [activePage, setActivePage] = React.useState(PAGES.DASHBOARD);
+// TODO: Add a proper type for the user
+export function AdminPanel({ user }: any) {
+  const [activePage, setActivePage] = React.useState(PAGES.BOOKINGS);
 
   const renderContent = () => {
     switch (activePage) {
-      case PAGES.DASHBOARD:
-        return <div>Welcome to the Dashboard!</div>;
-      case PAGES.ANALYTICS:
-        return <div>Here are you Analytics.</div>;
+      case PAGES.BOOKINGS:
+        return <Bookings />;
     }
   };
   const getLinkClass = (page: string) =>
@@ -39,7 +39,7 @@ export function Dashboard({ user }: any) {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+      <header className="z-10 sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             href="#"
@@ -50,17 +50,17 @@ export function Dashboard({ user }: any) {
           </Link>
           <Link
             href="#"
-            className={`${getLinkClass(PAGES.DASHBOARD)}`}
-            onClick={() => setActivePage(PAGES.DASHBOARD)}
+            className={`${getLinkClass(PAGES.BOOKINGS)}`}
+            onClick={() => setActivePage(PAGES.BOOKINGS)}
           >
-            Dashboard
+            Bookings
           </Link>
           <Link
             href="#"
-            className={`${getLinkClass(PAGES.ANALYTICS)}`}
-            onClick={() => setActivePage(PAGES.ANALYTICS)}
+            className={`${getLinkClass(PAGES.NOTIFICATIONS)}`}
+            onClick={() => setActivePage(PAGES.NOTIFICATIONS)}
           >
-            Analytics
+            Notifications
           </Link>
         </nav>
         <Sheet>
@@ -85,23 +85,22 @@ export function Dashboard({ user }: any) {
               </Link>
               <Link
                 href="#"
-                className={`${getLinkClass(PAGES.DASHBOARD)}`}
-                onClick={() => setActivePage(PAGES.DASHBOARD)}
+                className={`${getLinkClass(PAGES.BOOKINGS)}`}
+                onClick={() => setActivePage(PAGES.BOOKINGS)}
               >
-                Dashboard
+                Bookings
               </Link>
               <Link
                 href="#"
-                className={`${getLinkClass(PAGES.ANALYTICS)}`}
-                onClick={() => setActivePage(PAGES.ANALYTICS)}
+                className={`${getLinkClass(PAGES.NOTIFICATIONS)}`}
+                onClick={() => setActivePage(PAGES.NOTIFICATIONS)}
               >
-                Analytics
+                Notifications
               </Link>
             </nav>
           </SheetContent>
         </Sheet>
         <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <Bell />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -122,9 +121,7 @@ export function Dashboard({ user }: any) {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        {renderContent()}
-      </main>
+      <main className="p-4">{renderContent()}</main>
     </div>
   );
 }
