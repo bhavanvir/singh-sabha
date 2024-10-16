@@ -3,34 +3,26 @@
 import { db } from "@/db/db";
 import { eventTable } from "@/db/schema";
 import type { Event } from "@/lib/types/event";
-
-type CreateEventResponse =
-  | { success: true; message: string }
-  | { success: false; error: string };
+import { revalidatePath } from "next/cache";
 
 export const CreateEvent = async ({
   newEvent,
 }: {
   newEvent: Event;
-}): Promise<CreateEventResponse> => {
+}): Promise<void> => {
   try {
     await db.insert(eventTable).values({
       registrantFullName: newEvent.registrantFullName,
       registrantEmail: newEvent.registrantEmail,
       registrantPhoneNumber: newEvent.registrantPhoneNumber,
       type: newEvent.type,
-      startTime: newEvent.startTime,
-      endTime: newEvent.endTime,
-      isAllDay: newEvent.isAllDay,
+      start: newEvent.start,
+      end: newEvent.end,
+      allDay: newEvent.allDay,
       title: newEvent.title,
     });
-
-    return { success: true, message: "Event created successfully." };
+    revalidatePath("(/admin");
   } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "An unknown error occurred.",
-    };
+    throw new Error("Could not add an event");
   }
 };
