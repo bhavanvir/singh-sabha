@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "@/components/actions/logout-action";
-import Bookings from "@/components/bookings";
+import BookingCalendar from "./booking-calendar";
 
 const PAGES = {
   BOOKINGS: "bookings",
@@ -22,14 +22,19 @@ const PAGES = {
   SETTINGS: "settings",
 };
 
-// TODO: Add a proper type for the user
-export function AdminPanel({ user }: any) {
+// TODO: Update the types
+interface AdminPanelProps {
+  user: any;
+  events: any;
+}
+
+export function AdminPanel({ user, events }: AdminPanelProps) {
   const [activePage, setActivePage] = React.useState(PAGES.BOOKINGS);
 
   const renderContent = () => {
     switch (activePage) {
       case PAGES.BOOKINGS:
-        return <Bookings />;
+        return <BookingCalendar events={events} />;
     }
   };
   const getLinkClass = (page: string) =>
