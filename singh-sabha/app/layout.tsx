@@ -1,5 +1,4 @@
 import { Toaster } from "sonner";
-import { ReactQueryClientProvider } from "@/providers/react-query-client-provider";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -14,11 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryClientProvider>
-      <html lang="en">
-        <body className="antialiased">{children}</body>
-        <Toaster richColors={true} />
-      </html>
-    </ReactQueryClientProvider>
+    <html lang="en">
+      <body className="antialiased">{children}</body>
+      <Toaster richColors={true} />
+    </html>
   );
 }
