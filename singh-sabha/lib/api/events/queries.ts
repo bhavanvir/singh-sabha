@@ -13,6 +13,6 @@ export const GetAllEvents = cache(async (): Promise<Event[]> => {
     const events = await db.select().from(eventTable);
     return events;
   } catch (err) {
-    throw new Error("Could not fetch events.");
+    throw new Error(`Could not fetch events: ${err}`);
   }
 });

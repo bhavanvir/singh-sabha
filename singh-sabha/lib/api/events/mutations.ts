@@ -22,7 +22,7 @@ export const CreateEvent = async ({
       title: newEvent.title,
     });
     revalidatePath("(/admin");
-  } catch (error) {
-    throw new Error("Could not add an event");
+  } catch (err) {
+    throw new Error(`Could not add an event: ${err}`);
   }
 };

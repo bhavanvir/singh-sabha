@@ -78,6 +78,15 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      type: "",
+      note: "",
+    },
+  });
+
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const startOfWeek = moment(date).startOf("week");
     const endOfWeek = moment(date).endOf("week");
@@ -181,20 +190,14 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
 
-  const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
-    setSelectedSlot(slotInfo);
-    setIsDialogOpen(true);
-    form.reset();
-  }, []);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      type: "",
-      note: "",
+  const onSelectSlot = React.useCallback(
+    (slotInfo: SlotInfo) => {
+      setSelectedSlot(slotInfo);
+      setIsDialogOpen(true);
+      form.reset();
     },
-  });
+    [form],
+  );
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     if (!selectedSlot) return;
