@@ -21,7 +21,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Calendar as CalendarIcon,
+  Tag,
+  Text,
+} from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -31,6 +38,8 @@ import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
 import { toast } from "sonner";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 const monthNames = [
   "January",
@@ -155,6 +164,7 @@ export default function BookingCalendar({ events }: any) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedOption, setsSelectedOption] = React.useState("");
+  const [title, setTitle] = React.useState("");
 
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
@@ -201,7 +211,12 @@ export default function BookingCalendar({ events }: any) {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-xl">
           <DialogHeader>
-            <DialogTitle>Create event</DialogTitle>
+            <DialogTitle className="w-11/12 border-b-2 relative">
+              <Input
+                className="truncate border-none px-0"
+                placeholder="Add title"
+              />
+            </DialogTitle>
             <DialogDescription>
               Parameters based on your selections. Click save when you&apos;re
               done.
@@ -209,39 +224,46 @@ export default function BookingCalendar({ events }: any) {
           </DialogHeader>
           {selectedSlot ? (
             <div className="py-4 grid grid-flow-row gap-4">
-              <div className="flex items-center space-x-2">
-                <div className="border rounded-md h-10 border-input bg-background px-3 py-2 text-sm">
-                  {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
-                </div>
-                <span>to</span>
-                <div className="border rounded-md h-10 border-input bg-background px-3 py-2 text-sm">
-                  {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
+              <div className="flex items-center space-x-4">
+                <CalendarIcon className="h-4 w-4" />
+                <div className="text-sm flex items-center space-x-2 w-10/12">
+                  <span className="rounded-md border px-3 py-2 text-sm">
+                    {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
+                  </span>
+                  <Minus className="w-4" />
+                  <span className="rounded-md border px-3 py-2 text-sm">
+                    {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
+                  </span>
                 </div>
               </div>
 
-              <Select
-                onValueChange={(value) => {
-                  setsSelectedOption(value);
-                }}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select an event type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="funeral">Funeral</SelectItem>
-                    <SelectItem value="wedding">Wedding</SelectItem>
-                    <SelectItem value="akhand-path">Akhand Path</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-4">
+                <Tag className="h-4 w-4" />
+                <div className="text-sm flex items-center space-x-2">
+                  <Select
+                    onValueChange={(value) => {
+                      setsSelectedOption(value);
+                    }}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select an event type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="funeral">Funeral</SelectItem>
+                        <SelectItem value="wedding">Wedding</SelectItem>
+                        <SelectItem value="akhand-path">Akhand Path</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-              <div className="flex items-center space-x-2 ">
-                <Checkbox
-                  id="all-day"
-                  checked={selectedSlot?.action === "select"}
-                />
-                <Label htmlFor="all-day">All day event</Label>
+              <div className="flex items-center space-x-4">
+                <Text className="h-4 w-4" />
+                <div className="text-sm flex items-center space-x-2 w-10/12">
+                  <Textarea />
+                </div>
               </div>
             </div>
           ) : (
