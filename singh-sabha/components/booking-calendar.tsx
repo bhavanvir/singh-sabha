@@ -31,7 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ChevronLeft, ChevronRight, Minus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, SunMoon } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -60,7 +60,11 @@ const monthNames = [
 ];
 
 const formSchema = z.object({
-  title: z.string().min(6, "Invalid title").max(6, "Title too long"),
+  title: z
+    .string()
+    .nonempty("Title missing")
+    .min(6, "Title too short")
+    .max(64, "Title too long"),
   type: z.string().nonempty("Type missing"),
   note: z.string().max(128, "Note too long"),
 });
@@ -172,8 +176,6 @@ export default function BookingCalendar({ events }: any) {
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
-  const [selectedOption, setsSelectedOption] = React.useState("");
-  const [title, setTitle] = React.useState("");
 
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
@@ -190,25 +192,24 @@ export default function BookingCalendar({ events }: any) {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // if (!selectedSlot) return;
-    //
-    // const newEvent: Event = {
-    //   type: selectedOption,
-    //   startTime: selectedSlot.start,
-    //   endTime: selectedSlot.end,
-    //   isAllDay: selectedSlot.action === "select",
-    //   title: "Sample Event",
-    // };
-    //
-    // const response = await CreateEvent({ newEvent });
-    //
-    // if (response.success) {
-    //   toast.success(response.message);
-    // } else {
-    //   toast.error(response.error);
-    // }
-    //
-    // setIsDialogOpen(false);
+    if (!selectedSlot) return;
+
+    const newEvent: Event = {
+      type: data.type,
+      startTime: selectedSlot.start,
+      endTime: selectedSlot.end,
+      isAllDay: selectedSlot.action === "select",
+      title: data.title,
+      note: data.note,
+    };
+
+    toast.promise(CreateEvent({ newEvent }), {
+      loading: "Creating event...",
+      success: "Event created successfully!",
+      error: "An unknown error occured.",
+    });
+
+    setIsDialogOpen(false);
   };
 
   return (
@@ -231,7 +232,7 @@ export default function BookingCalendar({ events }: any) {
           <DialogHeader>
             <DialogTitle>Create event</DialogTitle>
             <DialogDescription>
-              Parameters based on your selections. Click save when you&apos;re
+              Parameters based on your selection. Click submit when you&apos;re
               done.
             </DialogDescription>
           </DialogHeader>
@@ -255,18 +256,25 @@ export default function BookingCalendar({ events }: any) {
               />
 
               <Label htmlFor="period">Time period</Label>
-              <div id="period" className="flex items-center space-x-2">
-                <span className="rounded-md border px-3 py-2 text-sm">
-                  {moment(selectedSlot?.start ?? new Date()).format(
-                    "MMMM Do YYYY, h:mm a",
-                  )}
-                </span>
-                <Minus className="w-4" />
-                <span className="rounded-md border px-3 py-2 text-sm">
-                  {moment(selectedSlot?.end ?? new Date()).format(
-                    "MMMM Do YYYY, h:mm a",
-                  )}
-                </span>
+              <div>
+                <div id="period" className="flex items-center space-x-2">
+                  <span className="rounded-md border px-3 py-2 text-sm">
+                    {moment(selectedSlot?.start ?? new Date()).format(
+                      "MMMM Do YYYY, h:mm a",
+                    )}
+                  </span>
+                  <Minus className="w-4" />
+                  <span className="rounded-md border px-3 py-2 text-sm">
+                    {moment(selectedSlot?.end ?? new Date()).format(
+                      "MMMM Do YYYY, h:mm a",
+                    )}
+                  </span>
+                </div>
+                {selectedSlot?.action === "select" ? (
+                  <p className="pt-1 text-muted-foreground text-sm">
+                    This is an all day event.
+                  </p>
+                ) : null}
               </div>
 
               <FormField
@@ -277,9 +285,9 @@ export default function BookingCalendar({ events }: any) {
                     <FormLabel>Type</FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={(value) => {
-                          setsSelectedOption(value);
-                        }}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        {...field}
                       >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Select an event type" />
@@ -307,14 +315,14 @@ export default function BookingCalendar({ events }: any) {
                   <FormItem>
                     <FormLabel>Note</FormLabel>
                     <FormControl>
-                      <Textarea />
+                      <Textarea placeholder="Add a special note" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <DialogFooter>
-                <Button type="submit">Save</Button>
+                <Button type="submit">Submit</Button>
               </DialogFooter>
             </form>
           </Form>
