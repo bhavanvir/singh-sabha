@@ -32,15 +32,15 @@ export const eventTable = pgTable(
     registrantEmail: text("registrant_email"),
     registrantPhoneNumber: text("registrant_phone_number"),
     type: text("type").notNull(),
-    startTime: timestamp("start_time").notNull(),
-    endTime: timestamp("end_time").notNull(),
-    isAllDay: boolean("is_all_day").notNull().default(false),
+    start: timestamp("start").notNull(),
+    end: timestamp("end").notNull(),
+    allDay: boolean("all_day").notNull().default(false),
     title: text("title").notNull(),
   },
   (table) => ({
     checkConstraint: check(
       "time_period_check",
-      sql`${table.endTime} > ${table.startTime}`,
+      sql`${table.end} > ${table.start}`,
     ),
   }),
 );
