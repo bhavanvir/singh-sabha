@@ -8,6 +8,34 @@
       "when": 1728877207517,
       "tag": "0000_late_proemial_gods",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1729036443341,
+      "tag": "0001_broad_zaran",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729036522727,
+      "tag": "0002_sweet_thundra",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729036728626,
+      "tag": "0003_calm_gauntlet",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1729041613843,
+      "tag": "0004_mature_toad",
+      "breakpoints": true
     }
   ]
 }
