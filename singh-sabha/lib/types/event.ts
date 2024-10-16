@@ -7,4 +7,5 @@ export type Event = {
   endTime: Date;
   isAllDay: boolean;
   title: string;
+  note?: string;
 };
