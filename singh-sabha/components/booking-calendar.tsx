@@ -18,17 +18,20 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
-  ChevronLeft,
-  ChevronRight,
-  Minus,
-  Calendar as CalendarIcon,
-  Tag,
-  Text,
-} from "lucide-react";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { ChevronLeft, ChevronRight, Minus } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -55,6 +58,12 @@ const monthNames = [
   "November",
   "December",
 ];
+
+const formSchema = z.object({
+  title: z.string().min(6, "Invalid title").max(6, "Title too long"),
+  type: z.string().nonempty("Type missing"),
+  note: z.string().max(128, "Note too long"),
+});
 
 // TODO: Add proper types for params
 export default function BookingCalendar({ events }: any) {
@@ -171,26 +180,35 @@ export default function BookingCalendar({ events }: any) {
     setIsDialogOpen(true);
   }, []);
 
-  const onSubmit = async () => {
-    if (!selectedSlot) return;
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      type: "",
+      note: "",
+    },
+  });
 
-    const newEvent: Event = {
-      type: selectedOption,
-      startTime: selectedSlot.start,
-      endTime: selectedSlot.end,
-      isAllDay: selectedSlot.action === "select",
-      title: "Sample Event",
-    };
-
-    const response = await CreateEvent({ newEvent });
-
-    if (response.success) {
-      toast.success(response.message);
-    } else {
-      toast.error(response.error);
-    }
-
-    setIsDialogOpen(false);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // if (!selectedSlot) return;
+    //
+    // const newEvent: Event = {
+    //   type: selectedOption,
+    //   startTime: selectedSlot.start,
+    //   endTime: selectedSlot.end,
+    //   isAllDay: selectedSlot.action === "select",
+    //   title: "Sample Event",
+    // };
+    //
+    // const response = await CreateEvent({ newEvent });
+    //
+    // if (response.success) {
+    //   toast.success(response.message);
+    // } else {
+    //   toast.error(response.error);
+    // }
+    //
+    // setIsDialogOpen(false);
   };
 
   return (
@@ -209,71 +227,97 @@ export default function BookingCalendar({ events }: any) {
         }}
       />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="w-11/12 border-b-2 relative">
-              <Input
-                className="truncate border-none px-0"
-                placeholder="Add title"
-              />
-            </DialogTitle>
+            <DialogTitle>Create event</DialogTitle>
             <DialogDescription>
               Parameters based on your selections. Click save when you&apos;re
               done.
             </DialogDescription>
           </DialogHeader>
-          {selectedSlot ? (
-            <div className="py-4 grid grid-flow-row gap-4">
-              <div className="flex items-center space-x-4">
-                <CalendarIcon className="h-4 w-4" />
-                <div className="text-sm flex items-center space-x-2 w-10/12">
-                  <span className="rounded-md border px-3 py-2 text-sm">
-                    {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
-                  </span>
-                  <Minus className="w-4" />
-                  <span className="rounded-md border px-3 py-2 text-sm">
-                    {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
-                  </span>
-                </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="grid grid-cols-1 gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input type="title" placeholder="Add title" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Label htmlFor="period">Time period</Label>
+              <div id="period" className="flex items-center space-x-2">
+                <span className="rounded-md border px-3 py-2 text-sm">
+                  {moment(selectedSlot?.start ?? new Date()).format(
+                    "MMMM Do YYYY, h:mm a",
+                  )}
+                </span>
+                <Minus className="w-4" />
+                <span className="rounded-md border px-3 py-2 text-sm">
+                  {moment(selectedSlot?.end ?? new Date()).format(
+                    "MMMM Do YYYY, h:mm a",
+                  )}
+                </span>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <Tag className="h-4 w-4" />
-                <div className="text-sm flex items-center space-x-2">
-                  <Select
-                    onValueChange={(value) => {
-                      setsSelectedOption(value);
-                    }}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select an event type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="funeral">Funeral</SelectItem>
-                        <SelectItem value="wedding">Wedding</SelectItem>
-                        <SelectItem value="akhand-path">Akhand Path</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => {
+                          setsSelectedOption(value);
+                        }}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select an event type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="funeral">Funeral</SelectItem>
+                            <SelectItem value="wedding">Wedding</SelectItem>
+                            <SelectItem value="akhand-path">
+                              Akhand Path
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="flex items-center space-x-4">
-                <Text className="h-4 w-4" />
-                <div className="text-sm flex items-center space-x-2 w-10/12">
-                  <Textarea />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <p>No slot selected.</p>
-          )}
-          <DialogFooter>
-            <Button type="submit" onClick={onSubmit}>
-              Save
-            </Button>
-          </DialogFooter>
+              <FormField
+                control={form.control}
+                name="note"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Note</FormLabel>
+                    <FormControl>
+                      <Textarea />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button type="submit">Save</Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>
