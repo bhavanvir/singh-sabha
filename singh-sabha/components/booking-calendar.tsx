@@ -23,11 +23,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
+import type { Event } from "@/lib/types/event";
+import { toast } from "sonner";
 
 const monthNames = [
   "January",
@@ -151,14 +154,37 @@ export default function BookingCalendar({ events }: any) {
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
+  const [selectedOption, setsSelectedOption] = React.useState("");
 
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
     setIsDialogOpen(true);
   }, []);
 
+  const onSubmit = async () => {
+    if (!selectedSlot) return;
+
+    const newEvent: Event = {
+      type: selectedOption,
+      startTime: selectedSlot.start,
+      endTime: selectedSlot.end,
+      isAllDay: selectedSlot.action === "select",
+      title: "Sample Event",
+    };
+
+    const response = await CreateEvent({ newEvent });
+
+    if (response.success) {
+      toast.success(response.message);
+    } else {
+      toast.error(response.error);
+    }
+
+    setIsDialogOpen(false);
+  };
+
   return (
-    <div className="h-screen">
+    <div className="h-[calc(100vh-6rem)] overflow-y-auto p-2">
       <Calendar
         selectable
         onSelectSlot={onSelectSlot}
@@ -184,14 +210,31 @@ export default function BookingCalendar({ events }: any) {
           {selectedSlot ? (
             <div className="py-4 grid grid-flow-row gap-4">
               <div className="flex items-center space-x-2">
-                <div className="border-2 p-2 rounded-md">
+                <div className="border rounded-md h-10 border-input bg-background px-3 py-2 text-sm">
                   {moment(selectedSlot.start).format("MMMM Do YYYY, h:mm a")}
                 </div>
                 <span>to</span>
-                <div className="border-2 p-2 rounded-md">
+                <div className="border rounded-md h-10 border-input bg-background px-3 py-2 text-sm">
                   {moment(selectedSlot.end).format("MMMM Do YYYY, h:mm a")}
                 </div>
               </div>
+
+              <Select
+                onValueChange={(value) => {
+                  setsSelectedOption(value);
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select an event type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="funeral">Funeral</SelectItem>
+                    <SelectItem value="wedding">Wedding</SelectItem>
+                    <SelectItem value="akhand-path">Akhand Path</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
 
               <div className="flex items-center space-x-2 ">
                 <Checkbox
@@ -205,7 +248,9 @@ export default function BookingCalendar({ events }: any) {
             <p>No slot selected.</p>
           )}
           <DialogFooter>
-            <Button type="submit">Save</Button>
+            <Button type="submit" onClick={onSubmit}>
+              Save
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
