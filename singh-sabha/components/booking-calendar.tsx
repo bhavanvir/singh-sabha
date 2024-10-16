@@ -31,7 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ChevronLeft, ChevronRight, Minus, SunMoon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, Info } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -69,8 +69,12 @@ const formSchema = z.object({
   note: z.string().max(128, "Note too long"),
 });
 
-// TODO: Add proper types for params
-export default function BookingCalendar({ events }: any) {
+// TODO: Add proper types
+interface BookingCalenderProps {
+  events: any;
+}
+
+export default function BookingCalendar({ events }: BookingCalenderProps) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
@@ -180,6 +184,7 @@ export default function BookingCalendar({ events }: any) {
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
     setIsDialogOpen(true);
+    form.reset();
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -196,9 +201,9 @@ export default function BookingCalendar({ events }: any) {
 
     const newEvent: Event = {
       type: data.type,
-      startTime: selectedSlot.start,
-      endTime: selectedSlot.end,
-      isAllDay: selectedSlot.action === "select",
+      start: selectedSlot.start,
+      end: selectedSlot.end,
+      allDay: selectedSlot.action === "select",
       title: data.title,
       note: data.note,
     };
@@ -271,7 +276,8 @@ export default function BookingCalendar({ events }: any) {
                   </span>
                 </div>
                 {selectedSlot?.action === "select" ? (
-                  <p className="pt-1 text-muted-foreground text-sm">
+                  <p className="pt-1 text-muted-foreground text-sm flex items-center">
+                    <Info className="mr-1 h-4 w-4" />
                     This is an all day event.
                   </p>
                 ) : null}
