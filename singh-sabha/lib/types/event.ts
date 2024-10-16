@@ -3,9 +3,9 @@ export type Event = {
   registrantEmail?: string;
   registrantPhoneNumber?: string;
   type: string;
-  startTime: Date;
-  endTime: Date;
-  isAllDay: boolean;
+  start: Date;
+  end: Date;
+  allDay: boolean;
   title: string;
   note?: string;
 };
