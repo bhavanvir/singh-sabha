@@ -21,7 +21,7 @@ export const CreateEvent = async ({
       allDay: newEvent.allDay,
       title: newEvent.title,
     });
-    revalidatePath("(/admin");
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not add an event: ${err}`);
   }
