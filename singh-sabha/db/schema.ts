@@ -36,6 +36,7 @@ export const eventTable = pgTable(
     end: timestamp("end").notNull(),
     allDay: boolean("all_day").notNull().default(false),
     title: text("title").notNull(),
+    note: text("note"),
   },
   (table) => ({
     checkConstraint: check(
