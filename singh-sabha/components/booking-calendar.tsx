@@ -191,6 +191,33 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     setEditEventDialogOpen(true);
   }, []);
 
+  // TODO: Fix type
+  const eventPropGetter = React.useCallback((event: any) => {
+    let newStyle = {
+      backgroundColor: "lightgrey",
+      color: "black",
+      borderRadius: "0px",
+      border: "none",
+    };
+
+    switch (event.type) {
+      case "wedding":
+        newStyle.backgroundColor = "lightblue";
+        break;
+      case "akhand-path":
+        newStyle.backgroundColor = "lightgreen";
+        break;
+      case "funeral":
+        newStyle.backgroundColor = "lightred";
+        break;
+    }
+
+    return {
+      className: "",
+      style: newStyle,
+    };
+  }, []);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     if (!selectedSlot) return;
 
@@ -218,6 +245,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
         selectable
         onSelectSlot={onSelectSlot}
         onSelectEvent={onSelectEvent}
+        eventPropGetter={eventPropGetter}
         localizer={localizer}
         events={events}
         defaultView="month"
