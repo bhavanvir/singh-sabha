@@ -193,7 +193,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
 
   // TODO: Fix type
   const eventPropGetter = React.useCallback((event: any) => {
-    let newStyle = {
+    const newStyle = {
       backgroundColor: "lightgrey",
       color: "black",
       borderRadius: "0px",
