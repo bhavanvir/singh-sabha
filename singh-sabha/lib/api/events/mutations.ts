@@ -2,8 +2,9 @@
 
 import { db } from "@/db/db";
 import { eventTable } from "@/db/schema";
-import type { Event } from "@/lib/types/event";
 import { revalidatePath } from "next/cache";
+
+import type { Event } from "@/lib/types/event";
 
 export const CreateEvent = async ({
   newEvent,

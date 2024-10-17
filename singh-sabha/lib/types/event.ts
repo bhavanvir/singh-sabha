@@ -1,4 +1,5 @@
 export type Event = {
+  id?: string;
   registrantFullName?: string;
   registrantEmail?: string;
   registrantPhoneNumber?: string;
