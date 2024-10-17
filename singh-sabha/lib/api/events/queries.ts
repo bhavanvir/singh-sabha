@@ -6,9 +6,9 @@ import { eventTable } from "@/db/schema";
 
 import type { InferSelectModel } from "drizzle-orm";
 
-type Event = InferSelectModel<typeof eventTable>;
+export type DatabaseEvent = InferSelectModel<typeof eventTable>;
 
-export const GetAllEvents = cache(async (): Promise<Event[]> => {
+export const GetAllEvents = cache(async (): Promise<DatabaseEvent[]> => {
   try {
     const events = await db.select().from(eventTable);
     return events;
