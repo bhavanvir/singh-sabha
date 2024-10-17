@@ -71,7 +71,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create Event</DialogTitle>
+          <DialogTitle>Create event</DialogTitle>
           <DialogDescription>
             Parameters based on your selection. Click submit when you&apos;re
             done.
