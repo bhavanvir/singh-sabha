@@ -20,11 +20,12 @@ import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import { toast } from "sonner";
+import CreateEventDialog from "@/components/create-event-dialog";
+import EditEventDialog from "@/components/edit-event-dialog";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
-import CreateEventDialog from "./create-event-dialog";
 
 const monthNames = [
   "January",
@@ -169,17 +170,26 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     );
   };
 
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [isCreateEventDialogOpen, setCreateEventDialogOpen] =
+    React.useState(false);
+  const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
+  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
   const onSelectSlot = React.useCallback(
     (slotInfo: SlotInfo) => {
       setSelectedSlot(slotInfo);
-      setIsDialogOpen(true);
+      setCreateEventDialogOpen(true);
       form.reset();
     },
     [form],
   );
+
+  // TODO: Fix type
+  const onSelectEvent = React.useCallback((event: any) => {
+    setSelectedEvent(event);
+    setEditEventDialogOpen(true);
+  }, []);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     if (!selectedSlot) return;
@@ -199,7 +209,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
       error: "An unknown error occured.",
     });
 
-    setIsDialogOpen(false);
+    setCreateEventDialogOpen(false);
   };
 
   return (
@@ -207,6 +217,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
       <Calendar
         selectable
         onSelectSlot={onSelectSlot}
+        onSelectEvent={onSelectEvent}
         localizer={localizer}
         events={events}
         defaultView="month"
@@ -218,10 +229,15 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
         }}
       />
       <CreateEventDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isCreateEventDialogOpen}
+        onClose={() => setCreateEventDialogOpen(false)}
         slot={selectedSlot}
         onSubmit={onSubmit}
+      />
+      <EditEventDialog
+        isOpen={isEditEventDialogOpen}
+        onClose={() => setEditEventDialogOpen(false)}
+        event={selectedEvent}
       />
     </div>
   );
