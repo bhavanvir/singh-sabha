@@ -33,15 +33,14 @@ import { Minus, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import moment from "moment";
 import type { SlotInfo } from "react-big-calendar";
-import type { Event } from "@/lib/types/event";
 
 const formSchema = z.object({
   title: z
     .string()
-    .nonempty("Title missing")
+    .min(1, "Title missing")
     .min(6, "Title too short")
     .max(64, "Title too long"),
-  type: z.string().nonempty("Type missing"),
+  type: z.string().min(1, "Type missing"),
   note: z.string().max(128, "Note too long"),
 });
 
