@@ -36,13 +36,15 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
+import { toast } from "sonner";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
-import { toast } from "sonner";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import type { DatabaseEvent } from "@/lib/api/events/queries";
+import CreateEventDialog from "./create-event-dialog";
 
 const monthNames = [
   "January",
@@ -235,108 +237,12 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
           month: { dateHeader: CustomDateHeader },
         }}
       />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Create event</DialogTitle>
-            <DialogDescription>
-              Parameters based on your selection. Click submit when you&apos;re
-              done.
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="grid grid-cols-1 gap-4"
-            >
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input type="title" placeholder="Add title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Label htmlFor="period">Time period</Label>
-              <div>
-                <div id="period" className="flex items-center space-x-2">
-                  <span className="rounded-md border px-3 py-2 text-sm">
-                    {moment(selectedSlot?.start ?? new Date()).format(
-                      "MMMM Do YYYY, h:mm a",
-                    )}
-                  </span>
-                  <Minus className="w-4" />
-                  <span className="rounded-md border px-3 py-2 text-sm">
-                    {moment(selectedSlot?.end ?? new Date()).format(
-                      "MMMM Do YYYY, h:mm a",
-                    )}
-                  </span>
-                </div>
-                {selectedSlot?.action === "select" ? (
-                  <p className="pt-1 text-muted-foreground text-sm flex items-center">
-                    <Info className="mr-1 h-4 w-4" />
-                    This is an all day event.
-                  </p>
-                ) : null}
-              </div>
-
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        {...field}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Select an event type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="funeral">Funeral</SelectItem>
-                            <SelectItem value="wedding">Wedding</SelectItem>
-                            <SelectItem value="akhand-path">
-                              Akhand Path
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="note"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Note</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Add a special note" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
-                <Button type="submit">Submit</Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+      <CreateEventDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        slot={selectedSlot}
+        onSubmit={onSubmit}
+      />
     </div>
   );
 }
