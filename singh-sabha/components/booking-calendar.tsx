@@ -10,40 +10,20 @@ import {
   SelectLabel,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { ChevronLeft, ChevronRight, Minus, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import { toast } from "sonner";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
-import type { DatabaseEvent } from "@/lib/api/events/queries";
 import CreateEventDialog from "./create-event-dialog";
 
 const monthNames = [
@@ -64,10 +44,10 @@ const monthNames = [
 const formSchema = z.object({
   title: z
     .string()
-    .nonempty("Title missing")
+    .min(1, "Title missing")
     .min(6, "Title too short")
     .max(64, "Title too long"),
-  type: z.string().nonempty("Type missing"),
+  type: z.string().min(1, "Type missing"),
   note: z.string().max(128, "Note too long"),
 });
 
