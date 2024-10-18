@@ -11,12 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { CreateEvent } from "@/lib/api/events/mutations";
+import { CreateEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import { toast } from "sonner";
@@ -42,15 +39,11 @@ const monthNames = [
   "December",
 ];
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, "Title missing")
-    .min(6, "Title too short")
-    .max(64, "Title too long"),
-  type: z.string().min(1, "Type missing"),
-  note: z.string().max(128, "Note too long"),
-});
+const typeColourMap: Record<string, string> = {
+  "akhand-path": "#fde68a",
+  wedding: "#ffc4d6",
+  funeral: "#a7a9be",
+};
 
 // TODO: Add proper types
 interface BookingCalenderProps {
@@ -60,15 +53,6 @@ interface BookingCalenderProps {
 export default function BookingCalendar({ events }: BookingCalenderProps) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      type: "",
-      note: "",
-    },
-  });
 
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const startOfWeek = moment(date).startOf("week");
@@ -176,14 +160,10 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
-  const onSelectSlot = React.useCallback(
-    (slotInfo: SlotInfo) => {
-      setSelectedSlot(slotInfo);
-      setCreateEventDialogOpen(true);
-      form.reset();
-    },
-    [form],
-  );
+  const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
+    setSelectedSlot(slotInfo);
+    setCreateEventDialogOpen(true);
+  }, []);
 
   // TODO: Fix type
   const onSelectEvent = React.useCallback((event: any) => {
@@ -200,17 +180,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
       border: "none",
     };
 
-    switch (event.type) {
-      case "wedding":
-        newStyle.backgroundColor = "lightblue";
-        break;
-      case "akhand-path":
-        newStyle.backgroundColor = "lightgreen";
-        break;
-      case "funeral":
-        newStyle.backgroundColor = "lightred";
-        break;
-    }
+    newStyle.backgroundColor = typeColourMap[event.type];
 
     return {
       className: "",
@@ -218,7 +188,8 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     };
   }, []);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  // TODO: Fix type
+  const onCreateEventSubmit = async (data: any) => {
     if (!selectedSlot) return;
 
     const newEvent: Event = {
@@ -237,6 +208,25 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     });
 
     setCreateEventDialogOpen(false);
+  };
+
+  const onEditEventSubmit = async (data: Partial<Event>) => {
+    if (!selectedEvent) return;
+    const updatedEvent = { ...selectedEvent };
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key in updatedEvent) {
+        (updatedEvent[key as keyof Event] as any) = value; // Can't be bothered with this nonsense
+      }
+    }
+
+    toast.promise(UpdateEvent({ updatedEvent }), {
+      loading: "Updating event...",
+      success: "Event updated successfully!",
+      error: "An unknown error occured.",
+    });
+
+    setEditEventDialogOpen(false);
   };
 
   return (
@@ -260,12 +250,13 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
         isOpen={isCreateEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
         slot={selectedSlot}
-        onSubmit={onSubmit}
+        onSubmit={onCreateEventSubmit}
       />
       <EditEventDialog
         isOpen={isEditEventDialogOpen}
         onClose={() => setEditEventDialogOpen(false)}
         event={selectedEvent}
+        onEditEventSubmit={onEditEventSubmit}
       />
     </div>
   );
