@@ -21,6 +21,7 @@ export const CreateEvent = async ({
       end: newEvent.end,
       allDay: newEvent.allDay,
       title: newEvent.title,
+      note: newEvent.note,
     });
     revalidatePath("/admin");
   } catch (err) {
