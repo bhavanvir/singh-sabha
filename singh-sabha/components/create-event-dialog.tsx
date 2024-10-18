@@ -67,14 +67,18 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     form.reset();
   };
 
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click submit when you&apos;re
-            done.
+            Parameters based on your selection. Click when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 
@@ -166,7 +170,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             />
 
             <DialogFooter>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Create</Button>
             </DialogFooter>
           </form>
         </Form>
