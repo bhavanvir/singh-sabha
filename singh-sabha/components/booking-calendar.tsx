@@ -38,10 +38,13 @@ const monthNames = [
   "December",
 ];
 
+// From https://coolors.co/palettes/trending
 const typeColourMap: Record<string, string> = {
-  "akhand-path": "#fde68a",
-  wedding: "#ffc4d6",
-  funeral: "#a7a9be",
+  "akhand-path": "#cdb4db",
+  wedding: "#ffc8dd",
+  funeral: "#ffafcc",
+  langar: "#bde0fe",
+  "sehaj-path": "#a2d2ff",
 };
 
 // TODO: Add proper types
@@ -175,7 +178,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     const newStyle = {
       backgroundColor: "lightgrey",
       color: "black",
-      borderRadius: "0px",
+      borderRadius: "0.375rem", // rounded-md
       border: "none",
     };
 
