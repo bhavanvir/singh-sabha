@@ -39,13 +39,12 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const error = await login({ email: data.email, password: data.password });
-    if (error) {
-      toast.error(error.error);
-    } else {
-      toast.success("Hooray! Logging you in...");
-    }
+  const handleLogIn = async (data: z.infer<typeof formSchema>) => {
+    toast.promise(login({ email: data.email, password: data.password }), {
+      loading: "Logging in...",
+      success: " successfully!",
+      error: "An unknown error occured.",
+    });
   };
 
   return (
@@ -59,7 +58,10 @@ export default function LoginForm() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(handleLogIn)}
+              className="space-y-4"
+            >
               <FormField
                 control={form.control}
                 name="email"
