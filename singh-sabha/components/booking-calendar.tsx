@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
@@ -22,21 +22,6 @@ import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
 
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 // From https://coolors.co/palettes/trending
 const typeColourMap: Record<string, string> = {
   "akhand-path": "#cdb4db",
@@ -46,34 +31,43 @@ const typeColourMap: Record<string, string> = {
   "sehaj-path": "#a2d2ff",
 };
 
-// TODO: Add proper types
 interface BookingCalenderProps {
-  events: any;
+  events: Event[];
 }
 
 export default function BookingCalendar({ events }: BookingCalenderProps) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Small delay to ensure CSS is loaded
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
-    const startOfWeek = moment(date).startOf("week");
-    const endOfWeek = moment(date).endOf("week");
     const formatDate = () => {
       if (view === "day") {
-        return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        return moment(date).format("MMMM D, YYYY");
       }
 
       if (view === "week") {
-        return `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${monthNames[endOfWeek.month()]} ${endOfWeek.date()}, ${startOfWeek.year()}`;
+        const start = moment(date).startOf("week");
+        const end = moment(date).endOf("week");
+        return `${start.format("MMMM D")} - ${end.format("MMMM D, YYYY")}`;
       }
 
       if (view === "month") {
-        return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+        return moment(date).format("MMMM YYYY");
       }
 
       return null;
     };
-
     return (
       <div className="flex justify-between pb-4 w-full">
         <div className="flex items-center w-fit space-x-4">
@@ -196,7 +190,11 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     };
   }, []);
 
-  return (
+  return isLoading ? (
+    <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <div className="h-[calc(100vh-6rem)] overflow-y-auto p-2">
       <Calendar
         selectable
