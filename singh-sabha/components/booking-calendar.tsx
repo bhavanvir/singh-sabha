@@ -58,40 +58,47 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const startOfWeek = moment(date).startOf("week");
     const endOfWeek = moment(date).endOf("week");
-    const weekDisplay =
-      startOfWeek.month() === endOfWeek.month()
-        ? `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${endOfWeek.date()}, ${startOfWeek.year()}`
-        : `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${monthNames[endOfWeek.month()]} ${endOfWeek.date()}, ${startOfWeek.year()}`;
+    const formatDate = () => {
+      if (view === "day") {
+        return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+      }
+
+      if (view === "week") {
+        return `${monthNames[startOfWeek.month()]} ${startOfWeek.date()} - ${monthNames[endOfWeek.month()]} ${endOfWeek.date()}, ${startOfWeek.year()}`;
+      }
+
+      if (view === "month") {
+        return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      }
+
+      return null;
+    };
 
     return (
-      <div className="flex justify-between pb-4">
-        <div className="relative flex items-center justify-center w-[35rem]">
-          <Button
-            size="icon"
-            variant="outline"
-            onClick={() => onNavigate("PREV")}
-            className="absolute left-0"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+      <div className="flex justify-between pb-4 w-full">
+        <div className="flex items-center w-fit space-x-4">
+          <div>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => onNavigate("PREV")}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
 
-          <h1 className="text-2xl font-bold">
-            {view === "week"
-              ? weekDisplay
-              : `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
-          </h1>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => onNavigate("NEXT")}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
 
-          <Button
-            size="icon"
-            variant="outline"
-            onClick={() => onNavigate("NEXT")}
-            className="absolute right-0"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <span className="text-2xl font-bold">{formatDate()}</span>
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-4">
           <Select
             onValueChange={(value) => onView(value as View)}
             defaultValue="month"
