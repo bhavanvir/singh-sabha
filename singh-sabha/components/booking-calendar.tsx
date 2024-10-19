@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { CreateEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import { toast } from "sonner";
@@ -188,47 +187,6 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     };
   }, []);
 
-  // TODO: Fix type
-  const onCreateEventSubmit = async (data: any) => {
-    if (!selectedSlot) return;
-
-    const newEvent: Event = {
-      type: data.type,
-      start: selectedSlot.start,
-      end: selectedSlot.end,
-      allDay: selectedSlot.action === "select",
-      title: data.title,
-      note: data.note,
-    };
-
-    toast.promise(CreateEvent({ newEvent }), {
-      loading: "Creating event...",
-      success: "Event created successfully!",
-      error: "An unknown error occured.",
-    });
-
-    setCreateEventDialogOpen(false);
-  };
-
-  const onEditEventSubmit = async (data: Partial<Event>) => {
-    if (!selectedEvent) return;
-    const updatedEvent = { ...selectedEvent };
-
-    for (const [key, value] of Object.entries(data)) {
-      if (key in updatedEvent) {
-        (updatedEvent[key as keyof Event] as any) = value; // Can't be bothered with this nonsense
-      }
-    }
-
-    toast.promise(UpdateEvent({ updatedEvent }), {
-      loading: "Updating event...",
-      success: "Event updated successfully!",
-      error: "An unknown error occured.",
-    });
-
-    setEditEventDialogOpen(false);
-  };
-
   return (
     <div className="h-[calc(100vh-6rem)] overflow-y-auto p-2">
       <Calendar
@@ -250,13 +208,11 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
         isOpen={isCreateEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
         slot={selectedSlot}
-        onSubmit={onCreateEventSubmit}
       />
       <EditEventDialog
         isOpen={isEditEventDialogOpen}
         onClose={() => setEditEventDialogOpen(false)}
         event={selectedEvent}
-        onEditEventSubmit={onEditEventSubmit}
       />
     </div>
   );

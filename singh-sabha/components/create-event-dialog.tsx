@@ -31,7 +31,11 @@ import {
 } from "@/components/ui/select";
 import { Minus, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { CreateEvent } from "@/lib/api/events/mutations";
 import moment from "moment";
+
+import type { Event } from "@/lib/types/event";
 import type { SlotInfo } from "react-big-calendar";
 
 const formSchema = z.object({
@@ -48,28 +52,42 @@ interface CreateEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   slot: SlotInfo | null;
-  onSubmit: (data: z.infer<typeof formSchema>) => void;
 }
 
 const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   isOpen,
   onClose,
   slot,
-  onSubmit,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "", type: "", note: "" },
   });
 
-  const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    onSubmit(data);
-    form.reset();
-  };
-
   const handleClose = () => {
     form.reset();
     onClose();
+  };
+
+  const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+    if (!slot) return;
+
+    const newEvent: Event = {
+      type: data.type,
+      start: slot.start,
+      end: slot.end,
+      allDay: slot.action === "select",
+      title: data.title,
+      note: data.note,
+    };
+
+    toast.promise(CreateEvent({ newEvent }), {
+      loading: "Creating event...",
+      success: "Event created successfully!",
+      error: "An unknown error occured.",
+    });
+
+    handleClose();
   };
 
   return (

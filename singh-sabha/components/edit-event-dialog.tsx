@@ -29,6 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UpdateEvent } from "@/lib/api/events/mutations";
+import { toast } from "sonner";
 
 import type { Event } from "@/lib/types/event";
 
@@ -36,7 +38,6 @@ interface EditEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   event: Event | null;
-  onEditEventSubmit: (data: z.infer<typeof formSchema>) => void;
 }
 
 const formSchema = z.object({
@@ -53,7 +54,6 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
   isOpen,
   onClose,
   event,
-  onEditEventSubmit,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,16 +75,30 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     }
   }, [event, form]);
 
-  const handleEditEventSubmit: SubmitHandler<z.infer<typeof formSchema>> = (
-    data,
-  ) => {
-    onEditEventSubmit(data);
-    form.reset();
-  };
-
   const handleClose = () => {
     form.reset();
     onClose();
+  };
+
+  const handleEditEventSubmit: SubmitHandler<z.infer<typeof formSchema>> = (
+    data,
+  ) => {
+    if (!event) return;
+    const updatedEvent = { ...event };
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key in updatedEvent) {
+        (updatedEvent[key as keyof Event] as any) = value; // Can't be bothered with this nonsense
+      }
+    }
+
+    toast.promise(UpdateEvent({ updatedEvent }), {
+      loading: "Updating event...",
+      success: "Event updated successfully!",
+      error: "An unknown error occured.",
+    });
+
+    handleClose();
   };
 
   return (
@@ -162,7 +176,9 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
               )}
             />
             <DialogFooter className="flex">
-              <Button variant="destructive">Delete</Button>
+              <Button variant="destructive" type="submit">
+                Delete
+              </Button>
               <Button type="submit" disabled={!form.formState.isDirty}>
                 Save changes
               </Button>
