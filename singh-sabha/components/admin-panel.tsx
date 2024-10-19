@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "@/components/actions/logout-action";
-import BookingCalendar from "./booking-calendar";
+import { toast } from "sonner";
+import BookingCalendar from "@/components/booking-calendar";
 
 const PAGES = {
   BOOKINGS: "bookings",
@@ -42,6 +43,13 @@ export function AdminPanel({ user, events }: AdminPanelProps) {
       ? "text-foreground"
       : "text-muted-foreground hover:text-foreground";
 
+  const handleLogOut = () => {
+    toast.promise(logout, {
+      loading: "Logging out...",
+      success: "Logged out successfully!",
+      error: "An unknown error occured.",
+    });
+  };
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="z-10 sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -119,9 +127,7 @@ export function AdminPanel({ user, events }: AdminPanelProps) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={async () => await logout()}>
-                Logout
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
