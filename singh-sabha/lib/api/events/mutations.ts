@@ -50,3 +50,20 @@ export const UpdateEvent = async ({
     throw new Error(`Could not update event: ${err}`);
   }
 };
+
+export const DeleteEvent = async ({
+  event,
+}: {
+  event: Event;
+}): Promise<void> => {
+  if (!event.id) {
+    throw new Error("Event ID is required to delete event");
+  }
+
+  try {
+    await db.delete(eventTable).where(eq(eventTable.id, event.id));
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Could not delete event: ${err}`);
+  }
+};
