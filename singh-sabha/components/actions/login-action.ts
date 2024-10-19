@@ -15,9 +15,7 @@ export async function login(values: { email: string; password: string }) {
     .from(userTable)
     .where(eq(userTable.email, email));
   if (!existingUser) {
-    return {
-      error: "Incorrect email or password",
-    };
+    throw new Error("Incorrect username or password");
   }
 
   const validPassword = await verify(existingUser.passwordHash, password, {
@@ -27,9 +25,7 @@ export async function login(values: { email: string; password: string }) {
     parallelism: 1,
   });
   if (!validPassword) {
-    return {
-      error: "Incorrect username or password",
-    };
+    throw new Error("Incorrect username or password");
   }
   const session = await lucia.createSession(existingUser.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
