@@ -42,7 +42,7 @@ export default function LoginForm() {
   const handleLogIn = async (data: z.infer<typeof formSchema>) => {
     toast.promise(login({ email: data.email, password: data.password }), {
       loading: "Logging in...",
-      success: " successfully!",
+      success: "Logged in successfully!",
       error: "An unknown error occured.",
     });
   };
