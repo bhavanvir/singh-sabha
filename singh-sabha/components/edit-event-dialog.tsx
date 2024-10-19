@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UpdateEvent } from "@/lib/api/events/mutations";
+import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
 
 import type { Event } from "@/lib/types/event";
@@ -101,6 +101,18 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     handleClose();
   };
 
+  const handleDeleteEventSubmit = () => {
+    if (!event) return;
+
+    toast.promise(DeleteEvent({ event }), {
+      loading: "Deleting event...",
+      success: "Event deleted successfully!",
+      error: "An unknown error occured.",
+    });
+
+    handleClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl">
@@ -113,10 +125,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleEditEventSubmit)}
-            className="grid grid-cols-1 gap-4"
-          >
+          <form className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
               name="title"
@@ -176,10 +185,17 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
               )}
             />
             <DialogFooter className="flex">
-              <Button variant="destructive" type="submit">
+              <Button
+                variant="destructive"
+                onClick={form.handleSubmit(handleDeleteEventSubmit)}
+              >
                 Delete
               </Button>
-              <Button type="submit" disabled={!form.formState.isDirty}>
+              <Button
+                type="submit"
+                disabled={!form.formState.isDirty}
+                onClick={form.handleSubmit(handleEditEventSubmit)}
+              >
                 Save changes
               </Button>
             </DialogFooter>
