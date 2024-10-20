@@ -160,7 +160,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                         <SelectGroup>
                           {Object.entries(typeColourMap).map(
                             ([type, colour]) => (
-                              <SelectItem value={type}>
+                              <SelectItem value={type} key={type}>
                                 <span className="flex items-center gap-1">
                                   <div
                                     className="w-4 h-4 rounded-full"

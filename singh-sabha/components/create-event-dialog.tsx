@@ -73,6 +73,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { title: "", type: "", note: "" },
+  });
+
   React.useEffect(() => {
     if (isOpen && slot) {
       setDate({
@@ -85,12 +90,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     } else {
       setDate(undefined);
     }
-  }, [isOpen, slot]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { title: "", type: "", note: "" },
-  });
+  }, [form, isOpen, slot]);
 
   const handleClose = () => {
     form.reset();
@@ -252,7 +252,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                         <SelectGroup>
                           {Object.entries(typeColourMap).map(
                             ([type, colour]) => (
-                              <SelectItem value={type}>
+                              <SelectItem value={type} key={type}>
                                 <span className="flex items-center gap-1">
                                   <div
                                     className="w-4 h-4 rounded-full"
