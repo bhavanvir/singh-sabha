@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Info } from "lucide-react";
+import { Info, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
@@ -75,7 +75,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { title: "", type: "", note: "" },
+    defaultValues: {
+      title: "",
+      type: "",
+      note: "",
+    },
   });
 
   React.useEffect(() => {
@@ -158,14 +162,14 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             />
 
             <Label htmlFor="period">Time period</Label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-4">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     id="date"
                     variant={"outline"}
                     className={cn(
-                      "justify-start text-left font-normal",
+                      "justify-start text-left font-normal w-[80%]",
                       !date && "text-muted-foreground",
                     )}
                   >
@@ -197,28 +201,29 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 </PopoverContent>
               </Popover>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="flex items-center justify-end space-x-1">
                 <FormField
                   control={form.control}
                   name="startTime"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input type="time" {...field} />
+                        <Input type="time" {...field} className="w-fit" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <span className="text-sm flex justify-center">to</span>
+                <Minus className="w-4" />
+
                 <FormField
                   control={form.control}
                   name="endTime"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input type="time" {...field} />
+                        <Input type="time" {...field} className="w-fit" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
