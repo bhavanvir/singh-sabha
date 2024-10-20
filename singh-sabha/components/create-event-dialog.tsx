@@ -195,7 +195,13 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     mode="range"
                     defaultMonth={date?.from}
                     selected={date}
-                    onSelect={setDate}
+                    onSelect={(selected) => {
+                      if (selected?.from) {
+                        setDate(selected);
+                      } else if (date) {
+                        setDate(date);
+                      }
+                    }}
                     numberOfMonths={2}
                   />
                 </PopoverContent>
