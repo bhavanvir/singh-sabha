@@ -126,7 +126,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
         </DialogHeader>
 
         <Form {...form}>
-          <form className="grid grid-cols-1 gap-4">
+          <form autoComplete="off" className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
               name="title"

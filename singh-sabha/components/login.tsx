@@ -61,6 +61,7 @@ export default function LoginForm() {
             <form
               onSubmit={form.handleSubmit(handleLogIn)}
               className="space-y-4"
+              autoComplete="off"
             >
               <FormField
                 control={form.control}

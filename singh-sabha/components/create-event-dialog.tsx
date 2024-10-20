@@ -146,6 +146,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="grid grid-cols-1 gap-4"
+            autoComplete="off"
           >
             <FormField
               control={form.control}
