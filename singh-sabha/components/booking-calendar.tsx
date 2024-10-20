@@ -17,19 +17,11 @@ import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
+import { typeColourMap } from "@/lib/utils";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
-
-// From https://coolors.co/palettes/trending
-const typeColourMap: Record<string, string> = {
-  "akhand-path": "#cdb4db",
-  wedding: "#ffc8dd",
-  funeral: "#ffafcc",
-  langar: "#bde0fe",
-  "sehaj-path": "#a2d2ff",
-};
 
 interface BookingCalenderProps {
   events: Event[];
@@ -71,10 +63,10 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
     return (
       <div className="flex justify-between pb-4 w-full">
         <div className="flex items-center w-fit space-x-4">
-          <div>
+          <div className="space-x-1">
             <Button
               size="icon"
-              variant="ghost"
+              variant="outline"
               onClick={() => onNavigate("PREV")}
             >
               <ChevronLeft className="h-4 w-4" />
@@ -82,7 +74,7 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
 
             <Button
               size="icon"
-              variant="ghost"
+              variant="outline"
               onClick={() => onNavigate("NEXT")}
             >
               <ChevronRight className="h-4 w-4" />

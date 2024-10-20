@@ -15,3 +15,12 @@ export function kebabToTitleCase(
       .join(" ");
   }
 }
+
+// From https://coolors.co/palettes/trending
+export const typeColourMap: Record<string, string> = {
+  "akhand-path": "#cdb4db",
+  wedding: "#ffc8dd",
+  funeral: "#ffafcc",
+  langar: "#bde0fe",
+  "sehaj-path": "#a2d2ff",
+};

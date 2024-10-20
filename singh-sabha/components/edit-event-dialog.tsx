@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
+import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
 
 import type { Event } from "@/lib/types/event";
 
@@ -157,11 +158,19 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="funeral">Funeral</SelectItem>
-                          <SelectItem value="wedding">Wedding</SelectItem>
-                          <SelectItem value="akhand-path">
-                            Akhand Path
-                          </SelectItem>
+                          {Object.entries(typeColourMap).map(
+                            ([type, colour]) => (
+                              <SelectItem value={type}>
+                                <span className="flex items-center gap-1">
+                                  <div
+                                    className="w-4 h-4 rounded-full"
+                                    style={{ backgroundColor: colour }}
+                                  />
+                                  {kebabToTitleCase(type)}
+                                </span>
+                              </SelectItem>
+                            ),
+                          )}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

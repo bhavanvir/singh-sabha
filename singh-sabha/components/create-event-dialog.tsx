@@ -1,7 +1,10 @@
-import React from "react";
+import * as React from "react";
+import { format } from "date-fns";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
 import {
   Form,
   FormControl,
@@ -18,6 +21,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,10 +38,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Minus, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
+import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
@@ -46,6 +56,8 @@ const formSchema = z.object({
     .max(64, "Title too long"),
   type: z.string().min(1, "Type missing"),
   note: z.string().max(128, "Note too long"),
+  startTime: z.string().min(1, "Start time missing"),
+  endTime: z.string().min(1, "End time missing"),
 });
 
 interface CreateEventDialogProps {
@@ -59,6 +71,22 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   onClose,
   slot,
 }) => {
+  const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (isOpen && slot) {
+      setDate({
+        from: slot.start,
+        to: slot.end,
+      });
+
+      form.setValue("startTime", moment(slot.start).format("HH:mm"));
+      form.setValue("endTime", moment(slot.end).format("HH:mm"));
+    } else {
+      setDate(undefined);
+    }
+  }, [isOpen, slot]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "", type: "", note: "" },
@@ -72,11 +100,21 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
     if (!slot) return;
 
+    const startDateTime = moment(
+      `${moment(date?.from).format("YYYY-MM-DD")} ${data.startTime}`,
+      "YYYY-MM-DD HH:mm",
+    );
+
+    const endDateTime = moment(
+      `${moment(date?.to ?? date?.from).format("YYYY-MM-DD")} ${data.endTime}`,
+      "YYYY-MM-DD HH:mm",
+    );
+
     const newEvent: Event = {
       type: data.type,
-      start: slot.start,
-      end: slot.end,
-      allDay: slot.action === "select",
+      start: startDateTime.toDate(),
+      end: endDateTime.toDate(),
+      allDay: data.startTime === data.endTime,
       title: data.title,
       note: data.note,
     };
@@ -92,7 +130,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-xl">
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
           <DialogDescription>
@@ -120,21 +158,74 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             />
 
             <Label htmlFor="period">Time period</Label>
-            <div>
-              <div id="period" className="flex items-center space-x-2">
-                <span className="rounded-md border px-3 py-2 text-sm">
-                  {moment(slot?.start ?? new Date()).format(
-                    "MMMM Do YYYY, h:mm a",
+            <div className="grid grid-cols-2 gap-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="date"
+                    variant={"outline"}
+                    className={cn(
+                      "justify-start text-left font-normal",
+                      !date && "text-muted-foreground",
+                    )}
+                  >
+                    <span className="ml-[-0.375rem]">
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={date?.from}
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
+
+              <div className="grid grid-cols-1 gap-4">
+                <FormField
+                  control={form.control}
+                  name="startTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </span>
-                <Minus className="w-4" />
-                <span className="rounded-md border px-3 py-2 text-sm">
-                  {moment(slot?.end ?? new Date()).format(
-                    "MMMM Do YYYY, h:mm a",
+                />
+
+                <span className="text-sm flex justify-center">to</span>
+                <FormField
+                  control={form.control}
+                  name="endTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </span>
+                />
               </div>
-              {slot?.action === "select" && (
+              {form.getValues()["startTime"] == form.getValues()["endTime"] && (
                 <p className="pt-1 text-muted-foreground text-sm flex items-center">
                   <Info className="mr-1 h-4 w-4" />
                   This is an all day event.
@@ -159,11 +250,19 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="funeral">Funeral</SelectItem>
-                          <SelectItem value="wedding">Wedding</SelectItem>
-                          <SelectItem value="akhand-path">
-                            Akhand Path
-                          </SelectItem>
+                          {Object.entries(typeColourMap).map(
+                            ([type, colour]) => (
+                              <SelectItem value={type}>
+                                <span className="flex items-center gap-1">
+                                  <div
+                                    className="w-4 h-4 rounded-full"
+                                    style={{ backgroundColor: colour }}
+                                  />
+                                  {kebabToTitleCase(type)}
+                                </span>
+                              </SelectItem>
+                            ),
+                          )}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
