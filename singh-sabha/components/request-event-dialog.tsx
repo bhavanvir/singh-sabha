@@ -134,7 +134,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
     const newEvent: Event = {
       registrantFullName: data.name,
       registrantEmail: data.email,
-      registrantPhoneNumber: data.email ?? null,
+      registrantPhoneNumber: data.phoneNumber ?? null,
       type: data.type,
       start: startDateTime.toDate(),
       end: endDateTime.toDate(),
