@@ -27,7 +27,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -121,6 +120,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       allDay: data.startTime === data.endTime,
       title: data.title,
       note: data.note,
+      verified: true,
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -154,7 +154,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel required>Title</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Add title" {...field} />
                   </FormControl>
@@ -163,7 +163,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               )}
             />
 
-            <Label htmlFor="period">Time period</Label>
+            <FormLabel required>Time period</FormLabel>
             <div className="grid grid-cols-2 gap-x-4">
               <Popover>
                 <PopoverTrigger asChild>
@@ -251,7 +251,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type</FormLabel>
+                  <FormLabel required>Type</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
