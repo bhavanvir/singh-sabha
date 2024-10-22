@@ -138,7 +138,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click when you&apos;re done.
+            Parameters based on your selection. Click create when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
 
