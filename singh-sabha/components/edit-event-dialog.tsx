@@ -31,7 +31,8 @@ import {
 } from "@/components/ui/select";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
-import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
+import { kebabToTitleCase } from "@/lib/utils";
+import { typeEventMap } from "@/lib/types/eventdetails";
 import { TriangleAlert } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
@@ -154,18 +155,18 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                       defaultValue={event?.type}
                       {...field}
                     >
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
-                          {Object.entries(typeColourMap).map(
-                            ([type, colour]) => (
+                          {Object.entries(typeEventMap).map(
+                            ([type, { color }]) => (
                               <SelectItem value={type} key={type}>
-                                <span className="flex items-center gap-1">
+                                <span className="flex items-center gap-2">
                                   <div
                                     className="w-4 h-4 rounded-full"
-                                    style={{ backgroundColor: colour }}
+                                    style={{ backgroundColor: color }}
                                   />
                                   {kebabToTitleCase(type)}
                                 </span>

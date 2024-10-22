@@ -43,7 +43,8 @@ import {
 import { Info, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
+import { kebabToTitleCase } from "@/lib/utils";
+import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 import { CreateEvent } from "@/lib/api/events/mutations";
 
@@ -339,24 +340,28 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                           defaultValue={field.value}
                           {...field}
                         >
-                          <SelectTrigger className="w-[180px]">
+                          <SelectTrigger>
                             <SelectValue placeholder="Select an event type" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="overflow-y-auto max-h-[10rem]">
                             <SelectGroup>
-                              {Object.entries(typeColourMap).map(
-                                ([type, colour]) => (
-                                  <SelectItem value={type} key={type}>
-                                    <span className="flex items-center gap-1">
-                                      <div
-                                        className="w-4 h-4 rounded-full"
-                                        style={{ backgroundColor: colour }}
-                                      />
-                                      {kebabToTitleCase(type)}
-                                    </span>
-                                  </SelectItem>
-                                ),
-                              )}
+                              <div className="max-h-64 overflow-y-auto">
+                                {Object.entries(typeEventMap)
+                                  .filter(
+                                    ([, { isRequestable }]) => isRequestable,
+                                  )
+                                  .map(([type, { color }]) => (
+                                    <SelectItem value={type} key={type}>
+                                      <span className="flex items-center gap-2">
+                                        <div
+                                          className="w-4 h-4 rounded-full"
+                                          style={{ backgroundColor: color }}
+                                        />
+                                        {kebabToTitleCase(type)}
+                                      </span>
+                                    </SelectItem>
+                                  ))}
+                              </div>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
