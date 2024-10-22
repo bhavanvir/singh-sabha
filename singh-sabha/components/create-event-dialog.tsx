@@ -41,7 +41,6 @@ import { Info, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
-import { kebabToTitleCase } from "@/lib/utils";
 import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 
@@ -265,14 +264,14 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                       <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
                           {Object.entries(typeEventMap).map(
-                            ([type, { colour }]) => (
+                            ([type, { colour, displayName }]) => (
                               <SelectItem value={type} key={type}>
                                 <span className="flex items-center gap-2">
                                   <div
                                     className="w-4 h-4 rounded-full"
                                     style={{ backgroundColor: colour }}
                                   />
-                                  {kebabToTitleCase(type)}
+                                  {displayName}
                                 </span>
                               </SelectItem>
                             ),

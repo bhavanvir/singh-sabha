@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/select";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
-import { kebabToTitleCase } from "@/lib/utils";
 import { typeEventMap } from "@/lib/types/eventdetails";
 import { TriangleAlert } from "lucide-react";
 
@@ -161,14 +160,14 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                       <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
                           {Object.entries(typeEventMap).map(
-                            ([type, { colour }]) => (
+                            ([type, { colour, displayName }]) => (
                               <SelectItem value={type} key={type}>
                                 <span className="flex items-center gap-2">
                                   <div
                                     className="w-4 h-4 rounded-full"
                                     style={{ backgroundColor: colour }}
                                   />
-                                  {kebabToTitleCase(type)}
+                                  {displayName}
                                 </span>
                               </SelectItem>
                             ),
