@@ -30,7 +30,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -46,6 +45,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
 import moment from "moment";
+import { CreateEvent } from "@/lib/api/events/mutations";
 
 import type { Event } from "@/lib/types/event";
 import type { SlotInfo } from "react-big-calendar";
@@ -54,10 +54,15 @@ import { Separator } from "./ui/separator";
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
   email: z.string().min(1, "Email missing").email("Invalid email"),
-  phoneNumber: z.string().refine((value) => {
-    const phoneNumber = parsePhoneNumberFromString(value, "CA");
-    return phoneNumber?.isValid();
-  }, "Invalid phone number"),
+  phoneNumber: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (!value) return true;
+
+      const phoneNumber = parsePhoneNumberFromString(value, "CA");
+      return phoneNumber?.isValid();
+    }, "Invalid phone number"),
   title: z
     .string()
     .min(1, "Title missing")
@@ -126,6 +131,25 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
       "YYYY-MM-DD HH:mm",
     );
 
+    const newEvent: Event = {
+      registrantFullName: data.name,
+      registrantEmail: data.email,
+      registrantPhoneNumber: data.email ?? null,
+      type: data.type,
+      start: startDateTime.toDate(),
+      end: endDateTime.toDate(),
+      allDay: data.startTime === data.endTime,
+      title: data.title,
+      note: data.note,
+      verified: false,
+    };
+
+    toast.promise(CreateEvent({ newEvent }), {
+      loading: "Submitting event request...",
+      success:
+        "Event request submitted successfully, we'll get back to you soon!",
+      error: "An unknown error occured.",
+    });
     handleClose();
   };
 
@@ -154,7 +178,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full name</FormLabel>
+                      <FormLabel required>Full name</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -172,7 +196,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel required>Email</FormLabel>
                       <FormControl>
                         <Input type="text" placeholder="Add email" {...field} />
                       </FormControl>
@@ -204,13 +228,13 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
               <Separator orientation="vertical" />
 
               {/* Right column */}
-              <div className="grid grid-cols-1 gap-4 w-2/3">
+              <div className="grid grid-cols-1 gap-4">
                 <FormField
                   control={form.control}
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel required>Title</FormLabel>
                       <FormControl>
                         <Input type="text" placeholder="Add title" {...field} />
                       </FormControl>
@@ -219,7 +243,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                   )}
                 />
 
-                <Label htmlFor="period">Time period</Label>
+                <FormLabel required>Time period</FormLabel>
                 <div className="grid grid-cols-2 gap-x-4">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -308,7 +332,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                   name="type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Type</FormLabel>
+                      <FormLabel required>Type</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
