@@ -34,7 +34,17 @@ export default function BookingCalendar({
   user,
   events,
 }: BookingCalenderProps) {
+  moment.locale("en-CA");
+  const localizer = momentLocalizer(moment);
+
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isCreateEventDialogOpen, setCreateEventDialogOpen] =
+    React.useState(false);
+  const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
+  const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
+    React.useState(false);
+  const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
+  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
   React.useEffect(() => {
     // Small delay to ensure CSS is loaded
@@ -44,9 +54,6 @@ export default function BookingCalendar({
 
     return () => clearTimeout(timer);
   }, []);
-
-  moment.locale("en-CA");
-  const localizer = momentLocalizer(moment);
 
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const formatDate = () => {
@@ -153,14 +160,6 @@ export default function BookingCalendar({
       </div>
     );
   };
-
-  const [isCreateEventDialogOpen, setCreateEventDialogOpen] =
-    React.useState(false);
-  const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
-  const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
-    React.useState(false);
-  const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
-  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
   const onSelectSlot = React.useCallback(
     (slotInfo: SlotInfo) => {
