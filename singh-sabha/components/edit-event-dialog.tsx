@@ -32,6 +32,7 @@ import {
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
 import { typeColourMap, kebabToTitleCase } from "@/lib/utils";
+import { TriangleAlert } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
 
@@ -193,6 +194,14 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                 </FormItem>
               )}
             />
+            {!event?.verified && (
+              <p className="text-muted-foreground text-sm flex items-center">
+                <TriangleAlert className="mr-1 h-4 w-4" />
+                This event is pending. Verify it to have it appear on the
+                general calendar.
+              </p>
+            )}
+
             <DialogFooter className="flex">
               <Button
                 variant="destructive"
