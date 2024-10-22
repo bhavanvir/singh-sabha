@@ -23,8 +23,9 @@ export const CreateEvent = async ({
       allDay: newEvent.allDay,
       title: newEvent.title,
       note: newEvent.note,
+      verified: newEvent.verified,
     });
-    revalidatePath("/admin");
+    revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not add an event: ${err}`);
   }
@@ -45,7 +46,7 @@ export const UpdateEvent = async ({
 
     await db.update(eventTable).set(updateData).where(eq(eventTable.id, id));
 
-    revalidatePath("/admin");
+    revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not update event: ${err}`);
   }
@@ -62,7 +63,7 @@ export const DeleteEvent = async ({
 
   try {
     await db.delete(eventTable).where(eq(eventTable.id, event.id));
-    revalidatePath("/admin");
+    revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not delete event: ${err}`);
   }
