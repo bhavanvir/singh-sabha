@@ -1,4 +1,4 @@
-import NavBar from "@/components/client-navbar";
+import NavBar from "@/components/navbar";
 
 export default async function Home() {
   return (
