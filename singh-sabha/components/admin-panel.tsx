@@ -35,7 +35,7 @@ export function AdminPanel({ user, events }: AdminPanelProps) {
   const renderContent = () => {
     switch (activePage) {
       case PAGES.BOOKINGS:
-        return <BookingCalendar events={events} />;
+        return <BookingCalendar user={user} events={events} />;
     }
   };
   const getLinkClass = (page: string) =>
