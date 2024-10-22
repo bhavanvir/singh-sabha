@@ -19,17 +19,17 @@ import BookingCalendar from "@/components/booking-calendar";
 
 const PAGES = {
   BOOKINGS: "bookings",
-  NOTIFICATIONS: "analytics",
+  NOTIFICATIONS: "notifications",
   SETTINGS: "settings",
 };
 
 // TODO: Update the types
-interface AdminPanelProps {
+interface DashboardProps {
   user: any;
   events: any;
 }
 
-export function AdminPanel({ user, events }: AdminPanelProps) {
+export function Dashboard({ user, events }: DashboardProps) {
   const [activePage, setActivePage] = React.useState(PAGES.BOOKINGS);
 
   const renderContent = () => {
