@@ -162,17 +162,23 @@ export default function BookingCalendar({
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
-  const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
-    setSelectedSlot(slotInfo);
-    if (user) setCreateEventDialogOpen(true);
-    else setRequestEventDialogOpen(true);
-  }, []);
+  const onSelectSlot = React.useCallback(
+    (slotInfo: SlotInfo) => {
+      setSelectedSlot(slotInfo);
+      if (user) setCreateEventDialogOpen(true);
+      else setRequestEventDialogOpen(true);
+    },
+    [user],
+  );
 
   // TODO: Fix type
-  const onSelectEvent = React.useCallback((event: any) => {
-    setSelectedEvent(event);
-    if (user) setEditEventDialogOpen(true);
-  }, []);
+  const onSelectEvent = React.useCallback(
+    (event: any) => {
+      setSelectedEvent(event);
+      if (user) setEditEventDialogOpen(true);
+    },
+    [user],
+  );
 
   // TODO: Fix type
   const eventPropGetter = React.useCallback((event: any) => {
