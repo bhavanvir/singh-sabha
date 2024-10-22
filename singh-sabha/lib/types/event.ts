@@ -9,4 +9,5 @@ export type Event = {
   allDay: boolean;
   title: string;
   note?: string | null;
+  verified: boolean;
 };
