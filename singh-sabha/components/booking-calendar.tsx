@@ -17,17 +17,23 @@ import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
+import RequestEventDialog from "@/components/request-event-dialog";
 import { typeColourMap } from "@/lib/utils";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
+import type { User } from "lucia";
 
 interface BookingCalenderProps {
+  user: User | null;
   events: Event[];
 }
 
-export default function BookingCalendar({ events }: BookingCalenderProps) {
+export default function BookingCalendar({
+  user,
+  events,
+}: BookingCalenderProps) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -151,18 +157,26 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
   const [isCreateEventDialogOpen, setCreateEventDialogOpen] =
     React.useState(false);
   const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
+  const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
+    React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
 
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
-    setCreateEventDialogOpen(true);
+    if (user) {
+      setCreateEventDialogOpen(true);
+    } else {
+      setRequestEventDialogOpen(true);
+    }
   }, []);
 
   // TODO: Fix type
   const onSelectEvent = React.useCallback((event: any) => {
     setSelectedEvent(event);
-    setEditEventDialogOpen(true);
+    if (user) {
+      setEditEventDialogOpen(true);
+    }
   }, []);
 
   // TODO: Fix type
@@ -212,6 +226,11 @@ export default function BookingCalendar({ events }: BookingCalenderProps) {
         isOpen={isEditEventDialogOpen}
         onClose={() => setEditEventDialogOpen(false)}
         event={selectedEvent}
+      />
+      <RequestEventDialog
+        isOpen={isRequestEventDialogOpen}
+        onClose={() => setRequestEventDialogOpen(false)}
+        slot={selectedSlot}
       />
     </div>
   );
