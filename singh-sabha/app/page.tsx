@@ -1,3 +1,10 @@
-export default function Home() {
-  return <div></div>;
+import NavBar from "@/components/client-navbar";
+
+export default async function Home() {
+  return (
+    <>
+      <NavBar />
+      <main className="p-4"></main>
+    </>
+  );
 }
