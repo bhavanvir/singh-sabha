@@ -164,19 +164,14 @@ export default function BookingCalendar({
 
   const onSelectSlot = React.useCallback((slotInfo: SlotInfo) => {
     setSelectedSlot(slotInfo);
-    if (user) {
-      setCreateEventDialogOpen(true);
-    } else {
-      setRequestEventDialogOpen(true);
-    }
+    if (user) setCreateEventDialogOpen(true);
+    else setRequestEventDialogOpen(true);
   }, []);
 
   // TODO: Fix type
   const onSelectEvent = React.useCallback((event: any) => {
     setSelectedEvent(event);
-    if (user) {
-      setEditEventDialogOpen(true);
-    }
+    if (user) setEditEventDialogOpen(true);
   }, []);
 
   // TODO: Fix type
@@ -186,9 +181,12 @@ export default function BookingCalendar({
       color: "black",
       borderRadius: "0.375rem", // rounded-md
       border: "none",
+      opacity: "1",
     };
 
     newStyle.backgroundColor = typeColourMap[event.type];
+
+    if (!event.verified) newStyle.opacity = ".5";
 
     return {
       className: "",
