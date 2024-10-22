@@ -265,12 +265,12 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                       <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
                           {Object.entries(typeEventMap).map(
-                            ([type, { color }]) => (
+                            ([type, { colour }]) => (
                               <SelectItem value={type} key={type}>
                                 <span className="flex items-center gap-2">
                                   <div
                                     className="w-4 h-4 rounded-full"
-                                    style={{ backgroundColor: color }}
+                                    style={{ backgroundColor: colour }}
                                   />
                                   {kebabToTitleCase(type)}
                                 </span>

@@ -350,12 +350,12 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                                   .filter(
                                     ([, { isRequestable }]) => isRequestable,
                                   )
-                                  .map(([type, { color }]) => (
+                                  .map(([type, { colour }]) => (
                                     <SelectItem value={type} key={type}>
                                       <span className="flex items-center gap-2">
                                         <div
                                           className="w-4 h-4 rounded-full"
-                                          style={{ backgroundColor: color }}
+                                          style={{ backgroundColor: colour }}
                                         />
                                         {kebabToTitleCase(type)}
                                       </span>
