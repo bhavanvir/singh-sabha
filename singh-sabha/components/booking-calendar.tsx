@@ -18,7 +18,7 @@ import moment from "moment";
 import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
 import RequestEventDialog from "@/components/request-event-dialog";
-import { typeColourMap } from "@/lib/utils";
+import { typeEventMap } from "@/lib/types/eventdetails";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { SlotInfo } from "react-big-calendar";
@@ -189,7 +189,7 @@ export default function BookingCalendar({
       opacity: "1",
     };
 
-    newStyle.backgroundColor = typeColourMap[event.type];
+    newStyle.backgroundColor = typeEventMap[event.type].colour;
 
     if (!event.verified) newStyle.opacity = ".5";
 
