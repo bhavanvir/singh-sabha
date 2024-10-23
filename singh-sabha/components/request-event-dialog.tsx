@@ -1,6 +1,7 @@
 import * as React from "react";
 import parsePhoneNumber, {
   parsePhoneNumberFromString,
+  PhoneNumber,
 } from "libphonenumber-js";
 import { format } from "date-fns";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -62,7 +63,13 @@ const formSchema = z.object({
 
       const phoneNumber = parsePhoneNumberFromString(value, "CA");
       return phoneNumber?.isValid();
-    }, "Invalid phone number"),
+    }, "Invalid phone number")
+    .transform((value) => {
+      if (!value) return value;
+
+      const phoneNumber = parsePhoneNumberFromString(value, "CA");
+      return phoneNumber ? phoneNumber.formatInternational() : value;
+    }),
   title: z
     .string()
     .min(1, "Title missing")
