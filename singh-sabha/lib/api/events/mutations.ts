@@ -52,17 +52,13 @@ export const UpdateEvent = async ({
   }
 };
 
-export const DeleteEvent = async ({
-  event,
-}: {
-  event: Event;
-}): Promise<void> => {
-  if (!event.id) {
+export const DeleteEvent = async ({ id }: { id: string }): Promise<void> => {
+  if (!id) {
     throw new Error("Event ID is required to delete event");
   }
 
   try {
-    await db.delete(eventTable).where(eq(eventTable.id, event.id));
+    await db.delete(eventTable).where(eq(eventTable.id, id));
     revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not delete event: ${err}`);
