@@ -16,6 +16,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "@/components/actions/logout-action";
 import { toast } from "sonner";
 import BookingCalendar from "@/components/booking-calendar";
+import Notifications from "@/components/notifications";
 
 const PAGES = {
   BOOKINGS: "bookings",
@@ -27,15 +28,18 @@ const PAGES = {
 interface DashboardProps {
   user: any;
   events: any;
+  notifications: any;
 }
 
-export function Dashboard({ user, events }: DashboardProps) {
+export function Dashboard({ user, events, notifications }: DashboardProps) {
   const [activePage, setActivePage] = React.useState(PAGES.BOOKINGS);
 
   const renderContent = () => {
     switch (activePage) {
       case PAGES.BOOKINGS:
         return <BookingCalendar user={user} events={events} />;
+      case PAGES.NOTIFICATIONS:
+        return <Notifications notifications={notifications} />;
     }
   };
   const getLinkClass = (page: string) =>
