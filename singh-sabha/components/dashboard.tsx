@@ -19,7 +19,7 @@ import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 
 const PAGES = {
-  BOOKINGS: "bookings",
+  CALENDAR: "calendar",
   NOTIFICATIONS: "notifications",
   SETTINGS: "settings",
 };
@@ -32,11 +32,11 @@ interface DashboardProps {
 }
 
 export function Dashboard({ user, events, notifications }: DashboardProps) {
-  const [activePage, setActivePage] = React.useState(PAGES.BOOKINGS);
+  const [activePage, setActivePage] = React.useState(PAGES.CALENDAR);
 
   const renderContent = () => {
     switch (activePage) {
-      case PAGES.BOOKINGS:
+      case PAGES.CALENDAR:
         return <BookingCalendar user={user} events={events} />;
       case PAGES.NOTIFICATIONS:
         return <Notifications notifications={notifications} />;
@@ -67,10 +67,10 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
           </Link>
           <Link
             href="#"
-            className={`${getLinkClass(PAGES.BOOKINGS)}`}
-            onClick={() => setActivePage(PAGES.BOOKINGS)}
+            className={`${getLinkClass(PAGES.CALENDAR)}`}
+            onClick={() => setActivePage(PAGES.CALENDAR)}
           >
-            Bookings
+            Calendar
           </Link>
           <Link
             href="#"
@@ -102,10 +102,10 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
               </Link>
               <Link
                 href="#"
-                className={`${getLinkClass(PAGES.BOOKINGS)}`}
-                onClick={() => setActivePage(PAGES.BOOKINGS)}
+                className={`${getLinkClass(PAGES.CALENDAR)}`}
+                onClick={() => setActivePage(PAGES.CALENDAR)}
               >
-                Bookings
+                Calendar
               </Link>
               <Link
                 href="#"
