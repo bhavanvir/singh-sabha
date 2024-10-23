@@ -106,7 +106,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
   const handleDeleteEventSubmit = () => {
     if (!event) return;
 
-    toast.promise(DeleteEvent({ event }), {
+    toast.promise(DeleteEvent({ id: event.id! }), {
       loading: "Deleting event...",
       success: "Event deleted successfully!",
       error: "An unknown error occured.",
