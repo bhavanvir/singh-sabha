@@ -153,7 +153,7 @@ export default function Notifications({ notifications }: NotificationsProps) {
             No notifications
           </h3>
           <p className="text-sm text-gray-500">
-            You're all caught up! Check back later for new notifications.
+            You&apos;re all caught up! Check back later for new notifications.
           </p>
         </div>
       )}
