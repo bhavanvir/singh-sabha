@@ -33,7 +33,6 @@ export default async function Page() {
       // 1. The start date of eventA and eventB are the same
       // 2. The end date of eventB and eventB are the same
       // 3. The times overlap for eventA and eventB
-
       if (startA.isSame(startB) || endA.isSame(endB)) {
         notifications[i].conflict = true;
       } else if (
