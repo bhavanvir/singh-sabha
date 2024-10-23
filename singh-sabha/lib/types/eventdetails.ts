@@ -1,4 +1,4 @@
-type EventDetails = {
+export type EventDetails = {
   colour: string;
   displayName: string;
   isRequestable: boolean;
@@ -39,14 +39,14 @@ export const typeEventMap: Record<string, EventDetails> = {
   "sehaj-path": {
     colour: "#f9c74f",
     displayName: "Sehaj Path",
-    isRequestable: false,
+    isRequestable: true,
     isSpecial: false,
     isRecurring: true,
   },
   "sukhmani-sahib-path": {
     colour: "#90be6d",
     displayName: "Sukhmani Sahib Path",
-    isRequestable: false,
+    isRequestable: true,
     isSpecial: false,
     isRecurring: true,
   },
