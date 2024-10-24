@@ -74,9 +74,10 @@ export default function BookingCalendar({
       return null;
     };
     return (
-      <div className="flex justify-between pb-4 w-full">
-        <div className="flex items-center w-fit space-x-4">
-          <div className="space-x-1">
+      <div className="flex flex-wrap items-center justify-between pb-4 w-full space-y-4 sm:space-y-0">
+        {/* Navigation and Date Section */}
+        <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-start">
+          <div className="flex space-x-1">
             <Button
               size="icon"
               variant="outline"
@@ -94,10 +95,11 @@ export default function BookingCalendar({
             </Button>
           </div>
 
-          <span className="text-2xl font-bold">{formatDate()}</span>
+          <span className="text-xl sm:text-2xl font-bold">{formatDate()}</span>
         </div>
 
-        <div className="flex space-x-4">
+        {/* Select View and Today Button Section */}
+        <div className="flex space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-end">
           <Select
             onValueChange={(value) => onView(value as View)}
             defaultValue="month"
