@@ -30,13 +30,7 @@ export default async function Page() {
       const startB = moment(verifiedEvent.start);
       const endB = moment(verifiedEvent.end);
 
-      // Three cases:
-      // 1. The start date of eventA and eventB are the same
-      // 2. The end date of eventB and eventB are the same
-      // 3. The times overlap for eventA and eventB
       if (
-        startA.isSame(startB) ||
-        endA.isSame(endB) ||
         startA.isBetween(startB, endB, null, "[)") ||
         startB.isBetween(startA, endA, null, "[)")
       ) {
