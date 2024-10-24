@@ -230,6 +230,7 @@ export default function Notifications({ notifications }: NotificationsProps) {
               Cancel
             </Button>
             <Button
+              variant="destructive"
               onClick={() => selectedEvent && approveEvent(selectedEvent)}
               disabled={!understood}
             >
