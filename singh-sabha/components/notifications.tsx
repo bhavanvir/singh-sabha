@@ -196,11 +196,6 @@ export default function Notifications({ notifications }: NotificationsProps) {
           <ScrollArea className="mt-4 max-h-[60vh]">
             {selectedEvent?.conflict.map((conflictEvent, index) => (
               <div key={index} className="mb-4 p-4 border rounded-md">
-                <h4 className="font-semibold">{conflictEvent.title}</h4>
-                <p className="text-sm text-gray-500">
-                  {format(conflictEvent.start, "LLL dd, y HH:mm")} -{" "}
-                  {format(conflictEvent.end, "LLL dd, y HH:mm")}
-                </p>
                 <Badge
                   style={{
                     backgroundColor: `${typeEventMap[conflictEvent.type].colour}`,
@@ -208,6 +203,11 @@ export default function Notifications({ notifications }: NotificationsProps) {
                 >
                   {typeEventMap[conflictEvent.type].displayName}
                 </Badge>
+                <h4 className="font-semibold">{conflictEvent.title}</h4>
+                <p className="text-sm text-gray-500">
+                  {format(conflictEvent.start, "LLL dd, y HH:mm")} -{" "}
+                  {format(conflictEvent.end, "LLL dd, y HH:mm")}
+                </p>
               </div>
             ))}
           </ScrollArea>
