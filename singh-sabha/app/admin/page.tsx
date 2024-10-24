@@ -24,6 +24,7 @@ export default async function Page() {
     const startA = moment(unverifiedEvent.start);
     const endA = moment(unverifiedEvent.end);
 
+    notifications[i].conflict = [];
     for (let j = 0; j < verifiedEvents.length; j++) {
       const verifiedEvent = verifiedEvents[j];
       const startB = moment(verifiedEvent.start);
@@ -33,15 +34,13 @@ export default async function Page() {
       // 1. The start date of eventA and eventB are the same
       // 2. The end date of eventB and eventB are the same
       // 3. The times overlap for eventA and eventB
-      if (startA.isSame(startB) || endA.isSame(endB)) {
-        notifications[i].conflict = true;
-      } else if (
+      if (
+        startA.isSame(startB) ||
+        endA.isSame(endB) ||
         startA.isBetween(startB, endB, null, "[)") ||
         startB.isBetween(startA, endA, null, "[)")
       ) {
-        notifications[i].conflict = true;
-      } else {
-        notifications[i].conflict = false;
+        notifications[i].conflict.push(verifiedEvent);
       }
     }
   }
