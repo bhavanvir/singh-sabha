@@ -24,6 +24,7 @@ export const CreateEvent = async ({
       title: newEvent.title,
       note: newEvent.note,
       verified: newEvent.verified,
+      frequencyRule: newEvent.frequencyRule,
     });
     revalidatePath("/");
   } catch (err) {
