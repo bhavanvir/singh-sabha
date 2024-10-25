@@ -1,4 +1,5 @@
 import * as React from "react";
+import { RRule, Frequency } from "rrule";
 import { format } from "date-fns";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,8 +7,6 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -77,6 +76,13 @@ const formSchema = z.object({
   note: z.string().max(128, "Note too long"),
   startTime: z.string().min(1, "Start time missing"),
   endTime: z.string().min(1, "End time missing"),
+  frequency: z.string(),
+  selectedDays: z.array(z.string()).optional(),
+  selectedMonths: z.array(z.string()).optional(),
+  count: z
+    .number()
+    .min(1, "Count must be at least 1")
+    .max(30, "Count can't be over 30"),
 });
 
 interface CreateEventDialogProps {
@@ -91,10 +97,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   slot,
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
-  const [frequency, setFrequency] = React.useState<string>("daily");
-  const [selectedDays, setSelectedDays] = React.useState<string[]>([]);
-  const [selectedMonths, setSelectedMonths] = React.useState<string[]>([]);
-  const [count, setCount] = React.useState<number>(1);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,6 +104,10 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       title: "",
       type: "",
       note: "",
+      frequency: "DAILY",
+      selectedDays: [],
+      selectedMonths: [],
+      count: 1,
     },
   });
 
@@ -130,21 +136,31 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     const startDateTime = moment(
       `${moment(date?.from).format("YYYY-MM-DD")} ${data.startTime}`,
       "YYYY-MM-DD HH:mm",
-    );
+    ).toDate();
 
     const endDateTime = moment(
       `${moment(date?.to ?? date?.from).format("YYYY-MM-DD")} ${data.endTime}`,
       "YYYY-MM-DD HH:mm",
-    );
+    ).toDate();
+
+    const rule = new RRule({
+      freq: Frequency[data.frequency as keyof typeof Frequency],
+      count: data.count,
+      byweekday: data.selectedDays?.map((day) => Number(day)),
+      bymonth: data.selectedMonths?.map((month) => Number(month)),
+      dtstart: startDateTime,
+      until: endDateTime,
+    });
 
     const newEvent: Event = {
       type: data.type,
-      start: startDateTime.toDate(),
-      end: endDateTime.toDate(),
+      start: startDateTime,
+      end: endDateTime,
       allDay: data.startTime === data.endTime,
       title: data.title,
       note: data.note,
       verified: true,
+      frequencyRule: rule.toString(),
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -154,18 +170,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     });
 
     handleClose();
-  };
-
-  const handleDayToggle = (day: string) => {
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
-    );
-  };
-
-  const handleMonthToggle = (month: string) => {
-    setSelectedMonths((prev) =>
-      prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month],
-    );
   };
 
   return (
@@ -349,88 +353,117 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             </Form>
           </TabsContent>
           <TabsContent value="frequency">
-            <div className="grid grid-cols-1 gap-4">
-              <div>
-                <Label htmlFor="frequency">Frequency</Label>
-                <Select onValueChange={setFrequency} defaultValue={frequency}>
-                  <SelectTrigger id="frequency">
-                    <SelectValue placeholder="Select frequency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <Form {...form}>
+              <form className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="frequency"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel required>Frequency</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
 
-              {frequency === "daily" && (
-                <div>
-                  <Label>Select weekdays</Label>
-                  <ToggleGroup
-                    type="multiple"
-                    id="weekdays"
-                    value={selectedDays}
-                    onValueChange={setSelectedDays}
-                    className="grid grid-cols-7"
-                  >
-                    {weekdays.map((day) => (
-                      <ToggleGroupItem key={day} value={day} aria-label={day}>
-                        {day}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                </div>
-              )}
+                            // Reset values when selecting another frequency
+                            form.setValue("frequency", value);
+                            form.setValue("selectedDays", []);
+                            form.setValue("selectedMonths", []);
+                            form.setValue("count", 1);
+                          }}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select frequency" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="DAILY">Daily</SelectItem>
+                            <SelectItem value="WEEKLY">Weekly</SelectItem>
+                            <SelectItem value="MONTHLY">Monthly</SelectItem>
+                            <SelectItem value="YEARLY">Yearly</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {frequency === "monthly" && (
-                <div>
-                  <Label>Select months</Label>
-                  <ToggleGroup
-                    type="multiple"
-                    id="months"
-                    value={selectedMonths}
-                    onValueChange={setSelectedMonths}
-                    className="grid grid-cols-6"
-                  >
-                    {months.map((month) => (
-                      <ToggleGroupItem
-                        key={month}
-                        value={month}
-                        aria-label={month}
-                      >
-                        {month}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                </div>
-              )}
-
-              <div>
-                <Label htmlFor="count">
-                  Repeat for how many{" "}
-                  <span>
-                    {frequency === "daily"
-                      ? "days"
-                      : frequency === "weekly"
-                        ? "weeks"
-                        : frequency === "monthly"
-                          ? "months"
-                          : "years"}
-                  </span>
-                </Label>
-                <div className="flex items-center space-x-2 justify-between">
-                  <Input
-                    id="count"
-                    type="number"
-                    min="1"
-                    value={count}
-                    onChange={(e) => setCount(parseInt(e.target.value, 10))}
+                {form.watch("frequency") === "DAILY" && (
+                  <FormField
+                    control={form.control}
+                    name="selectedDays"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Select weekdays</FormLabel>
+                        <ToggleGroup
+                          type="multiple"
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          className="grid grid-cols-7"
+                        >
+                          {weekdays.map((day, index) => (
+                            <ToggleGroupItem key={day} value={index.toString()}>
+                              {day}
+                            </ToggleGroupItem>
+                          ))}
+                        </ToggleGroup>
+                      </FormItem>
+                    )}
                   />
-                </div>
-              </div>
-            </div>
+                )}
+
+                {form.watch("frequency") === "MONTHLY" && (
+                  <FormField
+                    control={form.control}
+                    name="selectedMonths"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Select month</FormLabel>
+                        <ToggleGroup
+                          type="multiple"
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          className="grid grid-cols-6"
+                        >
+                          {months.map((month, index) => (
+                            <ToggleGroupItem
+                              key={month}
+                              value={(index + 1).toString()}
+                            >
+                              {month}
+                            </ToggleGroupItem>
+                          ))}
+                        </ToggleGroup>
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                <FormField
+                  control={form.control}
+                  name="count"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel required>Repeat count</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={1}
+                          {...field}
+                          className="w-full"
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
           </TabsContent>
         </Tabs>
       </DialogContent>
