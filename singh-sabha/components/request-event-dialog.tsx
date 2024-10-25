@@ -149,6 +149,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
       title: data.title,
       note: data.note,
       verified: false,
+      frequencyRule: "FREQ=DAILY;COUNT=1", // Happens only once
     };
 
     toast.promise(CreateEvent({ newEvent }), {
