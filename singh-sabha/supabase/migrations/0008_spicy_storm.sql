@@ -1,0 +1,1 @@
+ALTER TABLE "event" ADD COLUMN "frequency_rule" text NOT NULL;
