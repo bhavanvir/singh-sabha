@@ -1,5 +1,4 @@
-import { sql } from "drizzle-orm";
-import { boolean, pgTable, text, timestamp, check } from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
 
 export const userTable = pgTable("users", {
@@ -22,27 +21,19 @@ export const sessionTable = pgTable("session", {
   }).notNull(),
 });
 
-export const eventTable = pgTable(
-  "event",
-  {
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => createId()),
-    registrantFullName: text("registrant_full_name"),
-    registrantEmail: text("registrant_email"),
-    registrantPhoneNumber: text("registrant_phone_number"),
-    type: text("type").notNull(),
-    start: timestamp("start").notNull(),
-    end: timestamp("end").notNull(),
-    allDay: boolean("all_day").notNull().default(false),
-    title: text("title").notNull(),
-    note: text("note"),
-    verified: boolean("verified").default(false),
-  },
-  (table) => ({
-    checkConstraint: check(
-      "time_period_check",
-      sql`${table.end} > ${table.start}`,
-    ),
-  }),
-);
+export const eventTable = pgTable("event", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  registrantFullName: text("registrant_full_name"),
+  registrantEmail: text("registrant_email"),
+  registrantPhoneNumber: text("registrant_phone_number"),
+  type: text("type").notNull(),
+  start: timestamp("start").notNull(),
+  end: timestamp("end").notNull(),
+  allDay: boolean("all_day").notNull().default(false),
+  title: text("title").notNull(),
+  note: text("note"),
+  verified: boolean("verified").default(false),
+  frequencyRule: text("frequency_rule").notNull(),
+});
