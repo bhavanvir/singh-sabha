@@ -10,4 +10,5 @@ export type Event = {
   title: string;
   note?: string | null;
   verified: boolean;
+  frequencyRule: string;
 };
