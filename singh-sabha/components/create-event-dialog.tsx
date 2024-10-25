@@ -79,6 +79,10 @@ const formSchema = z.object({
   frequency: z.string(),
   selectedDays: z.array(z.string()).optional(),
   selectedMonths: z.array(z.string()).optional(),
+  interval: z
+    .number()
+    .min(1, "Interval must be at least 1")
+    .max(30, "Interval can't be over 30"),
   count: z
     .number()
     .min(1, "Count must be at least 1")
@@ -108,6 +112,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       selectedDays: [],
       selectedMonths: [],
       count: 1,
+      interval: 1,
     },
   });
 
@@ -145,6 +150,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
 
     const rule = new RRule({
       freq: Frequency[data.frequency as keyof typeof Frequency],
+      interval: data.interval,
       count: data.count,
       byweekday: data.selectedDays?.map((day) => Number(day)),
       bymonth: data.selectedMonths?.map((month) => Number(month)),
@@ -447,6 +453,28 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel required>Repeat count</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={1}
+                          {...field}
+                          className="w-full"
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="interval"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel required>Repeat every</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
