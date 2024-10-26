@@ -3,72 +3,97 @@ export type EventDetails = {
   displayName: string;
   isRequestable: boolean;
   isSpecial: boolean;
-  isRecurring: boolean;
 };
 
-// From https://coolors.co/palette/f94144-f3722c-f8961e-f9844a-f9c74f-90be6d-43aa8b-4d908e-577590-277da1
+// Use this function to generate a pastel HSL colour
+function getBackgroundColor(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+  return `hsl(${hash % 360}, 100%, 75%)`;
+}
+
 export const typeEventMap: Record<string, EventDetails> = {
+  // Regular events
   "akhand-path": {
-    colour: "#f94144",
+    colour: "hsl(-340, 100%, 75%)",
     displayName: "Akhand Path",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: false,
   },
   "anand-karaj": {
-    colour: "#f3722c",
+    colour: "hsl(343, 100%, 75%)",
     displayName: "Anand Karaj",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: false,
   },
   funeral: {
-    colour: "#f8961e",
+    colour: "hsl(207, 100%, 75%)",
     displayName: "Funeral",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: false,
   },
   langar: {
-    colour: "#f9844a",
+    colour: "hsl(-289, 100%, 75%)",
     displayName: "Langar",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: true,
   },
   "sehaj-path": {
-    colour: "#f9c74f",
+    colour: "hsl(-98, 100%, 75%)",
     displayName: "Sehaj Path",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: true,
   },
   "sukhmani-sahib-path": {
-    colour: "#90be6d",
+    colour: "hsl(-76, 100%, 75%)",
     displayName: "Sukhmani Sahib Path",
     isRequestable: true,
     isSpecial: false,
-    isRecurring: true,
   },
   "rainsabai-kirtan": {
-    colour: "#43aa8b",
+    colour: "hsl(-123, 100%, 75%)",
     displayName: "Rainsabai Kirtan",
     isRequestable: false,
     isSpecial: false,
-    isRecurring: false,
   },
   gurpurab: {
-    colour: "#4d908e",
+    colour: "hsl(-150, 100%, 75%)",
     displayName: "Gurpurab",
     isRequestable: false,
     isSpecial: false,
-    isRecurring: true,
   },
   "shaheedi-diwas": {
-    colour: "#577590",
+    colour: "hsl(-51, 100%, 75%)",
     displayName: "Shaheedi Diwas",
     isRequestable: false,
     isSpecial: false,
-    isRecurring: true,
+  },
+  // Special events
+  "new-years": {
+    colour: "hsl(-210, 100%, 75%)",
+    displayName: "New Years",
+    isRequestable: false,
+    isSpecial: true,
+  },
+  baisakhi: {
+    colour: "hsl(-68, 100%, 75%)",
+    displayName: "Baisakhi",
+    isRequestable: false,
+    isSpecial: true,
+  },
+  "bandi-chhor-divas": {
+    colour: "hsl(213, 100%, 75%)",
+    displayName: "Bandi Chhor Divas",
+    isRequestable: false,
+    isSpecial: true,
+  },
+  "nagar-kirtan": {
+    colour: "hsl(-128, 100%, 75%)",
+    displayName: "Nagar Kirtan",
+    isRequestable: false,
+    isSpecial: true,
   },
 };
