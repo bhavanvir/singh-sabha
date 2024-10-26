@@ -311,7 +311,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                       )}
                     />
 
-                    <Minus className="w-4" />
+                    <Minus className="w-4 text-muted-foreground" />
 
                     <FormField
                       control={form.control}

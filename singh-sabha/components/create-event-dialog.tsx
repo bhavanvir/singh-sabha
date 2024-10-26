@@ -82,11 +82,11 @@ const formSchema = z.object({
   interval: z
     .number()
     .min(1, "Interval must be at least 1")
-    .max(30, "Interval can't be over 30"),
+    .max(365, "Interval can't be over 365"),
   count: z
     .number()
     .min(1, "Count must be at least 1")
-    .max(30, "Count can't be over 30"),
+    .max(365, "Count can't be over 365"),
 });
 
 interface CreateEventDialogProps {
@@ -155,7 +155,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       byweekday: data.selectedDays?.map((day) => Number(day)),
       bymonth: data.selectedMonths?.map((month) => Number(month)),
       dtstart: startDateTime,
-      until: endDateTime,
     });
 
     const newEvent: Event = {
@@ -275,7 +274,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                       )}
                     />
 
-                    <Minus className="w-4" />
+                    <Minus className="w-4 text-muted-foreground" />
 
                     <FormField
                       control={form.control}
@@ -396,7 +395,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   )}
                 />
 
-                {form.watch("frequency") === "DAILY" && (
+                {(form.watch("frequency") === "DAILY" ||
+                  form.watch("frequency") === "WEEKLY") && (
                   <FormField
                     control={form.control}
                     name="selectedDays"
@@ -426,7 +426,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     name="selectedMonths"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Select month</FormLabel>
+                        <FormLabel>Select months</FormLabel>
                         <ToggleGroup
                           type="multiple"
                           value={field.value}
