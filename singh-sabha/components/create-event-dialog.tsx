@@ -188,12 +188,12 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="general">
+        <Tabs defaultValue="parameters">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="general">General</TabsTrigger>
+            <TabsTrigger value="parameters">Parameters</TabsTrigger>
             <TabsTrigger value="frequency">Frequency</TabsTrigger>
           </TabsList>
-          <TabsContent value="general">
+          <TabsContent value="parameters">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}
@@ -469,27 +469,34 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="interval"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel required>Repeat every</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min={1}
-                          {...field}
-                          className="w-full"
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="interval"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel required>Repeat every</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={1}
+                            {...field}
+                            className="w-full"
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <p className="pt-1 text-muted-foreground text-sm flex items-center">
+                    <Info className="mr-1 h-4 w-4" />
+                    Specifies how often the event repeats within the given
+                    frequency.
+                  </p>
+                </div>
               </form>
             </Form>
           </TabsContent>
