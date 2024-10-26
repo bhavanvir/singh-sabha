@@ -2,6 +2,7 @@ import { validateRequest } from "@/lib/auth";
 import LoginForm from "@/components/login";
 import { Dashboard } from "@/components/dashboard";
 import { GetAllEvents, GetAllUnverifiedEvents } from "@/lib/api/events/queries";
+import { generateRecurringEvents } from "@/lib/utils";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
@@ -14,6 +15,9 @@ export default async function Page() {
 
   const events = await GetAllEvents();
   const notifications = await GetAllUnverifiedEvents();
+
+  // Applies all reoccurence rules
+  const allGeneratedEvents = generateRecurringEvents(events);
 
   const verifiedEvents = events.filter(
     (event: Event) => event.verified === true,
@@ -41,7 +45,11 @@ export default async function Page() {
 
   return (
     <>
-      <Dashboard user={user} events={events} notifications={notifications} />
+      <Dashboard
+        user={user}
+        events={allGeneratedEvents}
+        notifications={notifications}
+      />
     </>
   );
 }
