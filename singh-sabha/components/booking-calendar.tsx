@@ -45,6 +45,7 @@ export default function BookingCalendar({
     React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
+  const [currentView, setCurrentView] = React.useState<View>("month");
 
   React.useEffect(() => {
     // Small delay to ensure CSS is loaded
@@ -101,8 +102,11 @@ export default function BookingCalendar({
         {/* Select View and Today Button Section */}
         <div className="flex space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-end">
           <Select
-            onValueChange={(value) => onView(value as View)}
-            defaultValue="month"
+            onValueChange={(value) => {
+              onView(value as View);
+              setCurrentView(value as View);
+            }}
+            value={currentView}
           >
             <SelectTrigger className="w-24 capitalize">
               <SelectValue placeholder={view} />
