@@ -6,6 +6,7 @@ import { userTable } from "@/db/schema";
 import { cookies } from "next/headers";
 import { lucia } from "@/lib/auth";
 import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 export async function login(values: { email: string; password: string }) {
   const { email, password } = values;
@@ -34,5 +35,5 @@ export async function login(values: { email: string; password: string }) {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return;
+  return redirect("/admin");
 }

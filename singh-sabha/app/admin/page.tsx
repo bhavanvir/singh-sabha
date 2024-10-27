@@ -1,8 +1,8 @@
 import { validateRequest } from "@/lib/auth";
-import LoginForm from "@/components/login";
 import { Dashboard } from "@/components/dashboard";
 import { GetAllEvents, GetAllUnverifiedEvents } from "@/lib/api/events/queries";
 import { generateRecurringEvents } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
@@ -10,7 +10,7 @@ import type { Event } from "@/lib/types/event";
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) {
-    return <LoginForm />;
+    redirect("/admin/signin");
   }
 
   const events = await GetAllEvents();

@@ -18,5 +18,5 @@ export async function logout() {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/admin");
+  return redirect("/admin/");
 }
