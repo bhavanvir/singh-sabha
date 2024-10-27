@@ -8,6 +8,18 @@ export const userTable = pgTable("users", {
   fullName: text("full_name").notNull(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
+  isAdmin: boolean("is_administrator").notNull().default(false),
+  isMod: boolean("is_moderator").notNull().default(false),
+});
+
+export const tempPasswordTable = pgTable("temp_passwords", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  tempPassword: text("temp_password").notNull(),
+  issuer: text("issuer").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").default(false),
 });
 
 export const sessionTable = pgTable("session", {
