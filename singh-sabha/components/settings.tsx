@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { AddOtp } from "@/lib/api/events/mutations";
-import { RefreshCw, Info, Copy } from "lucide-react";
+import { RefreshCw, Info, Copy, Send } from "lucide-react";
 
 import type { User } from "lucia";
 
@@ -47,14 +47,34 @@ export default function Settings({ user }: SettingsProps) {
 
   return (
     <div className="max-w-xl mx-auto p-2">
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4">
         <Card>
           <CardHeader>
             <CardTitle>Account</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="grid grid-cols-1 gap-4">
+            <div>
+              <Label htmlFor="email">Change Email</Label>
+              <div className="flex space-x-2">
+                <Input className="flex-grow" />
+                <Button type="button">
+                  <Send className="h-4 w-4 mr-2" />
+                  Submit
+                </Button>
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="password">Change Password</Label>
+              <div className="flex space-x-2">
+                <Input className="flex-grow" />
+                <Button type="button">
+                  <Send className="h-4 w-4 mr-2" />
+                  Submit
+                </Button>
+              </div>
+            </div>
             {user?.isAdmin && (
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="temp-password">
                   Generate One-Time Password
                 </Label>
@@ -81,7 +101,7 @@ export default function Settings({ user }: SettingsProps) {
                 </div>
                 <p className="pt-1 text-muted-foreground text-sm flex items-center">
                   <Info className="mr-1 h-4 w-4" />
-                  Allows for another user to create an account.
+                  Gives a user 15 minutes to create an account.
                 </p>
               </div>
             )}
