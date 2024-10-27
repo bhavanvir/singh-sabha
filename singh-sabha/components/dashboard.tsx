@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CircleUser, Menu, Package2 } from "lucide-react";
+import { CircleUser, Menu, Package2, LogOut } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,11 @@ import { logout } from "@/components/actions/logout-action";
 import { toast } from "sonner";
 import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
+import Settings from "@/components/settings";
+
+import type { User } from "lucia";
+import type { Event } from "@/lib/types/event";
+import type { ConflictingEvent } from "@/components/notifications";
 
 const PAGES = {
   CALENDAR: "calendar",
@@ -24,11 +29,10 @@ const PAGES = {
   SETTINGS: "settings",
 };
 
-// TODO: Update the types
 interface DashboardProps {
-  user: any;
-  events: any;
-  notifications: any;
+  user: User;
+  events: Event[];
+  notifications: ConflictingEvent[];
 }
 
 export function Dashboard({ user, events, notifications }: DashboardProps) {
@@ -40,8 +44,11 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
         return <BookingCalendar user={user} events={events} />;
       case PAGES.NOTIFICATIONS:
         return <Notifications notifications={notifications} />;
+      case PAGES.SETTINGS:
+        return <Settings user={user} />;
     }
   };
+
   const getLinkClass = (page: string) =>
     page === activePage
       ? "text-foreground"
@@ -54,6 +61,7 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
       error: "An unknown error occured.",
     });
   };
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="z-10 sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -78,6 +86,13 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
             onClick={() => setActivePage(PAGES.NOTIFICATIONS)}
           >
             Notifications
+          </Link>
+          <Link
+            href="#"
+            className={`${getLinkClass(PAGES.SETTINGS)}`}
+            onClick={() => setActivePage(PAGES.SETTINGS)}
+          >
+            Settings
           </Link>
         </nav>
         <Sheet>
@@ -128,10 +143,10 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogOut}>
+                <LogOut />
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
