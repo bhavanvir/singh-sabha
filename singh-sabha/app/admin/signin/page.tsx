@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +12,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -60,7 +61,7 @@ export default function LoginForm() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleLogIn)}
-              className="space-y-4"
+              className="grid grid-cols-1 gap-4"
               autoComplete="off"
             >
               <FormField
@@ -99,6 +100,11 @@ export default function LoginForm() {
             </form>
           </Form>
         </CardContent>
+        <CardFooter>
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/admin/signup">Don&apos; have an account? Sign up</Link>
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
