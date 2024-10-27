@@ -31,7 +31,7 @@ import { toast } from "sonner";
 
 import type { Event } from "@/lib/types/event";
 
-interface ConflictingEvent extends Event {
+export interface ConflictingEvent extends Event {
   conflict: Event[];
 }
 
@@ -49,7 +49,7 @@ export default function Notifications({ notifications }: NotificationsProps) {
     if (event.allDay) {
       return "All Day";
     }
-    return `${format(event.start, "HH:mm")} - ${format(event.end, "HH:mm")}`;
+    return `${format(event.start, "hh:mm a")} - ${format(event.end, "hh:mm a")}`;
   };
 
   const handleApprove = (id: string) => {
@@ -88,7 +88,7 @@ export default function Notifications({ notifications }: NotificationsProps) {
 
   return (
     <>
-      <ScrollArea className="h-[calc(100vh-6rem)] mx-auto w-1/2 p-2 flex justify-center items-center">
+      <ScrollArea className="h-[calc(100vh-6rem)] max-w-lg mx-auto p-2 flex justify-center items-center">
         {notifications.length > 0 ? (
           <div className="space-y-4 w-full">
             {notifications.map((notification) => (
@@ -114,39 +114,37 @@ export default function Notifications({ notifications }: NotificationsProps) {
                     <h3 className="text-lg font-semibold mb-2">
                       {notification.title}
                     </h3>
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="flex items-center text-sm text-muted-foreground mb-2">
                       <Calendar className="h-4 w-4 mr-2" />
                       <span>
                         {format(notification.start, "LLL dd, y")} -{" "}
                         {format(notification.end, "LLL dd, y")}
                       </span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="flex items-center text-sm text-muted-foreground mb-2">
                       <Clock className="h-4 w-4 mr-2" />
                       <span>{formatEventTime(notification)}</span>
                     </div>
                     {notification.registrantFullName && (
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <div className="flex items-center text-sm text-muted-foreground mb-2">
                         <User className="h-4 w-4 mr-2" />
                         <span>{notification.registrantFullName}</span>
                       </div>
                     )}
                     {notification.registrantEmail && (
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <div className="flex items-center text-sm text-muted-foreground mb-2">
                         <Mail className="h-4 w-4 mr-2" />
                         <span>{notification.registrantEmail}</span>
                       </div>
                     )}
                     {notification.registrantPhoneNumber && (
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <div className="flex items-center text-sm text-muted-foreground mb-2">
                         <Phone className="h-4 w-4 mr-2" />
                         <span>{notification.registrantPhoneNumber}</span>
                       </div>
                     )}
                     {notification.note && (
-                      <p className="text-md text-gray-600 mt-2">
-                        {notification.note}
-                      </p>
+                      <p className="text-md mt-2">{notification.note}</p>
                     )}
                     <div className="flex justify-end mt-4 space-x-2">
                       <Button
@@ -175,11 +173,9 @@ export default function Notifications({ notifications }: NotificationsProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <Inbox className="h-16 w-16 text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              No notifications
-            </h3>
-            <p className="text-sm text-gray-500">
+            <Inbox className="h-16 w-16 mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No notifications</h3>
+            <p className="text-sm text-muted-foreground">
               You&apos;re all caught up! Check back later for new notifications.
             </p>
           </div>
@@ -190,7 +186,7 @@ export default function Notifications({ notifications }: NotificationsProps) {
           <DialogHeader>
             <DialogTitle>Confirm event approval</DialogTitle>
             <DialogDescription>
-              This event conflicts with the following existing events:
+              This event results in a conflict. Either approve, or dismiss it.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="mt-4 max-h-[60vh]">
@@ -203,10 +199,10 @@ export default function Notifications({ notifications }: NotificationsProps) {
                 >
                   {typeEventMap[conflictEvent.type].displayName}
                 </Badge>
-                <h4 className="font-semibold">{conflictEvent.title}</h4>
-                <p className="text-sm text-gray-500">
-                  {format(conflictEvent.start, "LLL dd, y HH:mm")} -{" "}
-                  {format(conflictEvent.end, "LLL dd, y HH:mm")}
+                <h4 className="font-bold">{conflictEvent.title}</h4>
+                <p className="text-sm text-muted-foreground">
+                  {format(conflictEvent.start, "LLL dd, y hh:mm a")} -{" "}
+                  {format(conflictEvent.end, "LLL dd, y hh:mm a")}
                 </p>
               </div>
             ))}
