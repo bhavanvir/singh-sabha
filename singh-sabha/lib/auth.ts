@@ -19,6 +19,8 @@ export const lucia = new Lucia(adapter, {
     return {
       fullName: attributes.fullName,
       email: attributes.email,
+      isAdmin: attributes.isAdmin,
+      isMod: attributes.isMod,
     };
   },
 });
@@ -62,6 +64,8 @@ export const validateRequest = cache(
 export interface DatabaseUser {
   fullName: string;
   email: string;
+  isAdmin: boolean;
+  isMod: boolean;
 }
 
 declare module "lucia" {
