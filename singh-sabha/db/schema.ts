@@ -12,11 +12,11 @@ export const userTable = pgTable("users", {
   isMod: boolean("is_moderator").notNull().default(false),
 });
 
-export const tempPasswordTable = pgTable("temp_passwords", {
+export const otpTable = pgTable("one_time_passwords", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
-  tempPassword: text("temp_password").notNull(),
+  otp: text("one_time_password").notNull(),
   issuer: text("issuer").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
   used: boolean("used").default(false),

@@ -78,6 +78,20 @@
       "when": 1729921560298,
       "tag": "0010_sad_omega_flight",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1730065848613,
+      "tag": "0011_friendly_firelord",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1730065885269,
+      "tag": "0012_dusty_toxin",
+      "breakpoints": true
     }
   ]
 }
