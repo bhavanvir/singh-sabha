@@ -1,11 +1,12 @@
 "use server";
 
 import { db } from "@/db/db";
-import { eventTable, tempPasswordTable } from "@/db/schema";
+import { eventTable, otpTable, userTable } from "@/db/schema";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 import type { Event } from "@/lib/types/event";
+import { hash } from "@node-rs/argon2";
 
 export const CreateEvent = async ({
   newEvent,
@@ -66,26 +67,90 @@ export const DeleteEvent = async ({ id }: { id: string }): Promise<void> => {
   }
 };
 
-export const AddTempPassword = async ({
-  tempPassword,
+export const CreateMod = async ({
+  name,
+  email,
+  password,
+}: {
+  name: string;
+  email: string;
+  password: string;
+}): Promise<void> => {
+  if (!name || !email || !password) {
+    throw new Error("Missing component needed to create an account");
+  }
+
+  try {
+    const passwordHash = await hash(password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
+
+    await db.insert(userTable).values({
+      fullName: name,
+      email: email,
+      passwordHash: passwordHash,
+      isMod: true,
+    });
+  } catch (err) {
+    throw new Error(`Could not create a user: ${err}`);
+  }
+};
+
+export const AddOtp = async ({
+  otp,
   issuer,
 }: {
-  tempPassword: string;
+  otp: string;
   issuer: string;
 }): Promise<void> => {
-  if (!tempPassword) {
-    throw new Error("Temporary pasword is required to insert");
+  if (!otp) {
+    throw new Error("One-time pasword is required to insert");
+  }
+
+  if (!issuer) {
+    throw new Error("User id is required to tie to a one-time password");
   }
 
   try {
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
-    await db.insert(tempPasswordTable).values({
-      tempPassword: tempPassword,
+    await db.insert(otpTable).values({
+      otp: otp,
       issuer,
       expiresAt: expiresAt,
     });
   } catch (err) {
-    throw new Error(`Could not insert temporary password: ${err}`);
+    throw new Error(`Could not insert one-time password: ${err}`);
+  }
+};
+
+export const ValidateOtp = async ({ otp }: { otp: string }): Promise<void> => {
+  if (!otp) {
+    throw new Error("One-time pasword is required to validate");
+  }
+
+  try {
+    const [otpEntry] = await db
+      .select()
+      .from(otpTable)
+      .where(and(eq(otpTable.otp, otp), eq(otpTable.used, false)));
+
+    if (!otp) {
+      throw new Error("No such one-time password");
+    }
+
+    if (new Date() > new Date(otpEntry.expiresAt)) {
+      throw new Error("One-time password is expired");
+    }
+
+    await db
+      .update(otpTable)
+      .set({ used: true })
+      .where(eq(otpTable.id, otpEntry.id));
+  } catch (err) {
+    throw new Error(`Could not validate one-time password: ${err}`);
   }
 };
