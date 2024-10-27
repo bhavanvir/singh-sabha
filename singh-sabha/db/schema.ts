@@ -22,7 +22,7 @@ export const tempPasswordTable = pgTable("temp_passwords", {
   used: boolean("used").default(false),
 });
 
-export const sessionTable = pgTable("session", {
+export const sessionTable = pgTable("sessions", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -33,7 +33,7 @@ export const sessionTable = pgTable("session", {
   }).notNull(),
 });
 
-export const eventTable = pgTable("event", {
+export const eventTable = pgTable("events", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
