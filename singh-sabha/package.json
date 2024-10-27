@@ -31,6 +31,7 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.34.1",
+    "input-otp": "^1.2.4",
     "libphonenumber-js": "^1.11.12",
     "lucia": "^3.2.1",
     "lucide-react": "^0.452.0",
