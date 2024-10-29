@@ -86,7 +86,7 @@ body {
   @apply rounded-md border !important;
 }
 
-.rbc-calendar * {
+.rbc-calendar *:not(.rbc-event) {
   @apply border-border !important;
 }
 
