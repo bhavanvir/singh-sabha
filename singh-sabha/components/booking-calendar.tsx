@@ -185,19 +185,24 @@ export default function BookingCalendar({
     [user],
   );
 
-  // TODO: Fix type
-  const eventPropGetter = React.useCallback((event: any) => {
-    const newStyle = {
-      backgroundColor: "lightgrey",
-      color: "black",
-      borderRadius: "0.375rem", // rounded-md
-      border: "none",
-      opacity: "1",
+  // Adding Event as the sole type for the callback causes an error
+  // an overload error for the toolbar in the Calendar component...
+  const eventPropGetter = React.useCallback((event: Event | any) => {
+    const { type, verified } = event;
+    const hslColor = typeEventMap[type]?.colour;
+
+    // Convert HSL to HSLA for semi-transparent background
+    const backgroundColor = hslColor
+      .replace("hsl", "hsla")
+      .replace(")", ", 0.2)");
+
+    const newStyle: React.CSSProperties = {
+      backgroundColor: backgroundColor,
+      color: hslColor,
+      borderRadius: "0.375rem", // Tailwind rounded-md
+      border: `${hslColor} 1px ${verified ? "solid" : "dashed"}`,
+      filter: verified ? "none" : "grayscale(100%)",
     };
-
-    newStyle.backgroundColor = typeEventMap[event.type].colour;
-
-    if (!event.verified) newStyle.opacity = ".5";
 
     return {
       className: "",
