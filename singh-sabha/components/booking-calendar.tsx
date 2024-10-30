@@ -18,6 +18,7 @@ import moment from "moment";
 import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
 import RequestEventDialog from "@/components/request-event-dialog";
+import ViewEventDialog from "@/components/view-event-dialog";
 import { typeEventMap } from "@/lib/types/eventdetails";
 
 import type { ToolbarProps } from "react-big-calendar";
@@ -43,6 +44,7 @@ export default function BookingCalendar({
   const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
   const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
     React.useState(false);
+  const [isViewEventDialogOpen, setViewEventDialogOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [currentView, setCurrentView] = React.useState<View>("month");
@@ -182,6 +184,7 @@ export default function BookingCalendar({
     (event: Event | any) => {
       setSelectedEvent(event);
       if (user) setEditEventDialogOpen(true);
+      else setViewEventDialogOpen(true);
     },
     [user],
   );
@@ -244,6 +247,11 @@ export default function BookingCalendar({
         isOpen={isRequestEventDialogOpen}
         onClose={() => setRequestEventDialogOpen(false)}
         slot={selectedSlot}
+      />
+      <ViewEventDialog
+        isOpen={isViewEventDialogOpen}
+        onClose={() => setViewEventDialogOpen(false)}
+        event={selectedEvent}
       />
     </div>
   );
