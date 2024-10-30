@@ -154,3 +154,52 @@ export const ValidateOtp = async ({ otp }: { otp: string }): Promise<void> => {
     throw new Error(`Could not validate one-time password: ${err}`);
   }
 };
+
+export const ChangeEmail = async ({
+  id,
+  email,
+}: {
+  id: string;
+  email: string;
+}): Promise<void> => {
+  if (!id || !email) {
+    throw new Error("Missing required parameter(s) to update email");
+  }
+
+  try {
+    await db
+      .update(userTable)
+      .set({ email: email })
+      .where(eq(userTable.id, id));
+  } catch (err) {
+    throw new Error(`Could not update email: ${err}`);
+  }
+};
+
+export const ChangePassword = async ({
+  id,
+  password,
+}: {
+  id: string;
+  password: string;
+}): Promise<void> => {
+  if (!id || !password) {
+    throw new Error("Missing required parameter(s) to update email");
+  }
+
+  try {
+    const passwordHash = await hash(password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
+
+    await db
+      .update(userTable)
+      .set({ passwordHash: passwordHash })
+      .where(eq(userTable.id, id));
+  } catch (err) {
+    throw new Error(`Could not update password: ${err}`);
+  }
+};

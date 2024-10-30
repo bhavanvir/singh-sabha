@@ -4,8 +4,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { AddOtp } from "@/lib/api/events/mutations";
+import {
+  AddOtp,
+  ChangeEmail,
+  ChangePassword,
+} from "@/lib/api/events/mutations";
 import { RefreshCw, Info, Copy, Send } from "lucide-react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 import type { User } from "lucia";
 
@@ -13,7 +28,29 @@ interface SettingsProps {
   user: User;
 }
 
+const emailSchema = z.object({
+  email: z.string().min(1, "Email missing").email("Invalid email"),
+});
+
+const passwordSchema = z.object({
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 export default function Settings({ user }: SettingsProps) {
+  const emailForm = useForm<z.infer<typeof emailSchema>>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const passwordForm = useForm<z.infer<typeof passwordSchema>>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: {
+      password: "",
+    },
+  });
+
   const [otp, setOtp] = useState("");
 
   const generateOtp = () => {
@@ -45,6 +82,26 @@ export default function Settings({ user }: SettingsProps) {
     }
   };
 
+  const handleChangeEmail: SubmitHandler<z.infer<typeof emailSchema>> = (
+    data,
+  ) => {
+    toast.promise(ChangeEmail({ id: user?.id, email: data.email }), {
+      loading: "Changing email...",
+      success: "Email changed!",
+      error: "An unknown error occured.",
+    });
+  };
+
+  const handleChangePassword: SubmitHandler<z.infer<typeof passwordSchema>> = (
+    data,
+  ) => {
+    toast.promise(ChangePassword({ id: user?.id, password: data.password }), {
+      loading: "Changing password...",
+      success: "Password changed!",
+      error: "An unknown error occured.",
+    });
+  };
+
   return (
     <div className="max-w-xl mx-auto p-2">
       <div className="grid grid-cols-1 gap-4">
@@ -53,25 +110,69 @@ export default function Settings({ user }: SettingsProps) {
             <CardTitle>Account</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4">
+            <Form {...emailForm}>
+              <form
+                onSubmit={emailForm.handleSubmit(handleChangeEmail)}
+                autoComplete="false"
+              >
+                <FormField
+                  control={emailForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Change Email</FormLabel>
+                      <FormControl>
+                        <div className="flex space-x-2">
+                          <Input
+                            type="text"
+                            placeholder="Add email"
+                            {...field}
+                            className="flex-grow"
+                          />
+                          <Button type="submit">
+                            <Send className="h-4 w-4 mr-2" />
+                            Submit
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
             <div>
-              <Label htmlFor="email">Change Email</Label>
-              <div className="flex space-x-2">
-                <Input className="flex-grow" />
-                <Button type="button">
-                  <Send className="h-4 w-4 mr-2" />
-                  Submit
-                </Button>
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="password">Change Password</Label>
-              <div className="flex space-x-2">
-                <Input className="flex-grow" />
-                <Button type="button">
-                  <Send className="h-4 w-4 mr-2" />
-                  Submit
-                </Button>
-              </div>
+              <Form {...passwordForm}>
+                <form
+                  onSubmit={passwordForm.handleSubmit(handleChangePassword)}
+                  autoComplete="false"
+                >
+                  <FormField
+                    control={passwordForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Change Password</FormLabel>
+                        <FormControl>
+                          <div className="flex space-x-2">
+                            <Input
+                              type="text"
+                              placeholder="Add password"
+                              {...field}
+                              className="flex-grow"
+                            />
+                            <Button type="submit">
+                              <Send className="h-4 w-4 mr-2" />
+                              Submit
+                            </Button>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Form>
             </div>
             {user?.isAdmin && (
               <div>

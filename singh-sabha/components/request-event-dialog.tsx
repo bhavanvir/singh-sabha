@@ -1,8 +1,5 @@
 import * as React from "react";
-import parsePhoneNumber, {
-  parsePhoneNumberFromString,
-  PhoneNumber,
-} from "libphonenumber-js";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { format } from "date-fns";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
