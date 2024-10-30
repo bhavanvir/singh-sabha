@@ -176,17 +176,16 @@ export default function BookingCalendar({
     [user],
   );
 
-  // TODO: Fix type
+  // Adding Event as the sole type for the callback causes an error
+  // an overload error for the toolbar in the Calendar component...
   const onSelectEvent = React.useCallback(
-    (event: any) => {
+    (event: Event | any) => {
       setSelectedEvent(event);
       if (user) setEditEventDialogOpen(true);
     },
     [user],
   );
 
-  // Adding Event as the sole type for the callback causes an error
-  // an overload error for the toolbar in the Calendar component...
   const eventPropGetter = React.useCallback((event: Event | any) => {
     const { type, verified } = event;
     const hslColor = typeEventMap[type]?.colour;
