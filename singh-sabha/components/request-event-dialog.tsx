@@ -173,7 +173,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="grid grid-cols-1 gap-4"
-            autoComplete="false"
+            autoComplete="off"
           >
             <div className="flex justify-between space-x-4">
               {/* Left column */}
