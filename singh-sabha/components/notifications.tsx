@@ -94,9 +94,9 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                         </Badge>
 
                         {notification.conflict.length > 0 ? (
-                          <CalendarX2 className="h-5 w-5 text-destructive" />
+                          <CalendarX2 className="h-5 w-5 text-red-500" />
                         ) : (
-                          <CalendarCheck2 className="h-5 w-5 text-primary" />
+                          <CalendarCheck2 className="h-5 w-5 text-green-500" />
                         )}
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
@@ -163,6 +163,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                         </Button>
                         <Button
                           size="sm"
+                          variant="outline"
                           onClick={() => handleApprove(notification)}
                         >
                           <Check className="h-4 w-4 mr-1" />
