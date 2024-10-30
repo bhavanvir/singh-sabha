@@ -125,7 +125,7 @@ export default function Settings({ user }: SettingsProps) {
                         <div className="flex space-x-2">
                           <Input
                             type="text"
-                            placeholder="Add email"
+                            placeholder="New email"
                             {...field}
                             className="flex-grow"
                           />
@@ -157,7 +157,7 @@ export default function Settings({ user }: SettingsProps) {
                           <div className="flex space-x-2">
                             <Input
                               type="text"
-                              placeholder="Add password"
+                              placeholder="New password"
                               {...field}
                               className="flex-grow"
                             />
