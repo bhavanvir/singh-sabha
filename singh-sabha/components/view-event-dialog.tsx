@@ -27,16 +27,8 @@ export default function ViewEventDialog({
 }: ViewEventDialogProps) {
   if (!event) return null;
 
-  const formatDate = (date: Date) => {
-    return format(date, "MMMM d, yyyy");
-  };
-
-  const formatTime = (date: Date) => {
-    return format(date, "h:mm a");
-  };
-
   const isRecurring = event.frequencyRule
-    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 0
+    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 1
     : false;
 
   return (
@@ -62,24 +54,18 @@ export default function ViewEventDialog({
         <div className="grid grid-cols-1 gap-4">
           <div className="flex items-center space-x-2">
             <CalendarIcon className="w-4 h-4 text-muted-foreground" />
-            <span className="text-md">{formatDate(event.start)}</span>
+            <span className="text-md">
+              {format(event.start, "MMMM d, yyyy")}
+            </span>
           </div>
-          {!event.allDay && (
-            <div className="flex items-center space-x-2">
-              <ClockIcon className="w-4 h-4 text-muted-foreground" />
-              <span className="text-md">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</span>
-            </div>
-          )}
-          {event.allDay && (
-            <div className="flex items-center space-x-2">
-              <ClockIcon className="w-4 h-4 text-muted-foreground" />
-              <span>All Day</span>
-            </div>
-          )}
+          <div className="flex items-center space-x-2">
+            <ClockIcon className="w-4 h-4 text-muted-foreground" />
+            <span className="text-md">{`${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}</span>
+          </div>
           {isRecurring && (
             <div className="flex items-center space-x-2">
               <RepeatIcon className="w-4 h-4 text-muted-foreground" />
-              <span>
+              <span className="text-md">
                 {RRule.fromString(event.frequencyRule)
                   .toText()
                   .replace(
