@@ -45,7 +45,7 @@ export default function Hukamnama() {
           <>
             <div className="flex items-center space-x-2">
               <h1 className="text-xl sm:text-2xl font-bold ">
-                Today's Hukamnama
+                Today&apos;s Hukamnama
               </h1>
               <Badge>
                 {hukamnama.date.gregorian.month} {hukamnama.date.gregorian.date}
