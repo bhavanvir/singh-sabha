@@ -88,6 +88,11 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                           style={{
                             color: typeEventMap[notification.type].colour,
                             borderColor: typeEventMap[notification.type].colour,
+                            backgroundColor: typeEventMap[
+                              notification.type
+                            ].colour
+                              .replace("hsl", "hsla")
+                              .replace(")", ", 0.2)"),
                           }}
                         >
                           {typeEventMap[notification.type].displayName}
@@ -154,18 +159,13 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                       )}
                       <div className="flex justify-end space-x-2 mt-4">
                         <Button
-                          size="sm"
                           variant="outline"
                           onClick={() => handleDismiss(notification.id!)}
                         >
                           <X className="h-4 w-4 mr-1" />
                           Dismiss
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleApprove(notification)}
-                        >
+                        <Button onClick={() => handleApprove(notification)}>
                           <Check className="h-4 w-4 mr-1" />
                           Approve
                         </Button>
@@ -203,15 +203,19 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                   style={{
                     color: typeEventMap[conflictEvent.type].colour,
                     borderColor: typeEventMap[conflictEvent.type].colour,
+                    backgroundColor: typeEventMap[conflictEvent.type].colour
+                      .replace("hsl", "hsla")
+                      .replace(")", ", 0.2)"),
                   }}
                 >
                   {typeEventMap[conflictEvent.type].displayName}
                 </Badge>
                 <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
-                <p className="text-sm text-muted-foreground">
+                <span className="flex items-center text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4 mr-1" />
                   {format(conflictEvent.start, "EEE, MMM d, h:mm a")} -{" "}
                   {format(conflictEvent.end, "h:mm a")}
-                </p>
+                </span>
               </div>
             ))}
           </ScrollArea>

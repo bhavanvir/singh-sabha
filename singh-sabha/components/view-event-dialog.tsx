@@ -28,7 +28,7 @@ export default function ViewEventDialog({
   if (!event) return null;
 
   const isRecurring = event.frequencyRule
-    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 1
+    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 0
     : false;
 
   return (
@@ -44,10 +44,19 @@ export default function ViewEventDialog({
               style={{
                 color: typeEventMap[event.type].colour,
                 borderColor: typeEventMap[event.type].colour,
+                backgroundColor: typeEventMap[event.type].colour
+                  .replace("hsl", "hsla")
+                  .replace(")", ", 0.2)"),
               }}
             >
               {typeEventMap[event.type].displayName}
             </Badge>
+            {isRecurring && (
+              <Badge variant="secondary">
+                <RepeatIcon className="w-3 h-3 mr-1" />
+                Recurring
+              </Badge>
+            )}
           </DialogDescription>
         </DialogHeader>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CircleUser, Menu, LogOut } from "lucide-react";
+import { CircleUser, Menu, LogOut, FlagTriangleLeft } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,7 +74,8 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
             href="/"
             className="flex items-center space-x-2 text-lg font-semibold md:text-base"
           >
-            <span className="inline-block whitespace-nowrap">
+            <span className="whitespace-nowrap flex items-center">
+              <FlagTriangleLeft className="h-5 w-5 mr-1" />
               Gurdwara Singh Sabha
             </span>
           </Link>
@@ -104,7 +105,8 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
                     href="/"
                     className="flex items-center space-x-2 text-lg font-semibold"
                   >
-                    <span>Gurdwara Singh Sabha</span>
+                    <FlagTriangleLeft className="h-5 w-5 mr-1" />
+                    Gurdwara Singh Sabha
                   </Link>
                   {Object.keys(PAGES).map((page) => (
                     <NavLink key={page} page={page as PageKey} />

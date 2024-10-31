@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, FlagTriangleLeft } from "lucide-react";
 
 interface NavBarProps {
   currentLink: string;
@@ -19,9 +19,10 @@ export default function NavBar({ currentLink }: NavBarProps) {
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          className="flex items-center text-lg font-semibold md:text-base"
         >
-          <span>Gurdwara Singh Sabha</span>
+          <FlagTriangleLeft className="h-5 w-5 mr-1" />
+          Gurdwara Singh Sabha
         </Link>
         {links.map((link) => (
           <Link
@@ -46,11 +47,9 @@ export default function NavBar({ currentLink }: NavBarProps) {
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-lg font-semibold"
-            >
-              <span className="">Gurdwara Singh Sabha</span>
+            <Link href="/" className="flex items-center text-lg font-semibold">
+              <FlagTriangleLeft className="h-5 w-5 mr-1" />
+              Gurdwara Singh Sabha
             </Link>
             {links.map((link) => (
               <Link
