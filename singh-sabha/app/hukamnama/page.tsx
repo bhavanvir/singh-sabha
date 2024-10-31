@@ -81,12 +81,15 @@ export default function Hukamnama() {
             </div>
 
             <ScrollArea className="h-[calc(100vh-11rem)] mt-4 rounded-md border p-4">
-              <section className="grid grid-cols-1 gap-4">
+              <section className="grid grid-cols-1 gap-6">
                 {hukamnama.hukamnama.map((item, index) => (
                   <div key={index}>
                     <p className="text-xl">{item.line.gurmukhi.unicode}</p>
                     <p className="text-md text-muted-foreground">
                       {item.line.translation.english.default}
+                    </p>
+                    <p className="text-md text-muted-foreground italic">
+                      {item.line.transliteration.english.text}
                     </p>
                   </div>
                 ))}
