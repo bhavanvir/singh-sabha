@@ -10,11 +10,11 @@ export default async function Calendar() {
   const allGeneratedEvents = generateRecurringEvents(events);
 
   return (
-    <div>
+    <>
       <NavBar currentLink="Calendar" />
       <div className="p-4">
         <BookingCalendar user={null} events={allGeneratedEvents} />
       </div>
-    </div>
+    </>
   );
 }
