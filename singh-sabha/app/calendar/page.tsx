@@ -11,7 +11,7 @@ export default async function Calendar() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar currentLink="Calendar" />
       <div className="p-4">
         <BookingCalendar user={null} events={allGeneratedEvents} />
       </div>

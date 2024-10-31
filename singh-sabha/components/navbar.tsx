@@ -1,20 +1,41 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Package2 } from "lucide-react";
+import { Menu } from "lucide-react";
 
-export default function NavBar() {
+interface NavBarProps {
+  currentLink: string;
+}
+
+export default function NavBar({ currentLink }: NavBarProps) {
+  const links = [
+    { href: "/calendar", label: "Calendar" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+  ];
+
   return (
     <header className="z-10 sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#"
+          href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Package2 className="h-6 w-6" />
-          <span className="sr-only">Gurdwara Singh Sabha</span>
+          <span>Gurdwara Singh Sabha</span>
         </Link>
-        <Link href="/calendar">Calendar</Link>
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`transition-colors hover:text-primary ${
+              currentLink.toLowerCase() === link.label.toLowerCase()
+                ? "text-primary"
+                : "text-muted-foreground"
+            }`}
+          >
+            {link.label}
+          </Link>
+        ))}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -26,13 +47,24 @@ export default function NavBar() {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="/calendar"
+              href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Gurdwara Singh Sabha</span>
+              <span className="">Gurdwara Singh Sabha</span>
             </Link>
-            <Link href="#">Calendar</Link>
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition-colors hover:text-primary ${
+                  currentLink.toLowerCase() === link.label.toLowerCase()
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>
