@@ -28,7 +28,7 @@ export default function ViewEventDialog({
   if (!event) return null;
 
   const isRecurring = event.frequencyRule
-    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 0
+    ? (RRule.fromString(event.frequencyRule)?.options?.count ?? 0) > 1
     : false;
 
   return (
