@@ -61,19 +61,19 @@ export default function ViewEventDialog({
         </DialogHeader>
 
         <div className="grid grid-cols-1 gap-4">
-          <div className="flex items-center space-x-2">
-            <CalendarIcon className="w-4 h-4 text-muted-foreground" />
+          <div className="flex items-center space-x-1 text-muted-foreground">
+            <CalendarIcon className="w-4 h-4" />
             <span className="text-md">
               {format(event.start, "MMMM d, yyyy")}
             </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <ClockIcon className="w-4 h-4 text-muted-foreground" />
+          <div className="flex items-center space-x-1 text-muted-foreground">
+            <ClockIcon className="w-4 h-4" />
             <span className="text-md">{`${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}</span>
           </div>
           {isRecurring && (
-            <div className="flex items-center space-x-2">
-              <RepeatIcon className="w-4 h-4 text-muted-foreground" />
+            <div className="flex items-center space-x-2 text-muted-foreground">
+              <RepeatIcon className="w-4 h-4" />
               <span className="text-md">
                 {RRule.fromString(event.frequencyRule)
                   .toText()
