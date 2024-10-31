@@ -43,44 +43,54 @@ export default function Hukamnama() {
         )}
         {hukamnama ? (
           <>
-            <div className="flex items-center space-x-2">
-              <h1 className="text-xl sm:text-2xl font-bold ">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+              <h1 className="text-xl sm:text-2xl font-bold">
                 Today&apos;s Hukamnama
               </h1>
-              <Badge>
-                {hukamnama.date.gregorian.month} {hukamnama.date.gregorian.date}
-                {", "}
-                {hukamnama.date.gregorian.year}
-              </Badge>
-              <Badge>
-                {hukamnama.date.nanakshahi.punjabi.month}{" "}
-                {hukamnama.date.nanakshahi.punjabi.date}
-                {", "}
-                {hukamnama.date.nanakshahi.punjabi.year}
-              </Badge>
+              <div className="flex space-x-2">
+                <Badge>
+                  {hukamnama.date.gregorian.month}{" "}
+                  {hukamnama.date.gregorian.date}
+                  {", "}
+                  {hukamnama.date.gregorian.year}
+                </Badge>
+                <Badge>
+                  {hukamnama.date.nanakshahi.punjabi.month}{" "}
+                  {hukamnama.date.nanakshahi.punjabi.date}
+                  {", "}
+                  {hukamnama.date.nanakshahi.punjabi.year}
+                </Badge>
+              </div>
             </div>
-            <div className="flex items-center text-muted-foreground text-sm md:text-md">
-              <span className="flex items-center">
+
+            <div className="flex flex-col sm:flex-row items-center text-muted-foreground text-sm md:text-md mt-2 sm:mt-0">
+              <span className="flex items-center mb-1 sm:mb-0">
                 <Book className="h-4 w-4 mr-1" />
                 {hukamnama.hukamnamainfo.source.english}
               </span>
 
-              <Separator orientation="vertical" className="h-4 mx-2" />
+              <Separator
+                orientation="vertical"
+                className="h-4 mx-2 hidden sm:block"
+              />
 
-              <span className="flex items-center">
+              <span className="flex items-center mb-1 sm:mb-0">
                 <Pen className="h-4 w-4 mr-1" />
                 {hukamnama.hukamnamainfo.writer.english}
               </span>
 
-              <Separator orientation="vertical" className="h-4 mx-2" />
+              <Separator
+                orientation="vertical"
+                className="h-4 mx-2 hidden sm:block"
+              />
 
-              <span className="flex items-center">
+              <span className="flex items-center mb-1 sm:mb-0">
                 <Music2 className="h-4 w-4 mr-1" />
                 {hukamnama.hukamnamainfo.raag.raagwithpage}
               </span>
             </div>
 
-            <ScrollArea className="h-[calc(100vh-11rem)] mt-4 rounded-md border p-4">
+            <ScrollArea className="h-[calc(100vh-16.25rem)] sm:h-[calc(100vh-10.75rem)] mt-4 rounded-md border p-4">
               <section className="grid grid-cols-1 gap-6">
                 {hukamnama.hukamnama.map((item, index) => (
                   <div key={index}>
@@ -97,8 +107,8 @@ export default function Hukamnama() {
             </ScrollArea>
           </>
         ) : (
-          <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
-            <p className="text-center">No Hukamnama data available.</p>
+          <div className="h-[calc(100vh-6rem)] flex items-center justify-center text-center">
+            <p>No Hukamnama data available.</p>
             {error && <p>{error}</p>}
           </div>
         )}
