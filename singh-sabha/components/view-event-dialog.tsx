@@ -38,7 +38,7 @@ export default function ViewEventDialog({
           <DialogTitle className="text-2xl font-bold">
             {event.title}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="space-x-2">
             <Badge
               variant="outline"
               style={{
