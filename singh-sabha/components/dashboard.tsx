@@ -75,7 +75,7 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
             className="flex items-center space-x-2 text-lg font-semibold md:text-base"
           >
             <span className="whitespace-nowrap flex items-center">
-              <FlagTriangleLeft className="h-5 w-5 mr-1" />
+              <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
               Gurdwara Singh Sabha
             </span>
           </Link>
@@ -105,7 +105,7 @@ export function Dashboard({ user, events, notifications }: DashboardProps) {
                     href="/"
                     className="flex items-center space-x-2 text-lg font-semibold"
                   >
-                    <FlagTriangleLeft className="h-5 w-5 mr-1" />
+                    <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
                     Gurdwara Singh Sabha
                   </Link>
                   {Object.keys(PAGES).map((page) => (

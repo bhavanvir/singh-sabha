@@ -22,7 +22,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
           href="/"
           className="flex items-center text-lg font-semibold md:text-base"
         >
-          <FlagTriangleLeft className="h-5 w-5 mr-1" />
+          <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
           Gurdwara Singh Sabha
         </Link>
         {links.map((link) => (
@@ -49,7 +49,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link href="/" className="flex items-center text-lg font-semibold">
-              <FlagTriangleLeft className="h-5 w-5 mr-1" />
+              <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
               Gurdwara Singh Sabha
             </Link>
             {links.map((link) => (
