@@ -47,5 +47,5 @@ export const eventTable = pgTable("events", {
   title: text("title").notNull(),
   note: text("note"),
   verified: boolean("verified").default(false),
-  frequencyRule: text("frequency_rule").notNull(),
+  frequencyRule: text("frequency_rule"),
 });

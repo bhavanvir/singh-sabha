@@ -1,0 +1,1 @@
+ALTER TABLE "events" ALTER COLUMN "frequency_rule" DROP NOT NULL;
