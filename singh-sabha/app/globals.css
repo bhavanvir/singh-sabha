@@ -107,10 +107,10 @@ body {
 }
 
 .rbc-current-time-indicator {
-  @apply h-0.5 bg-foreground !important;
+  @apply h-0.5 bg-red-500 !important;
 
   &::before {
-    @apply -ml-3 -mt-1.5 mb-3 inline-block h-3 w-3 rounded-full bg-foreground content-[""] !important;
+    @apply -ml-3 -mt-1.5 mb-3 inline-block h-3 w-3 rounded-full bg-red-500 content-[""] !important;
   }
 }
 

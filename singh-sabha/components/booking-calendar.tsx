@@ -159,8 +159,8 @@ export default function BookingCalendar({
     return (
       <div className="flex items-center justify-center my-1">
         {isToday ? (
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
-            <span className="text-background">{dayOfMonth}</span>
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500">
+            <span className="text-primary-foreground">{dayOfMonth}</span>
           </div>
         ) : (
           <span>{dayOfMonth}</span>
