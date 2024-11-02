@@ -13,19 +13,23 @@ export const generateRecurringEvents = (events: Event[]): Event[] => {
   events.forEach((event) => {
     const { start, end, frequencyRule } = event;
 
-    const rule = RRule.fromString(frequencyRule);
+    if (frequencyRule) {
+      const rule = RRule.fromString(frequencyRule);
 
-    const occurrenceDates = rule.all(); // Returns an array of Dates
+      const occurrenceDates = rule.all(); // Returns an array of Dates
 
-    const generatedEvents = occurrenceDates.map((occurrenceStart) => ({
-      ...event,
-      start: occurrenceStart,
-      end: new Date(
-        occurrenceStart.getTime() + (end.getTime() - start.getTime()),
-      ),
-    }));
+      const generatedEvents = occurrenceDates.map((occurrenceStart) => ({
+        ...event,
+        start: occurrenceStart,
+        end: new Date(
+          occurrenceStart.getTime() + (end.getTime() - start.getTime()),
+        ),
+      }));
 
-    allGeneratedEvents.push(...generatedEvents);
+      allGeneratedEvents.push(...generatedEvents);
+    } else {
+      allGeneratedEvents.push(event);
+    }
   });
 
   return allGeneratedEvents;
