@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Info, Minus } from "lucide-react";
+import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { typeEventMap } from "@/lib/types/eventdetails";
@@ -146,7 +146,6 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
       title: data.title,
       note: data.note,
       verified: false,
-      frequencyRule: "FREQ=DAILY;COUNT=1", // Happens only once
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -256,7 +255,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                         id="date"
                         variant={"outline"}
                         className={cn(
-                          "justify-start text-left font-normal w-[80%]",
+                          "justify-start text-left font-normal w-[90%]",
                           !date && "text-muted-foreground",
                         )}
                       >
@@ -308,7 +307,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                       )}
                     />
 
-                    <Minus className="w-4 text-muted-foreground" />
+                    <span aria-label=" to ">–</span>
 
                     <FormField
                       control={form.control}
