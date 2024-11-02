@@ -40,7 +40,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, Minus } from "lucide-react";
+import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
@@ -82,11 +82,13 @@ const formSchema = z.object({
   interval: z
     .number()
     .min(1, "Interval must be at least 1")
-    .max(365, "Interval can't be over 365"),
+    .max(365, "Interval can't be over 365")
+    .optional(),
   count: z
     .number()
     .min(1, "Count must be at least 1")
-    .max(365, "Count can't be over 365"),
+    .max(365, "Count can't be over 365")
+    .optional(),
 });
 
 interface CreateEventDialogProps {
@@ -108,11 +110,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       title: "",
       type: "",
       note: "",
-      frequency: "DAILY",
+      frequency: "",
       selectedDays: [],
       selectedMonths: [],
-      count: 1,
-      interval: 1,
+      count: undefined,
+      interval: undefined,
     },
   });
 
@@ -148,14 +150,16 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       "YYYY-MM-DD HH:mm",
     ).toDate();
 
-    const rule = new RRule({
-      freq: Frequency[data.frequency as keyof typeof Frequency],
-      interval: data.interval,
-      count: data.count,
-      byweekday: data.selectedDays?.map((day) => Number(day)),
-      bymonth: data.selectedMonths?.map((month) => Number(month)),
-      dtstart: startDateTime,
-    });
+    const rule = data.frequency
+      ? new RRule({
+          freq: Frequency[data.frequency as keyof typeof Frequency],
+          interval: data.interval,
+          count: data.count,
+          byweekday: data.selectedDays?.map((day) => Number(day)),
+          bymonth: data.selectedMonths?.map((month) => Number(month)),
+          dtstart: startDateTime,
+        })
+      : null;
 
     const newEvent: Event = {
       type: data.type,
@@ -165,7 +169,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       title: data.title,
       note: data.note,
       verified: true,
-      frequencyRule: rule.toString(),
+      frequencyRule: rule ? rule.toString() : undefined,
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -222,7 +226,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                         id="date"
                         variant={"outline"}
                         className={cn(
-                          "justify-start text-left font-normal w-[80%]",
+                          "justify-start text-left font-normal w-[90%]",
                           !date && "text-muted-foreground",
                         )}
                       >
@@ -274,7 +278,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                       )}
                     />
 
-                    <Minus className="w-4 text-muted-foreground" />
+                    <span aria-label=" to ">–</span>
 
                     <FormField
                       control={form.control}
