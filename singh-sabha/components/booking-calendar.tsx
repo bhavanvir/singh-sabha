@@ -191,19 +191,11 @@ export default function BookingCalendar({
 
   const eventPropGetter = React.useCallback((event: Event | any) => {
     const { type, verified } = event;
-    const hslColor = typeEventMap[type]?.colour;
-
-    // Convert HSL to HSLA for semi-transparent background
-    const backgroundColor = hslColor
-      .replace("hsl", "hsla")
-      .replace(")", ", 0.2)");
 
     const newStyle: React.CSSProperties = {
-      backgroundColor: backgroundColor,
-      color: hslColor,
+      backgroundColor: typeEventMap[type]?.colour,
       borderRadius: "0.375rem", // Tailwind rounded-md
-      border: `${hslColor} 1px ${verified ? "solid" : "dashed"}`,
-      filter: verified ? "none" : "grayscale(100%)",
+      opacity: verified ? "1" : ".5",
     };
 
     return {

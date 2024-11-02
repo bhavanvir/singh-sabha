@@ -84,15 +84,9 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                     <div className="flex-grow p-4">
                       <div className="flex items-center justify-between mb-2">
                         <Badge
-                          variant="outline"
                           style={{
-                            color: typeEventMap[notification.type].colour,
-                            borderColor: typeEventMap[notification.type].colour,
-                            backgroundColor: typeEventMap[
-                              notification.type
-                            ].colour
-                              .replace("hsl", "hsla")
-                              .replace(")", ", 0.2)"),
+                            backgroundColor:
+                              typeEventMap[notification.type].colour,
                           }}
                         >
                           {typeEventMap[notification.type].displayName}
@@ -199,13 +193,8 @@ export default function Component({ notifications = [] }: NotificationsProps) {
             {selectedEvent?.conflict.map((conflictEvent, index) => (
               <div key={index} className="mb-4 p-4 border rounded-md">
                 <Badge
-                  variant="outline"
                   style={{
-                    color: typeEventMap[conflictEvent.type].colour,
-                    borderColor: typeEventMap[conflictEvent.type].colour,
-                    backgroundColor: typeEventMap[conflictEvent.type].colour
-                      .replace("hsl", "hsla")
-                      .replace(")", ", 0.2)"),
+                    backgroundColor: typeEventMap[conflictEvent.type].colour,
                   }}
                 >
                   {typeEventMap[conflictEvent.type].displayName}

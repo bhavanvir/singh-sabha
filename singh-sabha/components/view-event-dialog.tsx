@@ -9,7 +9,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-
 import { typeEventMap } from "@/lib/types/eventdetails";
 
 import type { Event } from "@/lib/types/event";
@@ -40,13 +39,8 @@ export default function ViewEventDialog({
           </DialogTitle>
           <DialogDescription className="space-x-2">
             <Badge
-              variant="outline"
               style={{
-                color: typeEventMap[event.type].colour,
-                borderColor: typeEventMap[event.type].colour,
-                backgroundColor: typeEventMap[event.type].colour
-                  .replace("hsl", "hsla")
-                  .replace(")", ", 0.2)"),
+                backgroundColor: typeEventMap[event.type].colour,
               }}
             >
               {typeEventMap[event.type].displayName}
@@ -71,7 +65,7 @@ export default function ViewEventDialog({
             <ClockIcon className="w-4 h-4" />
             <span className="text-md">{`${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}</span>
           </div>
-          {isRecurring && (
+          {isRecurring && event.frequencyRule && (
             <div className="flex items-center space-x-2 text-muted-foreground">
               <RepeatIcon className="w-4 h-4" />
               <span className="text-md">
