@@ -169,6 +169,22 @@ export default function BookingCalendar({
     );
   };
 
+  const CustomEvent = ({ event }: { event: Event | any }) => {
+    const eventDuration = moment(event.end).diff(moment(event.start), "days");
+
+    return (
+      <div className="flex justify-between items-center">
+        <span>{event.title}</span>
+        {eventDuration > 1 && (
+          <span className="text-sm ">
+            {moment(event.start).format("hh:mm a")} -{" "}
+            {moment(event.end).format("hh:mm a")}
+          </span>
+        )}
+      </div>
+    );
+  };
+
   const onSelectSlot = React.useCallback(
     (slotInfo: SlotInfo) => {
       setSelectedSlot(slotInfo);
@@ -220,6 +236,7 @@ export default function BookingCalendar({
         defaultView="month"
         views={["week", "day", "month"]}
         components={{
+          event: CustomEvent,
           toolbar: CustomToolbar,
           week: { header: CustomHeader },
           month: { dateHeader: CustomDateHeader },
