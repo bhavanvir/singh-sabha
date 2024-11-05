@@ -9,7 +9,7 @@ import {
   ChangeEmail,
   ChangePassword,
 } from "@/lib/api/events/mutations";
-import { RefreshCw, Info, Copy, Send } from "lucide-react";
+import { RefreshCw, Info, Copy, Send, X } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -37,6 +37,9 @@ const passwordSchema = z.object({
 });
 
 export default function Settings({ user }: SettingsProps) {
+  const [mailingList, setMailingList] = useState<string[]>([]);
+  const [otp, setOtp] = useState("");
+
   const emailForm = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
     defaultValues: {
@@ -51,7 +54,12 @@ export default function Settings({ user }: SettingsProps) {
     },
   });
 
-  const [otp, setOtp] = useState("");
+  const mailingListForm = useForm<z.infer<typeof emailSchema>>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
   const generateOtp = () => {
     const charset =
@@ -102,6 +110,14 @@ export default function Settings({ user }: SettingsProps) {
     });
   };
 
+  const handleAddEmail = (values: z.infer<typeof emailSchema>) => {
+    setMailingList((prev) => [...prev, values.email]);
+    mailingListForm.reset();
+  };
+
+  const handleRemoveEmail = (emailToRemove: string) => {
+    setMailingList((prev) => prev.filter((email) => email !== emailToRemove));
+  };
   return (
     <div className="max-w-xl mx-auto p-2">
       <div className="grid grid-cols-1 gap-4">
@@ -206,6 +222,72 @@ export default function Settings({ user }: SettingsProps) {
                 </p>
               </div>
             )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Mailing</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Form {...mailingListForm}>
+              <form
+                onSubmit={mailingListForm.handleSubmit(handleAddEmail)}
+                className="space-y-2"
+              >
+                <FormField
+                  control={mailingListForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Add Email to Mailing List</FormLabel>
+                      <FormControl>
+                        <div className="flex space-x-2">
+                          <Input
+                            type="email"
+                            placeholder="New email address"
+                            {...field}
+                            className="flex-grow"
+                          />
+                          <Button type="submit">
+                            <Send className="h-4 w-4 mr-2" />
+                            Add
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">Current Mailing List</h3>
+              {mailingList.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No emails in the list yet.
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {mailingList.map((email) => (
+                    <li
+                      key={email}
+                      className="flex items-center justify-between bg-secondary p-2 rounded-md"
+                    >
+                      <span className="text-sm">{email}</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveEmail(email)}
+                        aria-label={`Remove ${email} from mailing list`}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
