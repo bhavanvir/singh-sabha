@@ -161,7 +161,8 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
         <DialogHeader>
           <DialogTitle>Request event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click submit when you're done.
+            Parameters based on your selection. Click submit when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
 
