@@ -44,10 +44,10 @@ import { toast } from "sonner";
 import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 import { CreateEvent } from "@/lib/api/events/mutations";
+import { Separator } from "@/components/ui/separator";
 
 import type { Event } from "@/lib/types/event";
 import type { SlotInfo } from "react-big-calendar";
-import { Separator } from "./ui/separator";
 
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
@@ -57,13 +57,11 @@ const formSchema = z.object({
     .optional()
     .refine((value) => {
       if (!value) return true;
-
       const phoneNumber = parsePhoneNumberFromString(value, "CA");
       return phoneNumber?.isValid();
     }, "Invalid phone number")
     .transform((value) => {
       if (!value) return value;
-
       const phoneNumber = parsePhoneNumberFromString(value, "CA");
       return phoneNumber ? phoneNumber.formatInternational() : value;
     }),
@@ -152,19 +150,18 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
       loading: "Submitting event request...",
       success:
         "Event request submitted successfully, we'll get back to you soon!",
-      error: "An unknown error occured.",
+      error: "An unknown error occurred.",
     });
     handleClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Request event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click submit when you&apos;re
-            done.
+            Parameters based on your selection. Click submit when you're done.
           </DialogDescription>
         </DialogHeader>
 
@@ -174,9 +171,9 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
             className="grid grid-cols-1 gap-4"
             autoComplete="off"
           >
-            <div className="flex justify-between space-x-4">
+            <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
               {/* Left column */}
-              <div className="grid grid-cols-1 gap-4 h-fit w-1/3">
+              <div className="grid grid-cols-1 gap-4 h-fit w-full md:w-1/3">
                 <FormField
                   control={form.control}
                   name="name"
@@ -229,10 +226,11 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
               </div>
 
               {/* Separator */}
-              <Separator orientation="vertical" />
+              <Separator className="md:hidden" />
+              <Separator orientation="vertical" className="hidden md:block" />
 
               {/* Right column */}
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-4 w-full md:w-2/3">
                 <FormField
                   control={form.control}
                   name="title"
@@ -248,14 +246,14 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                 />
 
                 <FormLabel required>Time period</FormLabel>
-                <div className="grid grid-cols-2 gap-x-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         id="date"
                         variant={"outline"}
                         className={cn(
-                          "justify-start text-left font-normal w-[90%]",
+                          "justify-start text-left font-normal w-full md:w-[90%]",
                           !date && "text-muted-foreground",
                         )}
                       >
@@ -293,7 +291,7 @@ const RequestEventDialog: React.FC<RequestEventDialogProps> = ({
                     </PopoverContent>
                   </Popover>
 
-                  <div className="flex items-center justify-end space-x-1">
+                  <div className="flex items-center justify-start md:justify-end space-x-1">
                     <FormField
                       control={form.control}
                       name="startTime"
