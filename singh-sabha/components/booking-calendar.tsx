@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Pen } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
@@ -22,7 +22,6 @@ import ViewEventDialog from "@/components/view-event-dialog";
 import { typeEventMap } from "@/lib/types/eventdetails";
 
 import type { ToolbarProps } from "react-big-calendar";
-import type { SlotInfo } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
 import type { User } from "lucia";
 
@@ -76,7 +75,7 @@ export default function BookingCalendar({
       return null;
     };
 
-    const handleRequestEvent = () => {
+    const handleAddEvent = () => {
       if (user) {
         setCreateEventDialogOpen(true);
       } else {
@@ -135,8 +134,13 @@ export default function BookingCalendar({
             Today
           </Button>
 
-          <Button variant="outline" onClick={handleRequestEvent}>
-            Request event
+          <Button
+            variant="outline"
+            className="flex items-center"
+            onClick={handleAddEvent}
+          >
+            <Pen className="h-4 w-4 mr-2" />
+            {user ? "Create event" : "Request event"}
           </Button>
         </div>
       </div>
