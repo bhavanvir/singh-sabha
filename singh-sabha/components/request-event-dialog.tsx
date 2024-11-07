@@ -174,7 +174,7 @@ function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Full name</FormLabel>
+                      <FormLabel required>Full Name</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -206,7 +206,7 @@ function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone number</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input
                           type="text"

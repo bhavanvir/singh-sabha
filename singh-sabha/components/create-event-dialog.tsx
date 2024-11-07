@@ -452,7 +452,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   name="count"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Repeat count</FormLabel>
+                      <FormLabel required>Repeat Count</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
@@ -475,7 +475,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     name="interval"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel required>Repeat every</FormLabel>
+                        <FormLabel required>Repeat Every</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
