@@ -114,6 +114,12 @@ body {
   }
 }
 
+.rbc-event {
+  &:focus {
+    @apply outline-none !important;
+  }
+}
+
 .rbc-allday-cell {
   @apply h-fit !important;
 
