@@ -40,7 +40,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Info, CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
@@ -48,7 +49,6 @@ import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
-import type { SlotInfo } from "react-big-calendar";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
@@ -74,8 +74,6 @@ const formSchema = z.object({
     .max(64, "Title too long"),
   type: z.string().min(1, "Type missing"),
   note: z.string().max(128, "Note too long"),
-  startTime: z.string().min(1, "Start time missing"),
-  endTime: z.string().min(1, "End time missing"),
   frequency: z.string(),
   selectedDays: z.array(z.string()).optional(),
   selectedMonths: z.array(z.string()).optional(),
@@ -89,18 +87,26 @@ const formSchema = z.object({
     .min(1, "Count must be at least 1")
     .max(365, "Count can't be over 365")
     .optional(),
+  dateRange: z.object(
+    {
+      from: z.date(),
+      to: z.date().nullish().catch(undefined),
+    },
+    {
+      required_error: "Please select a date range",
+    }
+  ),
+  timeRange: z.array(z.number()).length(2),
 });
 
 interface CreateEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  slot: SlotInfo | null;
 }
 
 const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   isOpen,
   onClose,
-  slot,
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
 
@@ -115,22 +121,9 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       selectedMonths: [],
       count: undefined,
       interval: undefined,
+      timeRange: [9 * 4, 17 * 4],
     },
   });
-
-  React.useEffect(() => {
-    if (isOpen && slot) {
-      setDate({
-        from: slot.start,
-        to: slot.end,
-      });
-
-      form.setValue("startTime", moment(slot.start).format("HH:mm"));
-      form.setValue("endTime", moment(slot.end).format("HH:mm"));
-    } else {
-      setDate(undefined);
-    }
-  }, [form, isOpen, slot]);
 
   const handleClose = () => {
     form.reset();
@@ -138,17 +131,13 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   };
 
   const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    if (!slot) return;
+    const startDateTime = moment(data.dateRange.from)
+      .hour(Math.floor(data.timeRange[0] / 4))
+      .minute((data.timeRange[0] % 4) * 15);
 
-    const startDateTime = moment(
-      `${moment(date?.from).format("YYYY-MM-DD")} ${data.startTime}`,
-      "YYYY-MM-DD HH:mm",
-    ).toDate();
-
-    const endDateTime = moment(
-      `${moment(date?.to ?? date?.from).format("YYYY-MM-DD")} ${data.endTime}`,
-      "YYYY-MM-DD HH:mm",
-    ).toDate();
+    const endDateTime = moment(data.dateRange.to)
+      .hour(Math.floor(data.timeRange[1] / 4))
+      .minute((data.timeRange[1] % 4) * 15);
 
     const rule = data.frequency
       ? new RRule({
@@ -157,15 +146,15 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
           count: data.count,
           byweekday: data.selectedDays?.map((day) => Number(day)),
           bymonth: data.selectedMonths?.map((month) => Number(month)),
-          dtstart: startDateTime,
+          dtstart: startDateTime.toDate(),
         })
       : null;
 
     const newEvent: Event = {
       type: data.type,
-      start: startDateTime,
-      end: endDateTime,
-      allDay: data.startTime === data.endTime,
+      start: startDateTime.toDate(),
+      end: endDateTime.toDate(),
+      allDay: startDateTime === endDateTime,
       title: data.title,
       note: data.note,
       verified: true,
@@ -179,6 +168,16 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     });
 
     handleClose();
+  };
+
+  const formatTimeValue = (value: number) => {
+    const hours = Math.floor(value / 4);
+    const minutes = (value % 4) * 15;
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+    return `${formattedHours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
   };
 
   return (
@@ -218,88 +217,85 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   )}
                 />
 
-                <FormLabel required>Time period</FormLabel>
-                <div className="grid grid-cols-2 gap-x-4">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "justify-start text-left font-normal w-[90%]",
-                          !date && "text-muted-foreground",
-                        )}
-                      >
-                        <span className="ml-[-0.375rem]">
-                          {date?.from ? (
-                            date.to ? (
-                              <>
-                                {format(date.from, "LLL dd, y")} -{" "}
-                                {format(date.to, "LLL dd, y")}
-                              </>
-                            ) : (
-                              format(date.from, "LLL dd, y")
-                            )
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                        </span>
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={(selected) => {
-                          if (selected?.from) {
-                            setDate(selected);
-                          } else if (date) {
-                            setDate(date);
-                          }
-                        }}
-                        numberOfMonths={2}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                <div className="grid grid-cols-1 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="dateRange"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel required>Date Range</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value?.from ? (
+                                  field.value.to ? (
+                                    <>
+                                      {format(field.value.from, "LLL dd, y")} -{" "}
+                                      {format(field.value.to, "LLL dd, y")}
+                                    </>
+                                  ) : (
+                                    format(field.value.from, "LLL dd, y")
+                                  )
+                                ) : (
+                                  <span>Pick a date range</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="range"
+                              selected={field.value as DateRange}
+                              onSelect={(range) => {
+                                if (range?.from && !range.to) {
+                                  range.to = range.from;
+                                }
+                                field.onChange(range);
+                              }}
+                              initialFocus
+                              showOutsideDays={false}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                  <div className="flex items-center justify-end space-x-1">
-                    <FormField
-                      control={form.control}
-                      name="startTime"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input type="time" {...field} className="w-fit" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <span aria-label=" to ">–</span>
-
-                    <FormField
-                      control={form.control}
-                      name="endTime"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input type="time" {...field} className="w-fit" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  {form.getValues()["startTime"] ==
-                    form.getValues()["endTime"] && (
-                    <p className="pt-1 text-muted-foreground text-sm flex items-center">
-                      <Info className="mr-1 h-4 w-4" />
-                      This is an all day event.
-                    </p>
-                  )}
+                  <FormField
+                    control={form.control}
+                    name="timeRange"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel required>Time Range</FormLabel>
+                        <FormControl>
+                          <div className="space-y-2">
+                            <Slider
+                              min={0}
+                              max={95}
+                              step={1}
+                              value={field.value}
+                              onValueChange={field.onChange}
+                              className="w-full"
+                            />
+                            <div className="flex justify-between text-sm text-muted-foreground">
+                              <span>{formatTimeValue(field.value[0])}</span>
+                              <span>{formatTimeValue(field.value[1])}</span>
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 <FormField
@@ -330,7 +326,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                                       {displayName}
                                     </span>
                                   </SelectItem>
-                                ),
+                                )
                               )}
                             </SelectGroup>
                           </SelectContent>

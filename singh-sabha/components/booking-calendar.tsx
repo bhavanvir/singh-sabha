@@ -45,7 +45,6 @@ export default function BookingCalendar({
   const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
     React.useState(false);
   const [isViewEventDialogOpen, setViewEventDialogOpen] = React.useState(false);
-  const [selectedSlot, setSelectedSlot] = React.useState<SlotInfo | null>(null);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [currentView, setCurrentView] = React.useState<View>("month");
 
@@ -53,7 +52,7 @@ export default function BookingCalendar({
     // Small delay to ensure CSS is loaded
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, []);
@@ -76,6 +75,15 @@ export default function BookingCalendar({
 
       return null;
     };
+
+    const handleRequestEvent = () => {
+      if (user) {
+        setCreateEventDialogOpen(true);
+      } else {
+        setRequestEventDialogOpen(true);
+      }
+    };
+
     return (
       <div className="flex flex-wrap items-center justify-between pb-4 w-full space-y-4 sm:space-y-0">
         {/* Navigation and Date Section */}
@@ -126,6 +134,10 @@ export default function BookingCalendar({
           <Button variant="outline" onClick={() => onNavigate("TODAY")}>
             Today
           </Button>
+
+          <Button variant="outline" onClick={handleRequestEvent}>
+            Request event
+          </Button>
         </div>
       </div>
     );
@@ -141,7 +153,7 @@ export default function BookingCalendar({
         <div>{dayOfWeek}</div>
         <div className="ml-1">
           {isToday ? (
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500">
               <span className="text-background">{dayOfMonth}</span>
             </div>
           ) : (
@@ -185,15 +197,6 @@ export default function BookingCalendar({
     );
   };
 
-  const onSelectSlot = React.useCallback(
-    (slotInfo: SlotInfo) => {
-      setSelectedSlot(slotInfo);
-      if (user) setCreateEventDialogOpen(true);
-      else setRequestEventDialogOpen(true);
-    },
-    [user],
-  );
-
   // Adding Event as the sole type for the callback causes an error
   // an overload error for the toolbar in the Calendar component...
   const onSelectEvent = React.useCallback(
@@ -202,7 +205,7 @@ export default function BookingCalendar({
       if (user) setEditEventDialogOpen(true);
       else setViewEventDialogOpen(true);
     },
-    [user],
+    [user]
   );
 
   const eventPropGetter = React.useCallback((event: Event | any) => {
@@ -211,6 +214,7 @@ export default function BookingCalendar({
     const newStyle: React.CSSProperties = {
       backgroundColor: typeEventMap[type]?.colour,
       borderRadius: "0.375rem", // Tailwind rounded-md
+      border: "none",
       opacity: verified ? "1" : ".5",
     };
 
@@ -227,8 +231,6 @@ export default function BookingCalendar({
   ) : (
     <div className="h-[calc(100vh-6rem)] overflow-y-auto p-2">
       <Calendar
-        selectable
-        onSelectSlot={onSelectSlot}
         onSelectEvent={onSelectEvent}
         eventPropGetter={eventPropGetter}
         localizer={localizer}
@@ -245,7 +247,6 @@ export default function BookingCalendar({
       <CreateEventDialog
         isOpen={isCreateEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
-        slot={selectedSlot}
       />
       <EditEventDialog
         isOpen={isEditEventDialogOpen}
@@ -255,7 +256,6 @@ export default function BookingCalendar({
       <RequestEventDialog
         isOpen={isRequestEventDialogOpen}
         onClose={() => setRequestEventDialogOpen(false)}
-        slot={selectedSlot}
       />
       <ViewEventDialog
         isOpen={isViewEventDialogOpen}
