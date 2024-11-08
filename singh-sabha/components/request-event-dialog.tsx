@@ -79,7 +79,7 @@ const formSchema = z.object({
     },
     {
       required_error: "Please select a date range",
-    }
+    },
   ),
   timeRange: z.array(z.number()).length(2),
 });
@@ -254,7 +254,7 @@ function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
                                 variant={"outline"}
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
+                                  !field.value && "text-muted-foreground",
                                 )}
                               >
                                 {field.value?.from ? (
@@ -341,7 +341,7 @@ function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
                             <div className="max-h-64 overflow-y-auto">
                               {Object.entries(typeEventMap)
                                 .filter(
-                                  ([, { isRequestable }]) => isRequestable
+                                  ([, { isRequestable }]) => isRequestable,
                                 )
                                 .map(([type, { colour, displayName }]) => (
                                   <SelectItem value={type} key={type}>

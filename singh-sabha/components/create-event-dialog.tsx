@@ -94,7 +94,7 @@ const formSchema = z.object({
     },
     {
       required_error: "Please select a date range",
-    }
+    },
   ),
   timeRange: z.array(z.number()).length(2),
 });
@@ -231,7 +231,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                                 variant={"outline"}
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
+                                  !field.value && "text-muted-foreground",
                                 )}
                               >
                                 {field.value?.from ? (
@@ -326,7 +326,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                                       {displayName}
                                     </span>
                                   </SelectItem>
-                                )
+                                ),
                               )}
                             </SelectGroup>
                           </SelectContent>

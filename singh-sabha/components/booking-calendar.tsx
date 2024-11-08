@@ -209,7 +209,7 @@ export default function BookingCalendar({
       if (user) setEditEventDialogOpen(true);
       else setViewEventDialogOpen(true);
     },
-    [user]
+    [user],
   );
 
   const eventPropGetter = React.useCallback((event: Event | any) => {
