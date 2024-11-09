@@ -135,12 +135,12 @@ export default function BookingCalendar({
           </Button>
 
           <Button
+            size="icon"
             variant="outline"
             className="flex items-center"
             onClick={handleAddEvent}
           >
-            <Pen className="h-4 w-4 mr-2" />
-            {user ? "Create event" : "Request event"}
+            <Pen className="h-4 w-4" />
           </Button>
         </div>
       </div>
