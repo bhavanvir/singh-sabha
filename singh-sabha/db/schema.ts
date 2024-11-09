@@ -49,3 +49,10 @@ export const eventTable = pgTable("events", {
   verified: boolean("verified").default(false),
   frequencyRule: text("frequency_rule"),
 });
+
+export const mailTable = pgTable("mailing_list", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  email: text("email").notNull().unique(),
+});
