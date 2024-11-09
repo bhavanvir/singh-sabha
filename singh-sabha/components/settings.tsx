@@ -12,7 +12,7 @@ import {
   AddEmail,
   RemoveEmail,
 } from "@/lib/api/events/mutations";
-import { RefreshCw, Info, Copy, X, Plus } from "lucide-react";
+import { RefreshCw, Info, Copy, X, Plus, PenLine } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -157,8 +157,9 @@ export default function Settings({ user, mailingList }: SettingsProps) {
                             {...field}
                             className="flex-grow"
                           />
-                          <Button size="icon" type="submit">
-                            <Plus className="h-4 w-10" />
+                          <Button type="submit">
+                            <PenLine />
+                            Change
                           </Button>
                         </div>
                       </FormControl>
@@ -188,8 +189,9 @@ export default function Settings({ user, mailingList }: SettingsProps) {
                               {...field}
                               className="flex-grow"
                             />
-                            <Button size="icon" type="submit">
-                              <Plus className="h-4 w-10" />
+                            <Button type="submit">
+                              <PenLine />
+                              Change
                             </Button>
                           </div>
                         </FormControl>
@@ -213,16 +215,17 @@ export default function Settings({ user, mailingList }: SettingsProps) {
                     readOnly
                     className="flex-grow"
                   />
-                  <Button size="icon" type="button" onClick={generateOtp}>
-                    <RefreshCw className="h-4 w-10" />
+                  <Button type="button" onClick={generateOtp}>
+                    <RefreshCw />
+                    Generate
                   </Button>
                   <Button
-                    size="icon"
                     type="button"
                     onClick={copyToClipboard}
                     disabled={!otp}
                   >
-                    <Copy className="h-4 w-10" />
+                    <Copy />
+                    Copy
                     <span className="sr-only">Copy to clipboard</span>
                   </Button>
                 </div>
@@ -258,8 +261,9 @@ export default function Settings({ user, mailingList }: SettingsProps) {
                             {...field}
                             className="flex-grow"
                           />
-                          <Button size="icon" type="submit">
-                            <Plus className="h-4 w-10" />
+                          <Button type="submit">
+                            <Plus />
+                            Add
                           </Button>
                         </div>
                       </FormControl>

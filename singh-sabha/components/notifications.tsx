@@ -153,17 +153,15 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                       )}
                       <div className="flex justify-end space-x-2 mt-4">
                         <Button
-                          size="icon"
                           variant="outline"
                           onClick={() => handleDismiss(notification.id!)}
                         >
-                          <X className="h-4 w-4" />
+                          <X />
+                          Dismiss
                         </Button>
-                        <Button
-                          size="icon"
-                          onClick={() => handleApprove(notification)}
-                        >
-                          <Check className="h-4 w-4" />
+                        <Button onClick={() => handleApprove(notification)}>
+                          <Check />
+                          Approve
                         </Button>
                       </div>
                     </div>
