@@ -1,6 +1,10 @@
 import { validateRequest } from "@/lib/auth";
 import { Dashboard } from "@/components/dashboard";
-import { GetAllEvents, GetAllUnverifiedEvents } from "@/lib/api/events/queries";
+import {
+  GetAllEvents,
+  GetAllUnverifiedEvents,
+  GetMailingList,
+} from "@/lib/api/events/queries";
 import { generateRecurringEvents } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import moment from "moment";
@@ -15,6 +19,7 @@ export default async function Page() {
 
   const events = await GetAllEvents();
   const notifications = await GetAllUnverifiedEvents();
+  const mailingList = await GetMailingList();
 
   // Applies all reoccurence rules
   const allGeneratedEvents = generateRecurringEvents(events);
@@ -49,6 +54,7 @@ export default async function Page() {
         user={user}
         events={allGeneratedEvents}
         notifications={notifications}
+        mailingList={mailingList}
       />
     </>
   );
