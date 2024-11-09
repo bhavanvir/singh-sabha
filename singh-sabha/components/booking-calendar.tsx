@@ -97,7 +97,6 @@ export default function BookingCalendar({
 
     return (
       <div className="flex flex-wrap items-center justify-between pb-4 w-full space-y-4 sm:space-y-0">
-        {/* Navigation and Date Section */}
         <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-start">
           <div className="flex space-x-1">
             <Button
@@ -120,7 +119,6 @@ export default function BookingCalendar({
           <span className="text-xl sm:text-2xl font-bold">{formatDate()}</span>
         </div>
 
-        {/* Select View and Today Button Section */}
         <div className="flex space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-end">
           <Select
             onValueChange={(value) => {
@@ -207,7 +205,7 @@ export default function BookingCalendar({
         <div>{dayOfWeek}</div>
         <div className="ml-1">
           {isToday ? (
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground">
               <span className="text-background">{dayOfMonth}</span>
             </div>
           ) : (
@@ -225,7 +223,7 @@ export default function BookingCalendar({
     return (
       <div className="flex items-center justify-center my-1">
         {isToday ? (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground">
             <span className="text-primary-foreground">{dayOfMonth}</span>
           </div>
         ) : (
