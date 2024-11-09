@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/db";
-import { eventTable, otpTable, userTable } from "@/db/schema";
+import { eventTable, mailTable, otpTable, userTable } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 
@@ -199,6 +199,32 @@ export const ChangePassword = async ({
       .update(userTable)
       .set({ passwordHash: passwordHash })
       .where(eq(userTable.id, id));
+  } catch (err) {
+    throw new Error(`Could not update password: ${err}`);
+  }
+};
+
+export const AddEmail = async ({ email }: { email: string }): Promise<void> => {
+  if (!email) {
+    throw new Error("Missing required parameter to add to mailing list");
+  }
+
+  try {
+    await db.insert(mailTable).values({ email });
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Could not update password: ${err}`);
+  }
+};
+
+export const RemoveEmail = async ({ id }: { id: string }): Promise<void> => {
+  if (!id) {
+    throw new Error("Missing required parameter to add to mailing list");
+  }
+
+  try {
+    await db.delete(mailTable).where(eq(mailTable.id, id));
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update password: ${err}`);
   }

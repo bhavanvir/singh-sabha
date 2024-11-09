@@ -2,7 +2,7 @@
 
 import { cache } from "react";
 import { db } from "@/db/db";
-import { eventTable } from "@/db/schema";
+import { eventTable, mailTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // TODO: Fix types
@@ -36,5 +36,14 @@ export const GetAllEvents = cache(async (): Promise<any> => {
     return events;
   } catch (err) {
     throw new Error(`Could not fetch events: ${err}`);
+  }
+});
+
+export const GetMailingList = cache(async (): Promise<any> => {
+  try {
+    const mailingList = await db.select().from(mailTable);
+    return mailingList;
+  } catch (err) {
+    throw new Error(`Could not fetch mailing list: ${err}`);
   }
 });
