@@ -10,8 +10,20 @@ import {
   SelectLabel,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2, Pen } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Pen,
+  HelpCircle,
+} from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
@@ -19,7 +31,7 @@ import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
 import RequestEventDialog from "@/components/request-event-dialog";
 import ViewEventDialog from "@/components/view-event-dialog";
-import { typeEventMap } from "@/lib/types/eventdetails";
+import { typeEventMap, EventColors } from "@/lib/types/eventdetails";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
@@ -135,13 +147,51 @@ export default function BookingCalendar({
           </Button>
 
           <Button
-            size="icon"
             variant="outline"
             className="flex items-center"
             onClick={handleAddEvent}
           >
-            <Pen className="h-4 w-4" />
+            <Pen />
+            {user ? "Create" : "Request"} event
           </Button>
+
+          <div className="flex justify-end">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                  >
+                    <HelpCircle />
+                    Legend
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="end" className="p-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{
+                          backgroundColor: EventColors.regular,
+                        }}
+                      ></div>
+                      <span className="text-sm">Regular event</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{
+                          backgroundColor: EventColors.special,
+                        }}
+                      ></div>
+                      <span className="text-sm">Special event</span>
+                    </div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </div>
     );
