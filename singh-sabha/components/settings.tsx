@@ -16,7 +16,16 @@ import {
   UpdateEventType,
   DeleteEventType,
 } from "@/lib/api/events/mutations";
-import { RefreshCw, Info, Copy, X, Plus, PenLine, Trash } from "lucide-react";
+import {
+  RefreshCw,
+  Info,
+  Copy,
+  X,
+  Plus,
+  PenLine,
+  Trash,
+  TrashIcon,
+} from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -27,6 +36,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 
 import type { User } from "lucia";
@@ -308,6 +318,7 @@ export default function Settings({
             )}
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Mailing</CardTitle>
@@ -352,8 +363,8 @@ export default function Settings({
                   No emails in the list yet.
                 </p>
               ) : (
-                <ScrollArea className="max-h-[180px]">
-                  <ul className="space-y-2">
+                <ScrollArea>
+                  <ul className="space-y-2 max-h-[180px]">
                     {mailingList.map((item) => (
                       <li
                         key={item.id}
@@ -366,7 +377,7 @@ export default function Settings({
                           onClick={() => handleRemoveEmail(item)}
                           aria-label={`Remove ${item.email} from mailing list`}
                         >
-                          <X className="h-4 w-4" />
+                          <TrashIcon className="h-4 w-4 stroke-destructive" />
                         </Button>
                       </li>
                     ))}
@@ -376,6 +387,7 @@ export default function Settings({
             </div>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Event Management</CardTitle>
@@ -406,10 +418,14 @@ export default function Settings({
                   name="isRequestable"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
+                      <div>
                         <FormLabel className="text-base text-m">
                           Requestable
                         </FormLabel>
+                        <FormDescription className="flex items-center">
+                          <Info className="h-4 w-4 mr-1" /> Allow users to
+                          request this event
+                        </FormDescription>
                       </div>
                       <FormControl>
                         <Switch
@@ -424,11 +440,15 @@ export default function Settings({
                   control={eventTypeForm.control}
                   name="isSpecial"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 ">
+                      <div>
                         <FormLabel className="text-base">
                           Special Event
                         </FormLabel>
+                        <FormDescription className="flex items-center">
+                          <Info className="h-4 w-4 mr-1" /> Mark this as a
+                          special event
+                        </FormDescription>
                       </div>
                       <FormControl>
                         <Switch
@@ -462,8 +482,8 @@ export default function Settings({
                   No events added yet.
                 </p>
               ) : (
-                <ScrollArea className="max-h-[180px]">
-                  <ul className="space-y-2">
+                <ScrollArea>
+                  <ul className="space-y-2 max-h-[180px]">
                     {eventTypes.map((type) => (
                       <li
                         key={type.id}
@@ -488,7 +508,7 @@ export default function Settings({
                             onClick={() => handleDeleteEvent(type.id!)}
                             aria-label={`Delete ${type.displayName}`}
                           >
-                            <Trash className="h-4 w-4" />
+                            <Trash className="h-4 w-4 stroke-destructive" />
                           </Button>
                         </div>
                       </li>
