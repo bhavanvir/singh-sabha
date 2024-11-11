@@ -82,11 +82,11 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                   <div className="flex items-stretch">
                     <div className="flex-grow p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge>{notification.type}</Badge>
+                        <Badge>{notification.eventType?.displayName}</Badge>
                         {notification.conflict.length > 0 ? (
-                          <CalendarX2 className="h-5 w-5 text-red-500" />
+                          <CalendarX2 className="h-5 w-5 stroke-destructive" />
                         ) : (
-                          <CalendarCheck2 className="h-5 w-5 text-green-500" />
+                          <CalendarCheck2 className="h-5 w-5 stroke-green-500" />
                         )}
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
