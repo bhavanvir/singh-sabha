@@ -1,3 +1,5 @@
+import type { EventType } from "@/lib/types/eventtype";
+
 export type Event = {
   id?: string;
   registrantFullName?: string | null;
@@ -11,4 +13,5 @@ export type Event = {
   note?: string | null;
   verified: boolean;
   frequencyRule?: string;
+  eventType?: EventType;
 };
