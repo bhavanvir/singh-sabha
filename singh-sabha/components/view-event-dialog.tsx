@@ -9,7 +9,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { typeEventMap } from "@/lib/types/eventdetails";
 
 import type { Event } from "@/lib/types/event";
 
@@ -38,13 +37,7 @@ export default function ViewEventDialog({
             {event.title}
           </DialogTitle>
           <DialogDescription className="space-x-2">
-            <Badge
-              style={{
-                backgroundColor: typeEventMap[event.type].colour,
-              }}
-            >
-              {typeEventMap[event.type].displayName}
-            </Badge>
+            <Badge>{event.eventType?.displayName}</Badge>
             {isRecurring && (
               <Badge variant="secondary">
                 <RepeatIcon className="w-3 h-3 mr-1" />

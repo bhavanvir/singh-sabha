@@ -23,6 +23,7 @@ import type { User } from "lucia";
 import type { Event } from "@/lib/types/event";
 import type { ConflictingEvent } from "@/components/notifications";
 import { MailingList } from "@/lib/types/mailinglist";
+import { EventType } from "@/lib/types/eventtype";
 
 const PAGES = {
   CALENDAR: "Calendar",
@@ -37,6 +38,7 @@ interface DashboardProps {
   events: Event[];
   notifications: ConflictingEvent[];
   mailingList: MailingList[];
+  eventTypes: EventType[];
 }
 
 export function Dashboard({
@@ -44,13 +46,18 @@ export function Dashboard({
   events,
   notifications,
   mailingList,
+  eventTypes,
 }: DashboardProps) {
   const [activePage, setActivePage] = React.useState<PageKey>("CALENDAR");
 
   const pageComponents = {
-    CALENDAR: <BookingCalendar user={user} events={events} />,
+    CALENDAR: (
+      <BookingCalendar user={user} events={events} eventTypes={eventTypes} />
+    ),
     NOTIFICATIONS: <Notifications notifications={notifications} />,
-    SETTINGS: <Settings user={user} mailingList={mailingList} />,
+    SETTINGS: (
+      <Settings user={user} mailingList={mailingList} eventTypes={eventTypes} />
+    ),
   };
 
   const handleLogOut = () => {

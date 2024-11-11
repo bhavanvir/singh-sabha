@@ -40,7 +40,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
-import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Separator } from "@/components/ui/separator";
@@ -48,6 +47,7 @@ import { CalendarIcon } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
 import type { DateRange } from "react-day-picker";
+import type { EventType } from "@/lib/types/eventtype";
 
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
@@ -87,9 +87,14 @@ const formSchema = z.object({
 interface RequestEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  eventTypes: EventType[];
 }
 
-function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
+function RequestEventDialog({
+  isOpen,
+  onClose,
+  eventTypes,
+}: RequestEventDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -338,23 +343,16 @@ function RequestEventDialog({ isOpen, onClose }: RequestEventDialogProps) {
                         </FormControl>
                         <SelectContent className="overflow-y-auto max-h-[10rem]">
                           <SelectGroup>
-                            <div className="max-h-64 overflow-y-auto">
-                              {Object.entries(typeEventMap)
-                                .filter(
-                                  ([, { isRequestable }]) => isRequestable,
-                                )
-                                .map(([type, { colour, displayName }]) => (
-                                  <SelectItem value={type} key={type}>
-                                    <span className="flex items-center gap-2">
-                                      <div
-                                        className="w-4 h-4 rounded-full"
-                                        style={{ backgroundColor: colour }}
-                                      />
-                                      {displayName}
-                                    </span>
-                                  </SelectItem>
-                                ))}
-                            </div>
+                            {eventTypes.map((type) => (
+                              <SelectItem
+                                value={type.displayName}
+                                key={type.id || type.displayName}
+                              >
+                                <span className="flex items-center gap-2">
+                                  {type.displayName}
+                                </span>
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>

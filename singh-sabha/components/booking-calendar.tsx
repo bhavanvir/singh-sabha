@@ -31,20 +31,23 @@ import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
 import RequestEventDialog from "@/components/request-event-dialog";
 import ViewEventDialog from "@/components/view-event-dialog";
-import { typeEventMap, EventColors } from "@/lib/types/eventdetails";
+import { EventColors } from "@/lib/types/eventcolours";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
 import type { User } from "lucia";
+import type { EventType } from "@/lib/types/eventtype";
 
 interface BookingCalenderProps {
   user: User | null;
   events: Event[];
+  eventTypes: EventType[];
 }
 
 export default function BookingCalendar({
   user,
   events,
+  eventTypes,
 }: BookingCalenderProps) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
@@ -261,13 +264,13 @@ export default function BookingCalendar({
   );
 
   const eventPropGetter = React.useCallback((event: Event | any) => {
-    const { type, verified } = event;
-
     const newStyle: React.CSSProperties = {
-      backgroundColor: typeEventMap[type]?.colour,
+      backgroundColor: event.eventType.isSpecial
+        ? EventColors.special
+        : EventColors.regular,
       borderRadius: "0.375rem", // Tailwind rounded-md
       border: "none",
-      opacity: verified ? "1" : ".5",
+      opacity: event.verified ? "1" : ".5",
     };
 
     return {
@@ -299,15 +302,18 @@ export default function BookingCalendar({
       <CreateEventDialog
         isOpen={isCreateEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
+        eventTypes={eventTypes}
       />
       <EditEventDialog
         isOpen={isEditEventDialogOpen}
         onClose={() => setEditEventDialogOpen(false)}
         event={selectedEvent}
+        eventTypes={eventTypes}
       />
       <RequestEventDialog
         isOpen={isRequestEventDialogOpen}
         onClose={() => setRequestEventDialogOpen(false)}
+        eventTypes={eventTypes}
       />
       <ViewEventDialog
         isOpen={isViewEventDialogOpen}

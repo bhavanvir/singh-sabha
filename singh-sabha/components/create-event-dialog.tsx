@@ -45,10 +45,10 @@ import { Info, CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
-import { typeEventMap } from "@/lib/types/eventdetails";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
+import { EventType } from "@/lib/types/eventtype";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
@@ -102,14 +102,14 @@ const formSchema = z.object({
 interface CreateEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  eventTypes: EventType[];
 }
 
 const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   isOpen,
   onClose,
+  eventTypes,
 }) => {
-  const [date, setDate] = React.useState<DateRange | undefined>(undefined);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -315,19 +315,16 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                           </SelectTrigger>
                           <SelectContent className="overflow-y-auto max-h-[10rem]">
                             <SelectGroup>
-                              {Object.entries(typeEventMap).map(
-                                ([type, { colour, displayName }]) => (
-                                  <SelectItem value={type} key={type}>
-                                    <span className="flex items-center gap-2">
-                                      <div
-                                        className="w-4 h-4 rounded-full"
-                                        style={{ backgroundColor: colour }}
-                                      />
-                                      {displayName}
-                                    </span>
-                                  </SelectItem>
-                                ),
-                              )}
+                              {eventTypes.map((type) => (
+                                <SelectItem
+                                  value={type.id!}
+                                  key={type.id || type.displayName}
+                                >
+                                  <span className="flex items-center gap-2">
+                                    {type.displayName}
+                                  </span>
+                                </SelectItem>
+                              ))}
                             </SelectGroup>
                           </SelectContent>
                         </Select>

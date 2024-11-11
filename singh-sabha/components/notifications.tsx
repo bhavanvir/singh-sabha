@@ -16,7 +16,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { typeEventMap } from "@/lib/types/eventdetails";
 import {
   Dialog,
   DialogContent,
@@ -83,15 +82,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                   <div className="flex items-stretch">
                     <div className="flex-grow p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge
-                          style={{
-                            backgroundColor:
-                              typeEventMap[notification.type].colour,
-                          }}
-                        >
-                          {typeEventMap[notification.type].displayName}
-                        </Badge>
-
+                        <Badge>{notification.type}</Badge>
                         {notification.conflict.length > 0 ? (
                           <CalendarX2 className="h-5 w-5 text-red-500" />
                         ) : (
@@ -192,13 +183,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
           <ScrollArea className="mt-4 max-h-[60vh]">
             {selectedEvent?.conflict.map((conflictEvent, index) => (
               <div key={index} className="mb-4 p-4 border rounded-md">
-                <Badge
-                  style={{
-                    backgroundColor: typeEventMap[conflictEvent.type].colour,
-                  }}
-                >
-                  {typeEventMap[conflictEvent.type].displayName}
-                </Badge>
+                <Badge>{conflictEvent.type}</Badge>
                 <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
                 <span className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-1" />

@@ -31,15 +31,16 @@ import {
 } from "@/components/ui/select";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
-import { typeEventMap } from "@/lib/types/eventdetails";
 import { TriangleAlert } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
+import type { EventType } from "@/lib/types/eventtype";
 
 interface EditEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   event: Event | null;
+  eventTypes: EventType[];
 }
 
 const formSchema = z.object({
@@ -56,12 +57,13 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
   isOpen,
   onClose,
   event,
+  eventTypes,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: event?.title,
-      type: event?.type,
+      type: event?.eventType?.displayName,
       note: event?.note ?? "",
     },
     mode: "onChange",
@@ -71,7 +73,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     if (event) {
       form.reset({
         title: event.title,
-        type: event.type,
+        type: event.eventType?.displayName,
         note: event.note ?? "",
       });
     }
@@ -149,29 +151,22 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                 <FormItem>
                   <FormLabel>Type</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={event?.type}
-                      {...field}
-                    >
+                    <Select onValueChange={field.onChange} {...field}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
-                          {Object.entries(typeEventMap).map(
-                            ([type, { colour, displayName }]) => (
-                              <SelectItem value={type} key={type}>
-                                <span className="flex items-center gap-2">
-                                  <div
-                                    className="w-4 h-4 rounded-full"
-                                    style={{ backgroundColor: colour }}
-                                  />
-                                  {displayName}
-                                </span>
-                              </SelectItem>
-                            ),
-                          )}
+                          {eventTypes.map((type) => (
+                            <SelectItem
+                              value={type.displayName}
+                              key={type.id || type.displayName}
+                            >
+                              <span className="flex items-center gap-2">
+                                {type.displayName}
+                              </span>
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
