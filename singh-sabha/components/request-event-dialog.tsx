@@ -137,8 +137,7 @@ function RequestEventDialog({
 
     toast.promise(CreateEvent({ newEvent }), {
       loading: "Submitting event request...",
-      success:
-        "Event request submitted successfully, we'll get back to you soon!",
+      success: "Event request submitted successfully!",
       error: "An unknown error occurred.",
     });
     handleClose();
@@ -343,16 +342,15 @@ function RequestEventDialog({
                         </FormControl>
                         <SelectContent className="overflow-y-auto max-h-[10rem]">
                           <SelectGroup>
-                            {eventTypes.map((type) => (
-                              <SelectItem
-                                value={type.displayName}
-                                key={type.id || type.displayName}
-                              >
-                                <span className="flex items-center gap-2">
-                                  {type.displayName}
-                                </span>
-                              </SelectItem>
-                            ))}
+                            {eventTypes
+                              .filter((type) => type.isRequestable)
+                              .map((type) => (
+                                <SelectItem value={type.id!} key={type.id}>
+                                  <span className="flex items-center gap-2">
+                                    {type.displayName}
+                                  </span>
+                                </SelectItem>
+                              ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
