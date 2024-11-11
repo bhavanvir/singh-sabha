@@ -201,17 +201,8 @@ export default function Settings({
     });
   };
 
-  // const handleUpdateColors: SubmitHandler<z.infer<typeof colorSchema>> = (
-  //   data,
-  // ) => {
-  //   toast.promise(UpdateEventColors(data), {
-  //     loading: "Updating event colors...",
-  //     success: "Event colors updated successfully!",
-  //     error: "Failed to update event colors.",
-  //   });
-  // };
   return (
-    <div className="max-w-xl mx-auto p-2">
+    <div className="max-w-4xl mx-auto p-2">
       <div className="grid grid-cols-1 gap-4">
         <Card>
           <CardHeader>
@@ -361,7 +352,7 @@ export default function Settings({
                   No emails in the list yet.
                 </p>
               ) : (
-                <ScrollArea className="h-[180px]">
+                <ScrollArea className="max-h-[180px]">
                   <ul className="space-y-2">
                     {mailingList.map((item) => (
                       <li
@@ -471,7 +462,7 @@ export default function Settings({
                   No events added yet.
                 </p>
               ) : (
-                <ScrollArea className="h-[180px]">
+                <ScrollArea className="max-h-[180px]">
                   <ul className="space-y-2">
                     {eventTypes.map((type) => (
                       <li
