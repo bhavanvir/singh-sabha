@@ -33,6 +33,15 @@ export const sessionTable = pgTable("sessions", {
   }).notNull(),
 });
 
+export const eventTypeTable = pgTable("event_types", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  displayName: text("display_name").notNull(),
+  isRequestable: boolean("is_requestable").default(false),
+  isSpecial: boolean("is_special").default(false),
+});
+
 export const eventTable = pgTable("events", {
   id: text("id")
     .primaryKey()
@@ -40,7 +49,9 @@ export const eventTable = pgTable("events", {
   registrantFullName: text("registrant_full_name"),
   registrantEmail: text("registrant_email"),
   registrantPhoneNumber: text("registrant_phone_number"),
-  type: text("type").notNull(),
+  type: text("type")
+    .notNull()
+    .references(() => eventTypeTable.id),
   start: timestamp("start").notNull(),
   end: timestamp("end").notNull(),
   allDay: boolean("all_day").notNull().default(false),
