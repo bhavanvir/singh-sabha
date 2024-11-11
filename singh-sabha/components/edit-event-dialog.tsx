@@ -63,7 +63,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: event?.title,
-      type: event?.eventType?.displayName,
+      type: event?.type,
       note: event?.note ?? "",
     },
     mode: "onChange",
@@ -73,7 +73,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     if (event) {
       form.reset({
         title: event.title,
-        type: event.eventType?.displayName,
+        type: event.type,
         note: event.note ?? "",
       });
     }
@@ -88,13 +88,16 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     data,
   ) => {
     if (!event) return;
-    const updatedEvent = { ...event };
 
-    for (const [key, value] of Object.entries(data)) {
-      if (key in updatedEvent) {
-        (updatedEvent[key as keyof Event] as any) = value; // Can't be bothered with this nonsense
-      }
-    }
+    // Find the selected event type
+    const selectedEventType = eventTypes.find((type) => type.id === data.type);
+    if (!selectedEventType) return;
+
+    const updatedEvent = {
+      ...event,
+      ...data,
+      eventType: selectedEventType,
+    };
 
     toast.promise(UpdateEvent({ updatedEvent }), {
       loading: "Updating event...",
@@ -151,17 +154,14 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
                 <FormItem>
                   <FormLabel>Type</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} {...field}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="overflow-y-auto max-h-[10rem]">
                         <SelectGroup>
                           {eventTypes.map((type) => (
-                            <SelectItem
-                              value={type.displayName}
-                              key={type.id || type.displayName}
-                            >
+                            <SelectItem value={type.id!} key={type.id}>
                               <span className="flex items-center gap-2">
                                 {type.displayName}
                               </span>

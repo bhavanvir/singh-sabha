@@ -21,19 +21,8 @@ export const CreateEvent = async ({
   newEvent: Event;
 }): Promise<void> => {
   try {
-    await db.insert(eventTable).values({
-      registrantFullName: newEvent.registrantFullName,
-      registrantEmail: newEvent.registrantEmail,
-      registrantPhoneNumber: newEvent.registrantPhoneNumber,
-      type: newEvent.type,
-      start: newEvent.start,
-      end: newEvent.end,
-      allDay: newEvent.allDay,
-      title: newEvent.title,
-      note: newEvent.note,
-      verified: newEvent.verified,
-      frequencyRule: newEvent.frequencyRule,
-    });
+    const { eventType, ...eventData } = newEvent;
+    await db.insert(eventTable).values(eventData);
     revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not add an event: ${err}`);
@@ -51,10 +40,8 @@ export const UpdateEvent = async ({
 
   try {
     // Remove the id from the update payload since it's the primary key
-    const { id, ...updateData } = updatedEvent;
-
+    const { id, eventType, ...updateData } = updatedEvent;
     await db.update(eventTable).set(updateData).where(eq(eventTable.id, id));
-
     revalidatePath("/");
   } catch (err) {
     throw new Error(`Could not update event: ${err}`);
