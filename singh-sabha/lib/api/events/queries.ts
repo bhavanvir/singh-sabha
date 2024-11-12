@@ -2,7 +2,7 @@
 
 import { cache } from "react";
 import { db } from "@/db/db";
-import { eventTable, eventTypeTable, mailTable } from "@/db/schema";
+import { eventTable, eventTypeTable, mailTable, userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // TODO: Fix types
@@ -77,5 +77,22 @@ export const GetAllEventTypes = cache(async (): Promise<any> => {
     return eventTypes;
   } catch (err) {
     throw new Error(`Could not fetch event types: ${err}`);
+  }
+});
+
+export const GetAllUsers = cache(async (): Promise<any> => {
+  try {
+    const users = await db
+      .select({
+        id: userTable.id,
+        fullName: userTable.fullName,
+        email: userTable.email,
+        isAdmin: userTable.isAdmin,
+        isMod: userTable.isMod,
+      })
+      .from(userTable);
+    return users;
+  } catch (err) {
+    throw new Error(`Could not fetch users: ${err}`);
   }
 });
