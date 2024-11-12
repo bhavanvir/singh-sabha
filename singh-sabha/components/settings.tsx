@@ -5,6 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import {
   AddOtp,
@@ -30,15 +40,6 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
@@ -465,15 +466,16 @@ export default function Settings({
                           key={u.id}
                           className="flex items-center justify-between bg-secondary p-2 rounded-md"
                         >
-                          <div>
+                          <div className="inline-flex items-center space-x-2">
+                            <Badge>
+                              {u.isAdmin ? "Admin" : u.isMod ? "Mod" : "User"}
+                            </Badge>
                             <span className="font-medium">{u.fullName}</span>
                             <span className="text-sm text-muted-foreground ml-2">
                               {u.email}
                             </span>
-                            <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full ml-2">
-                              {u.isAdmin ? "Admin" : u.isMod ? "Mod" : "User"}
-                            </span>
                           </div>
+
                           <div className="space-x-2">
                             <Button
                               variant="ghost"
@@ -675,7 +677,13 @@ export default function Settings({
                         key={type.id}
                         className="flex items-center justify-between bg-secondary p-2 rounded-md"
                       >
-                        <span className="text-sm">{type.displayName}</span>
+                        <div className="inline-flex items-center space-x-2">
+                          <Badge>
+                            {type.isSpecial ? "Special" : "Regular"}
+                          </Badge>
+                          <span>{type.displayName}</span>
+                        </div>
+
                         <div className="space-x-2">
                           <Button
                             variant="ghost"
