@@ -15,12 +15,13 @@ import {
   CreateEventType,
   UpdateEventType,
   DeleteEventType,
+  UpdateUserPrivilege,
+  DeleteUser,
 } from "@/lib/api/events/mutations";
 import {
   RefreshCw,
   Info,
   Copy,
-  X,
   Plus,
   PenLine,
   Trash,
@@ -39,13 +40,15 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 
-import type { User } from "lucia";
+import type { User as SessionUser } from "lucia";
+import type { User as DatabaseUser } from "@/lib/types/user";
 import type { MailingList } from "@/lib/types/mailinglist";
 import type { EventType } from "@/lib/types/eventtype";
 import { ScrollArea } from "./ui/scroll-area";
 
 interface SettingsProps {
-  user: User;
+  user: SessionUser;
+  users: DatabaseUser[];
   mailingList: MailingList[];
   eventTypes: EventType[];
 }
@@ -64,14 +67,23 @@ const eventTypeSchema = z.object({
   isSpecial: z.boolean(),
 });
 
+const userSchema = z.object({
+  id: z.string(),
+  email: z.string().email(),
+  fullName: z.string(),
+  isAdmin: z.boolean(),
+  isMod: z.boolean(),
+});
+
 export default function Settings({
   user,
+  users,
   mailingList,
   eventTypes,
 }: SettingsProps) {
   const [otp, setOtp] = useState("");
-  const [events, setEvents] = useState<EventType[]>(eventTypes);
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
+  const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
 
   const emailForm = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
@@ -103,6 +115,17 @@ export default function Settings({
     },
   });
 
+  const userForm = useForm<z.infer<typeof userSchema>>({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      id: "",
+      email: "",
+      fullName: "",
+      isAdmin: false,
+      isMod: false,
+    },
+  });
+
   const generateOtp = () => {
     const charset =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -114,12 +137,12 @@ export default function Settings({
     }
 
     toast.promise(AddOtp({ otp: generatedOtp, issuer: user?.id }), {
-      loading: "Submitting event request...",
+      loading: "Creating OTP...",
       success: (_) => {
         setOtp(generatedOtp);
         return "Temporary password created! It is set to auto-expire in 15 minutes.";
       },
-      error: "An unknown error occurred.",
+      error: "Failed to create OTP.",
     });
   };
 
@@ -138,7 +161,7 @@ export default function Settings({
     toast.promise(ChangeEmail({ id: user?.id, email: data.email }), {
       loading: "Changing email...",
       success: "Email changed!",
-      error: "An unknown error occured.",
+      error: "Failed to change email.",
     });
   };
 
@@ -148,7 +171,7 @@ export default function Settings({
     toast.promise(ChangePassword({ id: user?.id, password: data.password }), {
       loading: "Changing password...",
       success: "Password changed!",
-      error: "An unknown error occured.",
+      error: "Failed to change password.",
     });
   };
 
@@ -159,7 +182,7 @@ export default function Settings({
         mailingListForm.reset();
         return `Added ${data.email} to mailing list.`;
       },
-      error: "An unknown error occured.",
+      error: "Failed to add email to mailing list.",
     });
   };
 
@@ -167,7 +190,7 @@ export default function Settings({
     toast.promise(RemoveEmail({ id: data.id }), {
       loading: "Removing email from mailing list...",
       success: `Removed ${data.email} from mailing list.`,
-      error: "An unknown error occured.",
+      error: "Failed to remove email from mailing list.",
     });
   };
 
@@ -180,7 +203,7 @@ export default function Settings({
         eventTypeForm.reset();
         return `Created ${data.displayName}.`;
       },
-      error: "An unknown error occured.",
+      error: "Failed to create an event.",
     });
   };
 
@@ -208,6 +231,33 @@ export default function Settings({
       loading: "Deleting event type...",
       success: "Delted event type successfully!",
       error: "Failed to delete event.",
+    });
+  };
+
+  const handleUpdateUser: SubmitHandler<z.infer<typeof userSchema>> = (
+    data,
+  ) => {
+    if (data.isAdmin && data.isMod) {
+      toast.warning("A user cannot be both an admin and a mod.");
+      return;
+    }
+
+    toast.promise(UpdateUserPrivilege({ user: data }), {
+      loading: `Updating ${data.fullName}'s privileges...`,
+      success: (_) => {
+        setEditingUser(null);
+        userForm.reset();
+        return "User updated successfully!";
+      },
+      error: "Failed to update user.",
+    });
+  };
+
+  const handleDeleteUser = (id: string) => {
+    toast.promise(DeleteUser({ id }), {
+      loading: "Deleting user...",
+      success: "User deleted successfully!",
+      error: "Failed to delete user.",
     });
   };
 
@@ -319,6 +369,142 @@ export default function Settings({
           </CardContent>
         </Card>
 
+        {user?.isAdmin && (
+          <Card>
+            <CardHeader>
+              <CardTitle>User Management</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {editingUser && (
+                <Form {...userForm}>
+                  <form
+                    onSubmit={userForm.handleSubmit(handleUpdateUser)}
+                    className="space-y-4"
+                  >
+                    <FormField
+                      control={userForm.control}
+                      name="fullName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="User's full name"
+                              disabled={true}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={userForm.control}
+                      name="isAdmin"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <FormLabel className="text-base">Admin</FormLabel>
+                            <FormDescription className="flex items-center">
+                              <Info className="h-4 w-4 mr-1" />
+                              Grant admin privileges
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={userForm.control}
+                      name="isMod"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <FormLabel className="text-base">
+                              Moderator
+                            </FormLabel>
+                            <FormDescription className="flex items-center">
+                              <Info className="h-4 w-4 mr-1" />
+                              Grant moderator privileges
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <div className="flex justify-end">
+                      <Button type="submit">
+                        <PenLine className="h-4 w-4" /> Change
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
+              )}
+
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Current Users</h3>
+                {users.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No users added yet.
+                  </p>
+                ) : (
+                  <ScrollArea>
+                    <ul className="space-y-2 max-h-[180px]">
+                      {users.map((u) => (
+                        <li
+                          key={u.id}
+                          className="flex items-center justify-between bg-secondary p-2 rounded-md"
+                        >
+                          <div>
+                            <span className="font-medium">{u.fullName}</span>
+                            <span className="text-sm text-muted-foreground ml-2">
+                              {u.email}
+                            </span>
+                            <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full ml-2">
+                              {u.isAdmin ? "Admin" : u.isMod ? "Mod" : "User"}
+                            </span>
+                          </div>
+                          <div className="space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setEditingUser(u);
+                                userForm.reset(u);
+                              }}
+                              aria-label={`Edit ${u.fullName}`}
+                            >
+                              <PenLine className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteUser(u.id)}
+                              aria-label={`Delete ${u.fullName}`}
+                            >
+                              <Trash className="h-4 w-4 stroke-destructive" />
+                            </Button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </ScrollArea>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Mailing</CardTitle>
@@ -407,7 +593,7 @@ export default function Settings({
                     <FormItem>
                       <FormLabel>Display Name</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} placeholder="New event type" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

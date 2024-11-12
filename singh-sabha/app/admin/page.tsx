@@ -5,6 +5,7 @@ import {
   GetAllUnverifiedEvents,
   GetMailingList,
   GetAllEventTypes,
+  GetAllUsers,
 } from "@/lib/api/events/queries";
 import { generateRecurringEvents } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -18,6 +19,7 @@ export default async function Page() {
     redirect("/admin/signin");
   }
 
+  const users = await GetAllUsers();
   const events = await GetAllEvents();
   const notifications = await GetAllUnverifiedEvents();
   const mailingList = await GetMailingList();
@@ -54,6 +56,7 @@ export default async function Page() {
     <>
       <Dashboard
         user={user}
+        users={users}
         events={allGeneratedEvents}
         notifications={notifications}
         mailingList={mailingList}
