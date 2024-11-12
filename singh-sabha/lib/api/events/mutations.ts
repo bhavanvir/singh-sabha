@@ -14,6 +14,7 @@ import { hash } from "@node-rs/argon2";
 
 import type { Event } from "@/lib/types/event";
 import type { EventType } from "@/lib/types/eventtype";
+import { User as DatabaseUser } from "@/lib/types/user";
 
 export const CreateEvent = async ({
   newEvent,
@@ -283,5 +284,41 @@ export const DeleteEventType = async ({
     revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update event type: ${err}`);
+  }
+};
+
+export const UpdateUserPrivilege = async ({
+  user,
+}: {
+  user: DatabaseUser;
+}): Promise<void> => {
+  if (!user.id) {
+    throw new Error("Missing required parameter to update a user's privilege");
+  }
+
+  try {
+    await db
+      .update(userTable)
+      .set({
+        isMod: user.isMod,
+        isAdmin: user.isAdmin,
+      })
+      .where(eq(userTable.id, user.id));
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Could not update user's privileges: ${err}`);
+  }
+};
+
+export const DeleteUser = async ({ id }: { id: string }): Promise<void> => {
+  if (!id) {
+    throw new Error("Missing required parameter to delete a user");
+  }
+
+  try {
+    await db.delete(userTable).where(eq(userTable.id, id));
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Could not delete user: ${err}`);
   }
 };
