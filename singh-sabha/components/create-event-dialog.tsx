@@ -164,7 +164,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     toast.promise(CreateEvent({ newEvent }), {
       loading: "Creating event...",
       success: "Event created successfully!",
-      error: "An unknown error occured.",
+      error: "Failed to create an event.",
     });
 
     handleClose();

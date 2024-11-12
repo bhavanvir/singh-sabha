@@ -44,7 +44,7 @@ export default function LoginForm() {
     toast.promise(login({ email: data.email, password: data.password }), {
       loading: "Logging in...",
       success: "Logged in successfully!",
-      error: "An unknown error occured.",
+      error: "Failed to login.",
     });
   };
 

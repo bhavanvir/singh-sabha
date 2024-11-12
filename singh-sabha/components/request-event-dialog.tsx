@@ -138,7 +138,7 @@ function RequestEventDialog({
     toast.promise(CreateEvent({ newEvent }), {
       loading: "Submitting event request...",
       success: "Event request submitted successfully!",
-      error: "An unknown error occurred.",
+      error: "Failed to submit an event request.",
     });
     handleClose();
   };

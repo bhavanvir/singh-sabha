@@ -102,7 +102,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     toast.promise(UpdateEvent({ updatedEvent }), {
       loading: "Updating event...",
       success: "Event updated successfully!",
-      error: "An unknown error occured.",
+      error: "Failed to update event.",
     });
 
     handleClose();
@@ -114,7 +114,7 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
     toast.promise(DeleteEvent({ id: event.id! }), {
       loading: "Deleting event...",
       success: "Event deleted successfully!",
-      error: "An unknown error occured.",
+      error: "Failed to delete event.",
     });
 
     handleClose();

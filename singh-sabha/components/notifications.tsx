@@ -57,7 +57,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
     toast.promise(UpdateEvent({ updatedEvent: { ...event, verified: true } }), {
       loading: "Approving event...",
       success: "Event approved successfully!",
-      error: "An unknown error occurred.",
+      error: "Failed to approve event.",
     });
     setIsOpen(false);
     setUnderstood(false);
@@ -67,7 +67,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
     toast.promise(DeleteEvent({ id }), {
       loading: "Dismissing event...",
       success: "Event dismissed successfully!",
-      error: "An unknown error occurred.",
+      error: "Failed to dismiss event.",
     });
   };
 
