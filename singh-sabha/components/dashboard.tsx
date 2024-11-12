@@ -19,7 +19,8 @@ import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
 
-import type { User } from "lucia";
+import type { User as SessionUser } from "lucia";
+import type { User as DatabaseUser } from "@/lib/types/user";
 import type { Event } from "@/lib/types/event";
 import type { ConflictingEvent } from "@/components/notifications";
 import { MailingList } from "@/lib/types/mailinglist";
@@ -34,7 +35,8 @@ const PAGES = {
 type PageKey = keyof typeof PAGES;
 
 interface DashboardProps {
-  user: User;
+  user: SessionUser;
+  users: DatabaseUser[];
   events: Event[];
   notifications: ConflictingEvent[];
   mailingList: MailingList[];
@@ -43,6 +45,7 @@ interface DashboardProps {
 
 export function Dashboard({
   user,
+  users,
   events,
   notifications,
   mailingList,
@@ -56,7 +59,12 @@ export function Dashboard({
     ),
     NOTIFICATIONS: <Notifications notifications={notifications} />,
     SETTINGS: (
-      <Settings user={user} mailingList={mailingList} eventTypes={eventTypes} />
+      <Settings
+        user={user}
+        users={users}
+        mailingList={mailingList}
+        eventTypes={eventTypes}
+      />
     ),
   };
 
@@ -64,7 +72,7 @@ export function Dashboard({
     toast.promise(logout, {
       loading: "Logging out...",
       success: "Logged out successfully!",
-      error: "An unknown error occurred.",
+      error: "Failed to log out.",
     });
   };
 
