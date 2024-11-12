@@ -11,8 +11,6 @@ export default function NavBar({ currentLink }: NavBarProps) {
   const links = [
     { href: "/calendar", label: "Calendar" },
     { href: "/hukamnama", label: "Hukamnama" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
   ];
 
   return (
