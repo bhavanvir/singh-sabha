@@ -183,7 +183,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
           <ScrollArea className="mt-4 max-h-[60vh]">
             {selectedEvent?.conflict.map((conflictEvent, index) => (
               <div key={index} className="mb-4 p-4 border rounded-md">
-                <Badge>{conflictEvent.type}</Badge>
+                <Badge>{conflictEvent.eventType?.displayName}</Badge>
                 <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
                 <span className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-1" />
