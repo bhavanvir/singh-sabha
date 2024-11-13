@@ -1,4 +1,4 @@
 export const EventColors = {
-  regular: "#3b82f6",
-  special: "#a855f7",
+  regular: "#14b8a6",
+  special: "#f59e0b",
 } as const;
