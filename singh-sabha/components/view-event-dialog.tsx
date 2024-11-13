@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 import type { Event } from "@/lib/types/event";
+import { EventColors } from "@/lib/types/eventcolours";
 
 interface ViewEventDialogProps {
   isOpen: boolean;
@@ -37,6 +38,15 @@ export default function ViewEventDialog({
             {event.title}
           </DialogTitle>
           <DialogDescription className="space-x-2">
+            <Badge
+              style={{
+                backgroundColor: event.eventType?.isSpecial
+                  ? EventColors.special
+                  : EventColors.regular,
+              }}
+            >
+              {event.eventType?.isSpecial ? "Special" : "Regular"}
+            </Badge>
             <Badge>{event.eventType?.displayName}</Badge>
             {isRecurring && (
               <Badge variant="secondary">

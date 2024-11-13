@@ -29,6 +29,7 @@ import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
 
 import type { Event } from "@/lib/types/event";
+import { EventColors } from "@/lib/types/eventcolours";
 
 export interface ConflictingEvent extends Event {
   conflict: Event[];
@@ -82,7 +83,20 @@ export default function Component({ notifications = [] }: NotificationsProps) {
                   <div className="flex items-stretch">
                     <div className="flex-grow p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge>{notification.eventType?.displayName}</Badge>
+                        <div className="space-x-2">
+                          <Badge
+                            style={{
+                              backgroundColor: notification.eventType?.isSpecial
+                                ? EventColors.special
+                                : EventColors.regular,
+                            }}
+                          >
+                            {notification.eventType?.isSpecial
+                              ? "Regular"
+                              : "Special"}
+                          </Badge>
+                          <Badge>{notification.eventType?.displayName}</Badge>
+                        </div>
                         {notification.conflict.length > 0 ? (
                           <CalendarX2 className="h-5 w-5 stroke-destructive" />
                         ) : (
@@ -183,7 +197,18 @@ export default function Component({ notifications = [] }: NotificationsProps) {
           <ScrollArea className="mt-4 max-h-[60vh]">
             {selectedEvent?.conflict.map((conflictEvent, index) => (
               <div key={index} className="mb-4 p-4 border rounded-md">
-                <Badge>{conflictEvent.eventType?.displayName}</Badge>
+                <div className="space-x-2">
+                  <Badge
+                    style={{
+                      backgroundColor: conflictEvent.eventType?.isSpecial
+                        ? EventColors.special
+                        : EventColors.regular,
+                    }}
+                  >
+                    {conflictEvent.eventType?.isSpecial ? "Regular" : "Special"}
+                  </Badge>
+                  <Badge>{conflictEvent.eventType?.displayName}</Badge>
+                </div>
                 <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
                 <span className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-1" />

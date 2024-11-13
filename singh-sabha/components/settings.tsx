@@ -40,6 +40,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { EventColors } from "@/lib/types/eventcolours";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
@@ -678,7 +679,13 @@ export default function Settings({
                         className="flex items-center justify-between bg-secondary p-2 rounded-md"
                       >
                         <div className="inline-flex items-center space-x-2">
-                          <Badge>
+                          <Badge
+                            style={{
+                              backgroundColor: type.isSpecial
+                                ? EventColors.special
+                                : EventColors.regular,
+                            }}
+                          >
                             {type.isSpecial ? "Special" : "Regular"}
                           </Badge>
                           <span>{type.displayName}</span>
