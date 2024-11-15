@@ -233,24 +233,26 @@ export default function BookingCalendar({
   };
 
   const CustomEvent = ({ event }: { event: Event | any }) => {
-    const eventDuration = moment(event.end).diff(moment(event.start), "days");
+    const eventDuration = moment(event.end).diff(moment(event.start), "hours");
     const isEventVisible = event.isPublic || user;
 
     return (
       <div className="flex justify-between items-center w-full">
         {isEventVisible ? (
-          event.title
+          <>
+            {event.title}
+            {eventDuration > 24 && (
+              <span className="text-sm ">
+                {moment(event.start).format("hh:mm a")} -{" "}
+                {moment(event.end).format("hh:mm a")}
+              </span>
+            )}
+          </>
         ) : (
           <>
             Private event
             <EyeOff className="h-4 w-4" />
           </>
-        )}
-        {eventDuration > 1 && (
-          <span className="text-sm ">
-            {moment(event.start).format("hh:mm a")} -{" "}
-            {moment(event.end).format("hh:mm a")}
-          </span>
         )}
       </div>
     );
