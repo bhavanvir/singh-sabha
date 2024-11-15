@@ -54,7 +54,7 @@ const formSchema = z.object({
   email: z.string().min(1, "Email missing").email("Invalid email"),
   phoneNumber: z
     .string()
-    .optional()
+    .min(1, "Phone number missing")
     .refine((value) => {
       if (!value) return true;
       const phoneNumber = parsePhoneNumberFromString(value, "CA");
@@ -210,7 +210,7 @@ function RequestEventDialog({
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel required>Phone Number</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
