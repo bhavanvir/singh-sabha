@@ -152,7 +152,7 @@ export default function Settings({
     try {
       await navigator.clipboard.writeText(otp);
       toast.info("OTP copied to clipboard!");
-    } catch (err) {
+    } catch (_) {
       toast.error("Failed to copy OTP to clipboard.");
     }
   };

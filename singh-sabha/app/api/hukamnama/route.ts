@@ -12,9 +12,9 @@ export async function GET() {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (err) {
     return NextResponse.json(
-      { error: "An error occurred while fetching the Hukamnama" },
+      { error: `an error occurred while fetching the hukamnama: ${err}` },
       { status: 500 },
     );
   }

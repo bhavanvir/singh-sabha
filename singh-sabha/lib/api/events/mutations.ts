@@ -22,7 +22,7 @@ export const CreateEvent = async ({
   newEvent: Event;
 }): Promise<void> => {
   try {
-    const { eventType, ...eventData } = newEvent;
+    const { ...eventData } = newEvent;
     await db.insert(eventTable).values(eventData);
     revalidatePath("/");
   } catch (err) {
@@ -41,7 +41,7 @@ export const UpdateEvent = async ({
 
   try {
     // Remove the id from the update payload since it's the primary key
-    const { id, eventType, ...updateData } = updatedEvent;
+    const { id, ...updateData } = updatedEvent;
     await db.update(eventTable).set(updateData).where(eq(eventTable.id, id));
     revalidatePath("/");
   } catch (err) {

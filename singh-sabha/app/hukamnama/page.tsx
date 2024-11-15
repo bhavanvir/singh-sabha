@@ -22,7 +22,7 @@ export default function Hukamnama() {
         }
         const data = await response.json();
         setHukamnama(data);
-      } catch (err) {
+      } catch (_) {
         setError("An error occurred while fetching the Hukamnama");
       } finally {
         setIsLoading(false);
