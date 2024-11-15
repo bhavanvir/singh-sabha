@@ -23,6 +23,7 @@ import {
   Loader2,
   Pen,
   HelpCircle,
+  EyeOff,
 } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -170,24 +171,19 @@ export default function BookingCalendar({
                 </TooltipTrigger>
                 <TooltipContent side="bottom" align="end" className="p-4">
                   <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{
-                          backgroundColor: EventColors.regular,
-                        }}
-                      ></div>
-                      <span className="text-sm">Regular event</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{
-                          backgroundColor: EventColors.special,
-                        }}
-                      ></div>
-                      <span className="text-sm">Special event</span>
-                    </div>
+                    {Object.entries(EventColors).map(([key, color]) => (
+                      <div key={key} className="flex items-center space-x-2">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{
+                            backgroundColor: color,
+                          }}
+                        ></div>
+                        <span className="text-sm capitalize">
+                          {key.replace(/([A-Z])/g, " $1")}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </TooltipContent>
               </Tooltip>
@@ -238,10 +234,18 @@ export default function BookingCalendar({
 
   const CustomEvent = ({ event }: { event: Event | any }) => {
     const eventDuration = moment(event.end).diff(moment(event.start), "days");
+    const isEventVisible = event.isPublic || user;
 
     return (
-      <div className="flex justify-between items-center">
-        <span>{event.title}</span>
+      <div className="flex justify-between items-center w-full">
+        {isEventVisible ? (
+          event.title
+        ) : (
+          <>
+            Private event
+            <EyeOff className="h-4 w-4" />
+          </>
+        )}
         {eventDuration > 1 && (
           <span className="text-sm ">
             {moment(event.start).format("hh:mm a")} -{" "}
@@ -263,21 +267,27 @@ export default function BookingCalendar({
     [user],
   );
 
-  const eventPropGetter = React.useCallback((event: Event | any) => {
-    const newStyle: React.CSSProperties = {
-      backgroundColor: event.eventType.isSpecial
-        ? EventColors.special
-        : EventColors.regular,
-      borderRadius: "0.375rem", // Tailwind rounded-md
-      border: "none",
-      opacity: event.verified ? "1" : ".5",
-    };
+  const eventPropGetter = React.useCallback(
+    (event: Event | any) => {
+      const newStyle: React.CSSProperties = {
+        backgroundColor: event.eventType.isSpecial
+          ? EventColors.special
+          : EventColors.regular,
+        borderRadius: "0.375rem", // Tailwind rounded-md
+        border: "none",
+        opacity: event.verified ? "1" : ".5",
+      };
 
-    return {
-      className: "",
-      style: newStyle,
-    };
-  }, []);
+      if (!event.isPublic && !user)
+        newStyle.backgroundColor = EventColors.private;
+
+      return {
+        className: "",
+        style: newStyle,
+      };
+    },
+    [user],
+  );
 
   return isLoading ? (
     <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
@@ -318,7 +328,7 @@ export default function BookingCalendar({
       <ViewEventDialog
         isOpen={isViewEventDialogOpen}
         onClose={() => setViewEventDialogOpen(false)}
-        event={selectedEvent}
+        event={selectedEvent?.isPublic ? selectedEvent : null}
       />
     </div>
   );

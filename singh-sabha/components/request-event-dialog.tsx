@@ -12,6 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import {
   Dialog,
@@ -39,11 +40,12 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import moment from "moment";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { Separator } from "@/components/ui/separator";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Info } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
 import type { DateRange } from "react-day-picker";
@@ -82,6 +84,7 @@ const formSchema = z.object({
     },
   ),
   timeRange: z.array(z.number()).length(2),
+  isPublic: z.boolean().default(false),
 });
 
 interface RequestEventDialogProps {
@@ -105,6 +108,7 @@ function RequestEventDialog({
       type: "",
       note: "",
       timeRange: [9 * 4, 17 * 4],
+      isPublic: false,
     },
   });
 
@@ -133,6 +137,7 @@ function RequestEventDialog({
       title: data.title,
       note: data.note,
       verified: false,
+      isPublic: data.isPublic,
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -372,6 +377,30 @@ function RequestEventDialog({
                     </FormItem>
                   )}
                 />
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="isPublic"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>Public Event</FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <p className="pt-1 flex items-center text-sm text-muted-foreground">
+                    <Info className="h-4 w-4 mr-1" />
+                    If checked, event details will be shown on the calendar.
+                  </p>
+                </div>
               </div>
             </div>
 

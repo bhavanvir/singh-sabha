@@ -14,6 +14,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import {
   Dialog,
@@ -41,6 +42,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Info, CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -97,6 +99,7 @@ const formSchema = z.object({
     },
   ),
   timeRange: z.array(z.number()).length(2),
+  isPublic: z.boolean().default(true),
 });
 
 interface CreateEventDialogProps {
@@ -122,6 +125,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       count: undefined,
       interval: undefined,
       timeRange: [9 * 4, 17 * 4],
+      isPublic: true,
     },
   });
 
@@ -159,6 +163,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       note: data.note,
       verified: true,
       frequencyRule: rule ? rule.toString() : undefined,
+      isPublic: data.isPublic,
     };
 
     toast.promise(CreateEvent({ newEvent }), {
@@ -216,7 +221,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     </FormItem>
                   )}
                 />
-
                 <div className="grid grid-cols-1 gap-4">
                   <FormField
                     control={form.control}
@@ -297,7 +301,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     )}
                   />
                 </div>
-
                 <FormField
                   control={form.control}
                   name="type"
@@ -333,7 +336,6 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="note"
@@ -347,7 +349,30 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     </FormItem>
                   )}
                 />
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="isPublic"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>Public Event</FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
 
+                  <p className="pt-1 flex items-center text-sm text-muted-foreground">
+                    <Info className="h-4 w-4 mr-1" />
+                    If checked, event details will be shown on the calendar.
+                  </p>
+                </div>
                 <DialogFooter>
                   <Button type="submit">Create</Button>
                 </DialogFooter>

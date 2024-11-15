@@ -13,5 +13,6 @@ export type Event = {
   note?: string | null;
   verified: boolean;
   frequencyRule?: string;
+  isPublic: boolean;
   eventType?: EventType;
 };
