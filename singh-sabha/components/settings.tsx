@@ -15,6 +15,8 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import {
   AddOtp,
@@ -27,6 +29,7 @@ import {
   DeleteEventType,
   UpdateUserPrivilege,
   DeleteUser,
+  CreateAnnouncement,
 } from "@/lib/api/events/mutations";
 import {
   RefreshCw,
@@ -46,13 +49,14 @@ import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
 import type { MailingList } from "@/lib/types/mailinglist";
 import type { EventType } from "@/lib/types/eventtype";
-import { ScrollArea } from "./ui/scroll-area";
+import type { Announcement } from "@/lib/types/announcement";
 
 interface SettingsProps {
   user: SessionUser;
   users: DatabaseUser[];
   mailingList: MailingList[];
   eventTypes: EventType[];
+  announcement: Announcement;
 }
 
 const emailSchema = z.object({
@@ -77,11 +81,20 @@ const userSchema = z.object({
   isMod: z.boolean(),
 });
 
+const announcementSchema = z.object({
+  title: z.string().min(6, "Title is required").max(64, "Title too long"),
+  message: z
+    .string()
+    .min(1, "Message is required")
+    .max(256, "Message too long"),
+});
+
 export default function Settings({
   user,
   users,
   mailingList,
   eventTypes,
+  announcement,
 }: SettingsProps) {
   const [otp, setOtp] = useState("");
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
@@ -125,6 +138,14 @@ export default function Settings({
       fullName: "",
       isAdmin: false,
       isMod: false,
+    },
+  });
+
+  const announcementForm = useForm<z.infer<typeof announcementSchema>>({
+    resolver: zodResolver(announcementSchema),
+    defaultValues: {
+      title: "",
+      message: "",
     },
   });
 
@@ -263,6 +284,18 @@ export default function Settings({
     });
   };
 
+  const handleAddAnnouncement = (data: z.infer<typeof announcementSchema>) => {
+    toast.promise(
+      CreateAnnouncement({ title: data.title, message: data.message }),
+      {
+        loading: "Creating announcement...",
+        success: "Announcement created successfully!",
+        error: "Failed to create an announcement.",
+      },
+    );
+    announcementForm.reset();
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-2">
       <div className="grid grid-cols-1 gap-4">
@@ -370,7 +403,6 @@ export default function Settings({
             )}
           </CardContent>
         </Card>
-
         {user?.isAdmin && (
           <Card>
             <CardHeader>
@@ -507,7 +539,6 @@ export default function Settings({
             </CardContent>
           </Card>
         )}
-
         <Card>
           <CardHeader>
             <CardTitle>Mailing</CardTitle>
@@ -576,7 +607,6 @@ export default function Settings({
             </div>
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Event Management</CardTitle>
@@ -718,6 +748,72 @@ export default function Settings({
                 </ScrollArea>
               )}
             </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Announcement</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Form {...announcementForm}>
+              <form
+                onSubmit={announcementForm.handleSubmit(handleAddAnnouncement)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={announcementForm.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter announcement title"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={announcementForm.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Message</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter announcement message"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex justify-end">
+                  <Button type="submit">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add
+                  </Button>
+                </div>
+              </form>
+
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Current Announcement</h3>
+                {announcement ? (
+                  <div className="bg-secondary p-4 rounded-md">
+                    <h4 className="font-semibold mb-2">{announcement.title}</h4>
+                    <p className="text-sm">{announcement.message}</p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No active announcement.
+                  </p>
+                )}
+              </div>
+            </Form>
           </CardContent>
         </Card>
       </div>
