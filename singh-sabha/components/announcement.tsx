@@ -7,7 +7,7 @@ export async function ActiveAnnouncement() {
 
   return (
     <Alert>
-      <Rss className="h-4 w-4" />
+      <Rss className="h-4 w-4 animate-pulse" />
       <AlertTitle>{announcement.title}</AlertTitle>
       <AlertDescription>{announcement.message}</AlertDescription>
     </Alert>
