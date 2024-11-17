@@ -1,9 +1,7 @@
 import BookingCalendar from "@/components/booking-calendar";
 import NavBar from "@/components/navbar";
-import {
-  GetAllVerifiedEvents,
-  GetAllEventTypes,
-} from "@/lib/api/events/queries";
+import { GetAllVerifiedEvents } from "@/lib/api/events/queries";
+import { GetAllEventTypes } from "@/lib/api/event-types/queries";
 import { generateRecurringEvents } from "@/lib/utils";
 
 export default async function Calendar() {

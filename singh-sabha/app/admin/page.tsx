@@ -1,13 +1,10 @@
 import { validateRequest } from "@/lib/auth";
 import { Dashboard } from "@/components/dashboard";
-import {
-  GetAllEvents,
-  GetAllUnverifiedEvents,
-  GetMailingList,
-  GetAllEventTypes,
-  GetAllUsers,
-  GetAllAnnouncements,
-} from "@/lib/api/events/queries";
+import { GetAllEvents, GetAllUnverifiedEvents } from "@/lib/api/events/queries";
+import { GetMailingList } from "@/lib/api/mailing-list/queries";
+import { GetAllEventTypes } from "@/lib/api/event-types/queries";
+import { GetAllUsers } from "@/lib/api/users/queries";
+import { GetAllAnnouncements } from "@/lib/api/announcements/queries";
 import { generateRecurringEvents } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import moment from "moment";

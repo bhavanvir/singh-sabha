@@ -28,7 +28,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { CreateMod, ValidateOtp } from "@/lib/api/events/mutations";
+import { CreateMod, ValidateOtp } from "@/lib/api/users/mutations";
 import { toast } from "sonner";
 import Link from "next/link";
 

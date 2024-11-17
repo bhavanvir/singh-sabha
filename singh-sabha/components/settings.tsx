@@ -20,17 +20,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import {
   AddOtp,
-  ChangeEmail,
-  ChangePassword,
-  AddEmail,
-  RemoveEmail,
+  UpdateUserPrivilege,
+  DeleteUser,
+} from "@/lib/api/users/mutations";
+import { ChangeEmail, ChangePassword } from "@/lib/api/users/mutations";
+import { AddEmail, RemoveEmail } from "@/lib/api/mailing-list/mutations";
+import {
   CreateEventType,
   UpdateEventType,
   DeleteEventType,
-  UpdateUserPrivilege,
-  DeleteUser,
-  CreateAnnouncement,
-} from "@/lib/api/events/mutations";
+} from "@/lib/api/event-types/mutations";
+import { CreateAnnouncement } from "@/lib/api/announcements/mutations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

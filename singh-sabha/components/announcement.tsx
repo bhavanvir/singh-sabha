@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Rss } from "lucide-react";
-import { GetActiveAnnouncement } from "@/lib/api/events/queries";
+import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
 
 export async function ActiveAnnouncement() {
   const [announcement] = await GetActiveAnnouncement();
