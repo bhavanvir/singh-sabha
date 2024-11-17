@@ -31,6 +31,11 @@ import {
   DeleteUser,
   CreateAnnouncement,
 } from "@/lib/api/events/mutations";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { EventColors } from "@/lib/types/eventcolours";
+
 import {
   RefreshCw,
   Info,
@@ -39,11 +44,8 @@ import {
   PenLine,
   Trash,
   TrashIcon,
+  Rss,
 } from "lucide-react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { EventColors } from "@/lib/types/eventcolours";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
@@ -56,7 +58,7 @@ interface SettingsProps {
   users: DatabaseUser[];
   mailingList: MailingList[];
   eventTypes: EventType[];
-  announcement: Announcement;
+  announcements: Announcement[];
 }
 
 const emailSchema = z.object({
@@ -94,11 +96,14 @@ export default function Settings({
   users,
   mailingList,
   eventTypes,
-  announcement,
+  announcements,
 }: SettingsProps) {
   const [otp, setOtp] = useState("");
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
   const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
+
+  const activeAnnouncement = announcements.find((a) => a.isActive);
+  const pastAnnouncements = announcements.filter((a) => !a.isActive);
 
   const emailForm = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
@@ -799,13 +804,15 @@ export default function Settings({
                   </Button>
                 </div>
               </form>
-
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold">Current Announcement</h3>
-                {announcement ? (
-                  <div className="bg-secondary p-4 rounded-md">
-                    <h4 className="font-semibold mb-2">{announcement.title}</h4>
-                    <p className="text-sm">{announcement.message}</p>
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Active Announcement</h3>
+                {activeAnnouncement ? (
+                  <div className="bg-secondary p-4 rounded-md flex flex-row items-start">
+                    <Rss className="h-4 w-4 mr-4 mt-1 animate-pulse" />
+                    <span>
+                      <h4>{activeAnnouncement.title}</h4>
+                      <p className="text-sm">{activeAnnouncement.message}</p>
+                    </span>
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">
@@ -813,6 +820,32 @@ export default function Settings({
                   </p>
                 )}
               </div>
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Past Announcements</h3>
+                {pastAnnouncements.length > 0 ? (
+                  <ScrollArea>
+                    <ul className="space-y-2 max-h-[180px]">
+                      {pastAnnouncements.map((announcement) => (
+                        <li
+                          key={announcement.title}
+                          className="flex items-center justify-between bg-secondary p-2 rounded-md"
+                        >
+                          <div className="inline-flex items-center space-x-2">
+                            <Badge>Past</Badge>
+                            <span className="font-medium">
+                              {announcement.title}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </ScrollArea>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No past announcements.
+                  </p>
+                )}
+              </div>{" "}
             </Form>
           </CardContent>
         </Card>
