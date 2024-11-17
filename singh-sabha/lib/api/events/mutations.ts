@@ -2,6 +2,7 @@
 
 import { db } from "@/db/db";
 import {
+  announcementTable,
   eventTable,
   eventTypeTable,
   mailTable,
@@ -320,5 +321,33 @@ export const DeleteUser = async ({ id }: { id: string }): Promise<void> => {
     revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not delete user: ${err}`);
+  }
+};
+
+export const CreateAnnouncement = async ({
+  title,
+  message,
+}: {
+  title: string;
+  message: string;
+}): Promise<void> => {
+  if (!title || !message) {
+    throw new Error("Missing required parameter(s) to create an announcement");
+  }
+
+  try {
+    await db
+      .update(announcementTable)
+      .set({ isActive: false })
+      .where(eq(announcementTable.isActive, true));
+
+    await db.insert(announcementTable).values({
+      title,
+      message,
+      isActive: true,
+    });
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error("Failed to create an announcement");
   }
 };
