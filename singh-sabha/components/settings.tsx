@@ -39,10 +39,10 @@ import { RefreshCw, Info, Copy, Plus, Trash, Rss, Edit } from "lucide-react";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
-import type { MailingList } from "@/lib/types/mailinglist";
-import type { EventType } from "@/lib/types/eventtype";
+import type { MailingList } from "@/lib/types/mailing-list";
+import type { EventType } from "@/lib/types/event-type";
 import type { Announcement } from "@/lib/types/announcement";
-import { EventColors } from "@/lib/types/eventcolours";
+import { EventColors } from "@/lib/types/event-colours";
 
 interface SettingsProps {
   user: SessionUser;

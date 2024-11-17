@@ -23,8 +23,8 @@ import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
 import type { Event } from "@/lib/types/event";
 import type { ConflictingEvent } from "@/components/notifications";
-import type { MailingList } from "@/lib/types/mailinglist";
-import type { EventType } from "@/lib/types/eventtype";
+import type { MailingList } from "@/lib/types/mailing-list";
+import type { EventType } from "@/lib/types/event-type";
 import type { Announcement } from "@/lib/types/announcement";
 
 const PAGES = {

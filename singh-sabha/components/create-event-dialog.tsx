@@ -49,7 +49,7 @@ import { CreateEvent } from "@/lib/api/events/mutations";
 import moment from "moment";
 
 import type { Event } from "@/lib/types/event";
-import { EventType } from "@/lib/types/eventtype";
+import { EventType } from "@/lib/types/event-type";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [

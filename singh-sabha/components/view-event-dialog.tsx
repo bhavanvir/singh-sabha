@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 import type { Event } from "@/lib/types/event";
-import { EventColors } from "@/lib/types/eventcolours";
+import { EventColors } from "@/lib/types/event-colours";
 
 interface ViewEventDialogProps {
   isOpen: boolean;

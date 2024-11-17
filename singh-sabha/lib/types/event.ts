@@ -1,4 +1,4 @@
-import type { EventType } from "@/lib/types/eventtype";
+import type { EventType } from "@/lib/types/event-type";
 
 export type Event = {
   id?: string;

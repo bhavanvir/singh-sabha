@@ -29,7 +29,7 @@ import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
 
 import type { Event } from "@/lib/types/event";
-import { EventColors } from "@/lib/types/eventcolours";
+import { EventColors } from "@/lib/types/event-colours";
 
 export interface ConflictingEvent extends Event {
   conflict: Event[];

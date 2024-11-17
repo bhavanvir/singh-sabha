@@ -48,7 +48,7 @@ import { CalendarIcon, Info } from "lucide-react";
 
 import type { Event } from "@/lib/types/event";
 import type { DateRange } from "react-day-picker";
-import type { EventType } from "@/lib/types/eventtype";
+import type { EventType } from "@/lib/types/event-type";
 
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),

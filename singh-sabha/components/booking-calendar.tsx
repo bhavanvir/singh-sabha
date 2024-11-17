@@ -32,12 +32,12 @@ import CreateEventDialog from "@/components/create-event-dialog";
 import EditEventDialog from "@/components/edit-event-dialog";
 import RequestEventDialog from "@/components/request-event-dialog";
 import ViewEventDialog from "@/components/view-event-dialog";
-import { EventColors } from "@/lib/types/eventcolours";
+import { EventColors } from "@/lib/types/event-colours";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { Event } from "@/lib/types/event";
 import type { User } from "lucia";
-import type { EventType } from "@/lib/types/eventtype";
+import type { EventType } from "@/lib/types/event-type";
 
 interface BookingCalenderProps {
   user: User | null;
