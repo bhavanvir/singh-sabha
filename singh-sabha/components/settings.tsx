@@ -34,24 +34,15 @@ import { CreateAnnouncement } from "@/lib/api/announcements/mutations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { EventColors } from "@/lib/types/eventcolours";
 
-import {
-  RefreshCw,
-  Info,
-  Copy,
-  Plus,
-  PenLine,
-  Trash,
-  TrashIcon,
-  Rss,
-} from "lucide-react";
+import { RefreshCw, Info, Copy, Plus, Trash, Rss, Edit } from "lucide-react";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
 import type { MailingList } from "@/lib/types/mailinglist";
 import type { EventType } from "@/lib/types/eventtype";
 import type { Announcement } from "@/lib/types/announcement";
+import { EventColors } from "@/lib/types/eventcolours";
 
 interface SettingsProps {
   user: SessionUser;
@@ -329,7 +320,7 @@ export default function Settings({
                             className="flex-grow"
                           />
                           <Button type="submit">
-                            <PenLine />
+                            <Edit />
                             Change
                           </Button>
                         </div>
@@ -361,7 +352,7 @@ export default function Settings({
                               className="flex-grow"
                             />
                             <Button type="submit">
-                              <PenLine />
+                              <Edit />
                               Change
                             </Button>
                           </div>
@@ -483,7 +474,7 @@ export default function Settings({
                     />
                     <div className="flex justify-end">
                       <Button type="submit">
-                        <PenLine className="h-4 w-4" /> Change
+                        <Edit className="h-4 w-4" /> Change
                       </Button>
                     </div>
                   </form>
@@ -514,7 +505,7 @@ export default function Settings({
                             </span>
                           </div>
 
-                          <div className="space-x-2">
+                          <div className="space-x-1">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -524,7 +515,7 @@ export default function Settings({
                               }}
                               aria-label={`Edit ${u.fullName}`}
                             >
-                              <PenLine className="h-4 w-4" />
+                              <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="ghost"
@@ -532,7 +523,7 @@ export default function Settings({
                               onClick={() => handleDeleteUser(u.id)}
                               aria-label={`Delete ${u.fullName}`}
                             >
-                              <Trash className="h-4 w-4 stroke-destructive" />
+                              <Trash className="h-4 w-4" />
                             </Button>
                           </div>
                         </li>
@@ -602,7 +593,7 @@ export default function Settings({
                           onClick={() => handleRemoveEmail(item)}
                           aria-label={`Remove ${item.email} from mailing list`}
                         >
-                          <TrashIcon className="h-4 w-4 stroke-destructive" />
+                          <Trash className="h-4 w-4" />
                         </Button>
                       </li>
                     ))}
@@ -687,7 +678,7 @@ export default function Settings({
                   <Button type="submit">
                     {editingEvent ? (
                       <>
-                        <PenLine /> Update
+                        <Edit /> Update
                       </>
                     ) : (
                       <>
@@ -726,7 +717,7 @@ export default function Settings({
                           <span>{type.displayName}</span>
                         </div>
 
-                        <div className="space-x-2">
+                        <div className="space-x-1">
                           <Button
                             variant="ghost"
                             size="sm"
@@ -736,7 +727,7 @@ export default function Settings({
                             }}
                             aria-label={`Edit ${type.displayName}`}
                           >
-                            <PenLine className="h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
@@ -744,7 +735,7 @@ export default function Settings({
                             onClick={() => handleDeleteEvent(type.id!)}
                             aria-label={`Delete ${type.displayName}`}
                           >
-                            <Trash className="h-4 w-4 stroke-destructive" />
+                            <Trash className="h-4 w-4" />
                           </Button>
                         </div>
                       </li>
@@ -827,7 +818,7 @@ export default function Settings({
                     <ul className="space-y-2 max-h-[180px]">
                       {pastAnnouncements.map((announcement) => (
                         <li
-                          key={announcement.title}
+                          key={announcement.id}
                           className="flex items-center justify-between bg-secondary p-2 rounded-md"
                         >
                           <div className="inline-flex items-center space-x-2">
@@ -845,7 +836,7 @@ export default function Settings({
                     No past announcements.
                   </p>
                 )}
-              </div>{" "}
+              </div>
             </Form>
           </CardContent>
         </Card>
