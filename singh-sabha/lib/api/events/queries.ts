@@ -114,3 +114,12 @@ export const GetActiveAnnouncement = cache(async (): Promise<any> => {
     throw new Error(`Could not fetch active announcement: ${err}`);
   }
 });
+
+export const GetAllAnnouncements = cache(async (): Promise<any> => {
+  try {
+    const announcement = await db.select().from(announcementTable);
+    return announcement;
+  } catch (err) {
+    throw new Error(`Could not fetch announcements: ${err}`);
+  }
+});
