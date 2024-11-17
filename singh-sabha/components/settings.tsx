@@ -757,7 +757,7 @@ export default function Settings({
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Announcement</CardTitle>
+            <CardTitle>Announcement Management</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <Form {...announcementForm}>
