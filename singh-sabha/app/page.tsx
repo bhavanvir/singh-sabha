@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Suspense } from "react";
 import { ActiveAnnouncement } from "@/components/announcement";
 import NavBar from "@/components/navbar";

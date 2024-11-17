@@ -6,6 +6,7 @@ import {
   GetMailingList,
   GetAllEventTypes,
   GetAllUsers,
+  GetAllAnnouncements,
 } from "@/lib/api/events/queries";
 import { generateRecurringEvents } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -24,6 +25,7 @@ export default async function Page() {
   const notifications = await GetAllUnverifiedEvents();
   const mailingList = await GetMailingList();
   const eventTypes = await GetAllEventTypes();
+  const announcements = await GetAllAnnouncements();
 
   // Applies all reoccurence rules
   const allGeneratedEvents = generateRecurringEvents(events);
@@ -61,6 +63,7 @@ export default async function Page() {
         notifications={notifications}
         mailingList={mailingList}
         eventTypes={eventTypes}
+        announcements={announcements}
       />
     </>
   );
