@@ -68,3 +68,12 @@ export const mailTable = pgTable("mailing_list", {
     .$defaultFn(() => createId()),
   email: text("email").notNull().unique(),
 });
+
+export const announcementTable = pgTable("announcements", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  title: text("title"),
+  message: text("message"),
+  isActive: boolean("is_active").default(false),
+});
