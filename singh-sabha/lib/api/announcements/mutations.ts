@@ -29,6 +29,6 @@ export const CreateAnnouncement = async ({
     });
     revalidatePath("/admin");
   } catch (err) {
-    throw new Error("Failed to create an announcement");
+    throw new Error(`Failed to create an announcement: ${err}`);
   }
 };
