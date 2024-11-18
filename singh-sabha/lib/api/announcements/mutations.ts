@@ -32,3 +32,23 @@ export const CreateAnnouncement = async ({
     throw new Error(`Failed to create an announcement: ${err}`);
   }
 };
+
+export const DisableAnnouncement = async ({
+  id,
+}: {
+  id: string;
+}): Promise<void> => {
+  if (!id) {
+    throw new Error("Missing id to disable an announcement");
+  }
+
+  try {
+    await db
+      .update(announcementTable)
+      .set({ isActive: false })
+      .where(eq(announcementTable.id, id));
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Failed to disable an announcement: ${err}`);
+  }
+};

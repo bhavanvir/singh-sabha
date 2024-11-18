@@ -30,7 +30,10 @@ import {
   UpdateEventType,
   DeleteEventType,
 } from "@/lib/api/event-types/mutations";
-import { CreateAnnouncement } from "@/lib/api/announcements/mutations";
+import {
+  CreateAnnouncement,
+  DisableAnnouncement,
+} from "@/lib/api/announcements/mutations";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -89,12 +92,15 @@ export default function Settings({
   eventTypes,
   announcements,
 }: SettingsProps) {
-  const [otp, setOtp] = useState("");
-  const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
-  const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
-
   const activeAnnouncement = announcements.find((a) => a.isActive);
   const pastAnnouncements = announcements.filter((a) => !a.isActive);
+
+  const [otp, setOtp] = useState<string>("");
+  const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
+  const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
+  const [enabled, setEnabled] = useState<boolean>(
+    activeAnnouncement?.isActive ?? true,
+  );
 
   const emailForm = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
@@ -790,7 +796,7 @@ export default function Settings({
                 />
                 <div className="flex justify-end">
                   <Button type="submit">
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus />
                     Add
                   </Button>
                 </div>
@@ -798,12 +804,21 @@ export default function Settings({
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Active Announcement</h3>
                 {activeAnnouncement ? (
-                  <div className="bg-secondary p-4 rounded-md flex flex-row items-start">
-                    <Rss className="h-4 w-4 mr-4 mt-1 animate-pulse" />
-                    <span>
-                      <h4>{activeAnnouncement.title}</h4>
-                      <p className="text-sm">{activeAnnouncement.message}</p>
-                    </span>
+                  <div className="bg-secondary p-4 rounded-md flex flex-row items-center justify-between">
+                    <div className="flex flex-row items-start">
+                      <Rss className="h-4 w-4 mr-4 mt-1 animate-pulse" />
+                      <span>
+                        <h4>{activeAnnouncement.title}</h4>
+                        <p className="text-sm">{activeAnnouncement.message}</p>
+                      </span>
+                    </div>
+                    <Switch
+                      checked={enabled}
+                      onCheckedChange={() => {
+                        setEnabled(false);
+                        DisableAnnouncement({ id: activeAnnouncement.id });
+                      }}
+                    />
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">
