@@ -1,7 +1,8 @@
 import { RRule } from "rrule";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Event } from "@/lib/types/event";
+
+import type { Event } from "@/lib/types/event";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
