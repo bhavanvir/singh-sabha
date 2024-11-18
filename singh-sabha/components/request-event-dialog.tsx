@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -376,30 +377,27 @@ function RequestEventDialog({
                     </FormItem>
                   )}
                 />
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="isPublic"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormField
+                  control={form.control}
+                  name="isPublic"
+                  render={({ field }) => (
+                    <FormItem className="rounded-md border p-4">
+                      <div className="flex space-x-2 items-center">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Public Event</FormLabel>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-
-                  <p className="pt-1 flex items-center text-sm text-muted-foreground">
-                    <Info className="h-4 w-4 mr-1" />
-                    If checked, event details will be shown on the calendar.
-                  </p>
-                </div>
+                        <FormLabel>Public Event</FormLabel>
+                      </div>
+                      <FormDescription className="pt-1 flex items-center text-sm text-muted-foreground">
+                        <Info className="h-4 w-4 mr-1" />
+                        Public event details will be shown on the calendar.
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
