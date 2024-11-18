@@ -26,6 +26,7 @@ export const CreateAnnouncement = async ({
       title,
       message,
       isActive: true,
+      createdAt: new Date(),
     });
     revalidatePath("/admin");
   } catch (err) {
