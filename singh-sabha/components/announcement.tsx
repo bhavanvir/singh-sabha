@@ -1,15 +1,36 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Rss } from "lucide-react";
-import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
+"use client";
 
-export async function ActiveAnnouncement() {
-  const [announcement] = await GetActiveAnnouncement();
+import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Rss, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import type { Announcement } from "@/lib/types/announcement";
+
+export function ActiveAnnouncement({
+  announcement,
+}: {
+  announcement: Announcement | null;
+}) {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!announcement || !isVisible) {
+    return null;
+  }
 
   return (
-    <Alert>
+    <Alert className="flex flex-row justify-between">
       <Rss className="h-4 w-4 animate-pulse" />
-      <AlertTitle>{announcement.title}</AlertTitle>
-      <AlertDescription>{announcement.message}</AlertDescription>
+      <div>
+        <AlertTitle>{announcement.title}</AlertTitle>
+        <AlertDescription>{announcement.message}</AlertDescription>
+      </div>
+      <div>
+        <Button variant="ghost" size="icon" onClick={() => setIsVisible(false)}>
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </Button>
+      </div>
     </Alert>
   );
 }

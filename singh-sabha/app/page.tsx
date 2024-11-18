@@ -1,24 +1,15 @@
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Suspense } from "react";
-import { ActiveAnnouncement } from "@/components/announcement";
+import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
 import NavBar from "@/components/navbar";
-import { Loader2 } from "lucide-react";
+import { ActiveAnnouncement } from "@/components/announcement";
 
-export default function Home() {
+export default async function Home() {
+  const [announcement] = await GetActiveAnnouncement();
+
   return (
     <>
       <NavBar currentLink="" />
       <main className="p-4">
-        <Suspense
-          fallback={
-            <Alert>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <AlertTitle>Loading announcement...</AlertTitle>
-            </Alert>
-          }
-        >
-          <ActiveAnnouncement />
-        </Suspense>
+        <ActiveAnnouncement announcement={announcement} />
       </main>
     </>
   );
