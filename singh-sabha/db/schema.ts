@@ -76,4 +76,5 @@ export const announcementTable = pgTable("announcements", {
   title: text("title"),
   message: text("message"),
   isActive: boolean("is_active").default(false),
+  createdAt: timestamp("created_at").notNull(),
 });

@@ -1,0 +1,1 @@
+ALTER TABLE "announcements" ADD COLUMN "created_at" timestamp NOT NULL;
