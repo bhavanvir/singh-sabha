@@ -37,6 +37,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { format } from "date-fns";
 
 import {
   RefreshCw,
@@ -299,7 +300,10 @@ export default function Settings({
 
   const handleAddAnnouncement = (data: z.infer<typeof announcementSchema>) => {
     toast.promise(
-      CreateAnnouncement({ title: data.title, message: data.message }),
+      CreateAnnouncement({
+        title: data.title,
+        message: data.message,
+      }),
       {
         loading: "Creating announcement...",
         success: "Announcement created successfully!",
@@ -818,7 +822,11 @@ export default function Settings({
               </form>
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Active Announcement</h3>
-                {activeAnnouncement ? (
+                {!activeAnnouncement ? (
+                  <p className="text-sm text-muted-foreground">
+                    No active announcement.
+                  </p>
+                ) : (
                   <div className="bg-secondary p-4 rounded-md flex flex-row items-center justify-between">
                     <div className="flex flex-row items-start">
                       <Rss className="h-4 w-4 mr-4 mt-1 animate-pulse" />
@@ -835,36 +843,39 @@ export default function Settings({
                       }}
                     />
                   </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No active announcement.
-                  </p>
                 )}
               </div>
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Past Announcements</h3>
-                {pastAnnouncements.length > 0 ? (
-                  <ScrollArea>
-                    <ul className="space-y-2 max-h-[180px]">
-                      {pastAnnouncements.map((announcement) => (
-                        <li
-                          key={announcement.id}
-                          className="flex items-center justify-between bg-secondary p-2 rounded-md"
-                        >
-                          <div className="inline-flex items-center space-x-2">
-                            <Badge>Past</Badge>
-                            <span className="font-medium">
-                              {announcement.title}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </ScrollArea>
-                ) : (
+                {pastAnnouncements.length == 0 ? (
                   <p className="text-sm text-muted-foreground">
                     No past announcements.
                   </p>
+                ) : (
+                  <ScrollArea>
+                    <div className="max-h-[180px] space-y-4">
+                      {pastAnnouncements.map((announcement) => (
+                        <div
+                          key={announcement.id}
+                          className="rounded-lg bg-secondary p-4"
+                        >
+                          <div className="inline-flex items-center space-x-2">
+                            <Badge>
+                              {format(announcement.createdAt, "MMM d")}
+                            </Badge>
+                            <span>
+                              <h4 className="font-medium">
+                                {announcement.title}
+                              </h4>
+                              <p className="text-sm text-muted-foreground">
+                                {announcement.message}
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
                 )}
               </div>
             </Form>
