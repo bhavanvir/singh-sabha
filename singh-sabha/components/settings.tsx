@@ -38,7 +38,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { RefreshCw, Info, Copy, Plus, Trash, Rss, Edit } from "lucide-react";
+import {
+  RefreshCw,
+  Info,
+  Copy,
+  Plus,
+  Trash,
+  Rss,
+  Edit,
+  Check,
+} from "lucide-react";
 
 import type { User as SessionUser } from "lucia";
 import type { User as DatabaseUser } from "@/lib/types/user";
@@ -96,6 +105,7 @@ export default function Settings({
   const pastAnnouncements = announcements.filter((a) => !a.isActive);
 
   const [otp, setOtp] = useState<string>("");
+  const [copied, setCopied] = useState<boolean>(false);
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
   const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
   const [enabled, setEnabled] = useState<boolean>(
@@ -174,7 +184,8 @@ export default function Settings({
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(otp);
-      toast.info("OTP copied to clipboard!");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (_) {
       toast.error("Failed to copy OTP to clipboard.");
     }
@@ -392,8 +403,12 @@ export default function Settings({
                     onClick={copyToClipboard}
                     disabled={!otp}
                   >
-                    <Copy />
-                    Copy
+                    <Copy
+                      className={`h-4 w-4 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-100"}`}
+                    />
+                    <Check
+                      className={`h-4 w-4 absolute transition-opacity duration-300 ${copied ? "opacity-100" : "opacity-0"}`}
+                    />{" "}
                     <span className="sr-only">Copy to clipboard</span>
                   </Button>
                 </div>
