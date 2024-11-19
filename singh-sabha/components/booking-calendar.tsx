@@ -2,28 +2,23 @@
 
 import * as React from "react";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectLabel,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   ChevronLeft,
   ChevronRight,
   Loader2,
-  Pen,
   HelpCircle,
   EyeOff,
+  CalendarPlus,
+  Calendar as CalendarIcon,
+  CalendarRange,
+  CalendarDays,
 } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
@@ -39,7 +34,7 @@ import type { Event } from "@/lib/types/event";
 import type { User } from "lucia";
 import type { EventType } from "@/lib/types/event-type";
 
-interface BookingCalenderProps {
+interface BookingCalendarProps {
   user: User | null;
   events: Event[];
   eventTypes: EventType[];
@@ -49,7 +44,7 @@ export default function BookingCalendar({
   user,
   events,
   eventTypes,
-}: BookingCalenderProps) {
+}: BookingCalendarProps) {
   moment.locale("en-CA");
   const localizer = momentLocalizer(moment);
 
@@ -64,7 +59,6 @@ export default function BookingCalendar({
   const [currentView, setCurrentView] = React.useState<View>("month");
 
   React.useEffect(() => {
-    // Small delay to ensure CSS is loaded
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 250);
@@ -75,13 +69,13 @@ export default function BookingCalendar({
   const CustomToolbar = ({ date, onNavigate, onView, view }: ToolbarProps) => {
     const formatDate = () => {
       if (view === "day") {
-        return moment(date).format("MMMM D, YYYY");
+        return moment(date).format("MMM D, YYYY");
       }
 
       if (view === "week") {
         const start = moment(date).startOf("week");
         const end = moment(date).endOf("week");
-        return `${start.format("MMMM D")} - ${end.format("MMMM D, YYYY")}`;
+        return `${start.format("MMM D")} - ${end.format("MMM D, YYYY")}`;
       }
 
       if (view === "month") {
@@ -100,73 +94,77 @@ export default function BookingCalendar({
     };
 
     return (
-      <div className="flex flex-wrap items-center justify-between pb-4 w-full space-y-4 sm:space-y-0">
-        <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-start">
-          <div className="flex space-x-1">
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => onNavigate("PREV")}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => onNavigate("NEXT")}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <span className="text-xl sm:text-2xl font-bold">{formatDate()}</span>
-        </div>
-
-        <div className="flex space-x-2 sm:space-x-4 w-full sm:w-fit justify-center sm:justify-end">
-          <Select
-            onValueChange={(value) => {
-              onView(value as View);
-              setCurrentView(value as View);
-            }}
-            value={currentView}
-          >
-            <SelectTrigger className="w-24 capitalize">
-              <SelectValue placeholder={view} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>View</SelectLabel>
-                <SelectItem value="month">Month</SelectItem>
-                <SelectItem value="week">Week</SelectItem>
-                <SelectItem value="day">Day</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Button variant="outline" onClick={() => onNavigate("TODAY")}>
-            Today
-          </Button>
-
+      <div className="flex flex-col space-y-4 pb-4 w-full sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div className="flex items-center justify-between">
           <Button
             variant="outline"
-            className="flex items-center"
+            size="icon"
+            onClick={() => onNavigate("PREV")}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <div className="text-xl sm:text-2xl font-bold w-[300px] text-center">
+            {formatDate()}
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => onNavigate("NEXT")}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="flex items-center justify-between sm:justify-end space-x-4">
+          <ToggleGroup
+            type="single"
+            value={currentView}
+            onValueChange={(value) => {
+              if (value) {
+                onView(value as View);
+                setCurrentView(value as View);
+              }
+            }}
+            className="border rounded-md"
+          >
+            <ToggleGroupItem
+              value="month"
+              aria-label="Month view"
+              className="px-3 py-2 text-xs sm:text-sm data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+            >
+              <CalendarIcon className="h-4 w-4 mr-2" />
+              Month
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="week"
+              aria-label="Week view"
+              className="px-3 py-2 text-xs sm:text-sm data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+            >
+              <CalendarRange className="h-4 w-4 mr-2" />
+              Week
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="day"
+              aria-label="Day view"
+              className="px-3 py-2 text-xs sm:text-sm data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+            >
+              <CalendarDays className="h-4 w-4 mr-2" />
+              Day
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <Button
+            variant="outline"
+            className="text-xs sm:text-sm px-2 sm:px-3"
             onClick={handleAddEvent}
           >
-            <Pen />
-            {user ? "Create" : "Request"} event
+            <CalendarPlus />
+            {user ? "Create" : "Request"} Event
           </Button>
-
-          <div className="flex justify-end">
+          <div className="hidden sm:block">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="flex items-center space-x-2"
-                  >
+                  <Button variant="outline" size="icon">
                     <HelpCircle />
-                    Legend
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" align="end" className="p-4">
@@ -179,7 +177,7 @@ export default function BookingCalendar({
                             backgroundColor: color,
                           }}
                         ></div>
-                        <span className="text-sm capitalize">
+                        <span className="text-xs sm:text-sm capitalize">
                           {key.replace(/([A-Z])/g, " $1")}
                         </span>
                       </div>
@@ -201,14 +199,16 @@ export default function BookingCalendar({
 
     return (
       <div className="flex items-center justify-between">
-        <div>{dayOfWeek}</div>
+        <div className="text-xs sm:text-sm">{dayOfWeek}</div>
         <div className="ml-1">
           {isToday ? (
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground">
-              <span className="text-background">{dayOfMonth}</span>
+            <div className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-primary">
+              <span className="text-xs sm:text-sm text-primary-foreground">
+                {dayOfMonth}
+              </span>
             </div>
           ) : (
-            <span>{dayOfMonth}</span>
+            <span className="text-xs sm:text-sm">{dayOfMonth}</span>
           )}
         </div>
       </div>
@@ -222,11 +222,13 @@ export default function BookingCalendar({
     return (
       <div className="flex items-center justify-center my-1">
         {isToday ? (
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground">
-            <span className="text-primary-foreground">{dayOfMonth}</span>
+          <div className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-primary">
+            <span className="text-xs sm:text-sm text-primary-foreground">
+              {dayOfMonth}
+            </span>
           </div>
         ) : (
-          <span>{dayOfMonth}</span>
+          <span className="text-xs sm:text-sm">{dayOfMonth}</span>
         )}
       </div>
     );
@@ -237,21 +239,21 @@ export default function BookingCalendar({
     const isEventVisible = event.isPublic || user;
 
     return (
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full text-xs sm:text-sm">
         {isEventVisible ? (
           <>
-            {event.title}
+            <span className="truncate">{event.title}</span>
             {eventDuration > 24 && (
-              <span className="text-sm ">
-                {moment(event.start).format("hh:mm a")} -{" "}
-                {moment(event.end).format("hh:mm a")}
+              <span className="hidden sm:inline-block text-xs">
+                {moment(event.start).format("HH:mm")} -{" "}
+                {moment(event.end).format("HH:mm")}
               </span>
             )}
           </>
         ) : (
           <>
-            Private event
-            <EyeOff className="h-4 w-4" />
+            <span className="truncate">Private event</span>
+            <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />
           </>
         )}
       </div>
@@ -303,13 +305,16 @@ export default function BookingCalendar({
         localizer={localizer}
         events={events}
         defaultView="month"
-        views={["week", "day", "month"]}
+        view={currentView}
+        onView={setCurrentView}
+        views={["month", "week", "day"]}
         components={{
           event: CustomEvent,
           toolbar: CustomToolbar,
           week: { header: CustomHeader },
           month: { dateHeader: CustomDateHeader },
         }}
+        className="text-md sm:text-lg"
       />
       <CreateEventDialog
         isOpen={isCreateEventDialogOpen}
