@@ -188,7 +188,7 @@ export default function Component({ notifications = [] }: NotificationsProps) {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm event approval</DialogTitle>
+            <DialogTitle>Confirm Event Approval</DialogTitle>
             <DialogDescription>
               This event conflicts with existing events. Please review and
               confirm.

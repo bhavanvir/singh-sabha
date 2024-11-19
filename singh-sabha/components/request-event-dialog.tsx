@@ -162,7 +162,7 @@ function RequestEventDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Request event</DialogTitle>
+          <DialogTitle>Request Event</DialogTitle>
           <DialogDescription>
             Parameters based on your selection. Click submit when you&apos;re
             done.

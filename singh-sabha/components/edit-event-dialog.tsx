@@ -247,7 +247,7 @@ function EditEventDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Edit event</DialogTitle>
+          <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
             Make changes to the event parameters. Click save when you&apos;re
             done.
