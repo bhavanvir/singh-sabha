@@ -314,7 +314,7 @@ export default function BookingCalendar({
           week: { header: CustomHeader },
           month: { dateHeader: CustomDateHeader },
         }}
-        className="text-md sm:text-lg"
+        className="text-xs sm:text-sm"
       />
       <CreateEventDialog
         isOpen={isCreateEventDialogOpen}
