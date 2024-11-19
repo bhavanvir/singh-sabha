@@ -504,7 +504,11 @@ function EditEventDialog({
                           className="grid grid-cols-7"
                         >
                           {weekdays.map((day, index) => (
-                            <ToggleGroupItem key={day} value={index.toString()}>
+                            <ToggleGroupItem
+                              key={day}
+                              value={index.toString()}
+                              className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                            >
                               {day}
                             </ToggleGroupItem>
                           ))}
@@ -531,6 +535,7 @@ function EditEventDialog({
                             <ToggleGroupItem
                               key={month}
                               value={(index + 1).toString()}
+                              className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                             >
                               {month}
                             </ToggleGroupItem>

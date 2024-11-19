@@ -429,7 +429,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                           className="grid grid-cols-7"
                         >
                           {weekdays.map((day, index) => (
-                            <ToggleGroupItem key={day} value={index.toString()}>
+                            <ToggleGroupItem
+                              key={day}
+                              value={index.toString()}
+                              className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                            >
                               {day}
                             </ToggleGroupItem>
                           ))}
@@ -450,12 +454,13 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                           type="multiple"
                           value={field.value}
                           onValueChange={field.onChange}
-                          className="grid grid-cols-6"
+                          className="grid grid-cols-6 "
                         >
                           {months.map((month, index) => (
                             <ToggleGroupItem
                               key={month}
                               value={(index + 1).toString()}
+                              className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                             >
                               {month}
                             </ToggleGroupItem>
