@@ -95,11 +95,11 @@ export default function Hukamnama() {
                 {hukamnama.hukamnama.map((item, index) => (
                   <div key={index}>
                     <p className="text-xl">{item.line.gurmukhi.unicode}</p>
-                    <p className="text-md text-muted-foreground">
-                      {item.line.translation.english.default}
-                    </p>
                     <p className="text-md text-muted-foreground italic">
                       {item.line.transliteration.english.text}
+                    </p>
+                    <p className="text-md text-muted-foreground">
+                      {item.line.translation.english.default}
                     </p>
                   </div>
                 ))}
