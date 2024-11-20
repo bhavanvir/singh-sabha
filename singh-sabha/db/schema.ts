@@ -78,3 +78,18 @@ export const announcementTable = pgTable("announcements", {
   isActive: boolean("is_active").default(false),
   createdAt: timestamp("created_at").notNull(),
 });
+
+export type User = typeof userTable.$inferSelect;
+
+export type Session = typeof sessionTable.$inferSelect;
+
+export type EventType = typeof eventTypeTable.$inferSelect;
+export type Event = typeof eventTable.$inferSelect;
+
+export type EventWithType = Event & {
+  eventType: EventType;
+};
+
+export type MailingList = typeof mailTable.$inferSelect;
+
+export type Announcement = typeof announcementTable.$inferInsert;
