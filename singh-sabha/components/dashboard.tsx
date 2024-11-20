@@ -19,12 +19,14 @@ import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
 
-import type { User } from "@/db/schema";
-import type { Event } from "@/lib/types/event";
 import type { ConflictingEvent } from "@/components/notifications";
-import type { MailingList } from "@/lib/types/mailing-list";
-import type { EventType } from "@/lib/types/event-type";
-import type { Announcement } from "@/lib/types/announcement";
+import type {
+  User,
+  Event,
+  MailingList,
+  EventType,
+  Announcement,
+} from "@/db/schema";
 
 const PAGES = {
   CALENDAR: "Calendar",
@@ -36,7 +38,7 @@ type PageKey = keyof typeof PAGES;
 
 interface DashboardProps {
   user: User;
-  users: User[];
+  users: Omit<User, "passwordHash">[];
   events: Event[];
   notifications: ConflictingEvent[];
   mailingList: MailingList[];

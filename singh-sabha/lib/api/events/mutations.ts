@@ -10,7 +10,10 @@ import type { Event } from "@/db/schema";
 export const CreateEvent = async ({
   newEvent,
 }: {
-  newEvent: Event;
+  newEvent: Omit<
+    Event,
+    "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
+  >;
 }): Promise<void> => {
   try {
     const { ...eventData } = newEvent;

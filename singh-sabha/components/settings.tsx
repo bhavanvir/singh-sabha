@@ -55,7 +55,7 @@ import { EventColors } from "@/lib/types/event-colours";
 
 interface SettingsProps {
   user: User;
-  users: User[];
+  users: Omit<User, "passwordHash">[];
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
@@ -104,7 +104,10 @@ export default function Settings({
   const [otp, setOtp] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
-  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [editingUser, setEditingUser] = useState<Omit<
+    User,
+    "passwordHash"
+  > | null>(null);
   const [enabled, setEnabled] = useState<boolean>(
     activeAnnouncement?.isActive ?? true,
   );

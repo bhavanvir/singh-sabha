@@ -9,7 +9,8 @@ import { generateRecurringEvents } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import moment from "moment";
 
-import type { Event } from "@/lib/types/event";
+import type { ConflictingEvent } from "@/components/notifications";
+import type { EventWithType } from "@/db/schema";
 
 export default async function Page() {
   const { user } = await validateRequest();
@@ -19,7 +20,7 @@ export default async function Page() {
 
   const users = await GetAllUsers();
   const events = await GetAllEvents();
-  const notifications = await GetAllUnverifiedEvents();
+  const notifications = (await GetAllUnverifiedEvents()) as ConflictingEvent[];
   const mailingList = await GetMailingList();
   const eventTypes = await GetAllEventTypes();
   const announcements = await GetAllAnnouncements();
@@ -28,7 +29,7 @@ export default async function Page() {
   const allGeneratedEvents = generateRecurringEvents(events);
 
   const verifiedEvents = events.filter(
-    (event: Event) => event.verified === true,
+    (event: EventWithType) => event.verified === true,
   );
 
   for (let i = 0; i < notifications.length; i++) {

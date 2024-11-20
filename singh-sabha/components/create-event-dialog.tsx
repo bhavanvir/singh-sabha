@@ -49,8 +49,7 @@ import { toast } from "sonner";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import moment from "moment";
 
-import type { Event } from "@/lib/types/event";
-import { EventType } from "@/lib/types/event-type";
+import type { Event, EventType } from "@/db/schema";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
@@ -154,7 +153,10 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
         })
       : null;
 
-    const newEvent: Event = {
+    const newEvent: Omit<
+      Event,
+      "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
+    > = {
       type: data.type,
       start: startDateTime.toDate(),
       end: endDateTime.toDate(),
@@ -162,7 +164,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       title: data.title,
       note: data.note,
       verified: true,
-      frequencyRule: rule ? rule.toString() : undefined,
+      frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,
     };
 

@@ -87,7 +87,7 @@ export type EventType = typeof eventTypeTable.$inferSelect;
 export type Event = typeof eventTable.$inferSelect;
 
 export type EventWithType = Event & {
-  eventType: EventType;
+  eventType?: EventType;
 };
 
 export type MailingList = typeof mailTable.$inferSelect;

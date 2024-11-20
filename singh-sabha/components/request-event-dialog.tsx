@@ -47,9 +47,8 @@ import { CreateEvent } from "@/lib/api/events/mutations";
 import { Separator } from "@/components/ui/separator";
 import { CalendarIcon, Info } from "lucide-react";
 
-import type { Event } from "@/lib/types/event";
 import type { DateRange } from "react-day-picker";
-import type { EventType } from "@/lib/types/event-type";
+import type { Event, EventType } from "@/db/schema";
 
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
@@ -126,7 +125,7 @@ function RequestEventDialog({
       .hour(Math.floor(data.timeRange[1] / 4))
       .minute((data.timeRange[1] % 4) * 15);
 
-    const newEvent: Event = {
+    const newEvent: Omit<Event, "id"> = {
       registrantFullName: data.name,
       registrantEmail: data.email,
       registrantPhoneNumber: data.phoneNumber ?? null,
@@ -137,6 +136,7 @@ function RequestEventDialog({
       title: data.title,
       note: data.note,
       verified: false,
+      frequencyRule: null,
       isPublic: data.isPublic,
     };
 

@@ -48,8 +48,7 @@ import { toast } from "sonner";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 import moment from "moment";
 
-import type { Event } from "@/lib/types/event";
-import type { EventType } from "@/lib/types/event-type";
+import { Event, EventType } from "@/db/schema";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
@@ -168,7 +167,7 @@ function EditEventDialog({
           to: endTime.toDate(),
         },
         timeRange,
-        isPublic: event.isPublic,
+        isPublic: event.isPublic!,
       });
     }
   }, [event, form]);
@@ -208,7 +207,7 @@ function EditEventDialog({
       allDay: startDateTime === endDateTime,
       title: data.title,
       note: data.note,
-      frequencyRule: rule ? rule.toString() : undefined,
+      frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,
     };
 

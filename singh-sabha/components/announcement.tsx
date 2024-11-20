@@ -5,7 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Rss, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import type { Announcement } from "@/lib/types/announcement";
+import type { Announcement } from "@/db/schema";
 
 export function ActiveAnnouncement({
   announcement,
