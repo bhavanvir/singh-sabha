@@ -5,7 +5,7 @@ import { eventTable } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
-import type { Event } from "@/lib/types/event";
+import type { Event } from "@/db/schema";
 
 export const CreateEvent = async ({
   newEvent,

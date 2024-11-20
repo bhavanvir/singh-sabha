@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
-import type { Event } from "@/lib/types/event";
+import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
 interface ViewEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  event: Event | null;
+  event: EventWithType | null;
 }
 
 export default function ViewEventDialog({

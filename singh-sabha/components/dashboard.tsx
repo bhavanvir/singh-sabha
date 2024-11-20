@@ -19,8 +19,7 @@ import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
 
-import type { User as SessionUser } from "lucia";
-import type { User as DatabaseUser } from "@/lib/types/user";
+import type { User } from "@/db/schema";
 import type { Event } from "@/lib/types/event";
 import type { ConflictingEvent } from "@/components/notifications";
 import type { MailingList } from "@/lib/types/mailing-list";
@@ -36,8 +35,8 @@ const PAGES = {
 type PageKey = keyof typeof PAGES;
 
 interface DashboardProps {
-  user: SessionUser;
-  users: DatabaseUser[];
+  user: User;
+  users: User[];
   events: Event[];
   notifications: ConflictingEvent[];
   mailingList: MailingList[];

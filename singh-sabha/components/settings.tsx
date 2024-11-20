@@ -50,16 +50,12 @@ import {
   Check,
 } from "lucide-react";
 
-import type { User as SessionUser } from "lucia";
-import type { User as DatabaseUser } from "@/lib/types/user";
-import type { MailingList } from "@/lib/types/mailing-list";
-import type { EventType } from "@/lib/types/event-type";
-import type { Announcement } from "@/lib/types/announcement";
+import { User, MailingList, EventType, Announcement } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
 interface SettingsProps {
-  user: SessionUser;
-  users: DatabaseUser[];
+  user: User;
+  users: User[];
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
@@ -75,8 +71,8 @@ const passwordSchema = z.object({
 
 const eventTypeSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
-  isRequestable: z.boolean(),
-  isSpecial: z.boolean(),
+  isRequestable: z.boolean().nullable().default(false),
+  isSpecial: z.boolean().nullable().default(false),
 });
 
 const userSchema = z.object({
@@ -108,7 +104,7 @@ export default function Settings({
   const [otp, setOtp] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
-  const [editingUser, setEditingUser] = useState<DatabaseUser | null>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [enabled, setEnabled] = useState<boolean>(
     activeAnnouncement?.isActive ?? true,
   );
@@ -248,10 +244,10 @@ export default function Settings({
     data,
   ) => {
     if (editingEvent) {
-      const updatedEvent: EventType = data;
+      const updatedEvent: Partial<EventType> = data;
       updatedEvent["id"] = editingEvent.id;
 
-      toast.promise(UpdateEventType({ eventType: updatedEvent }), {
+      toast.promise(UpdateEventType({ eventType: updatedEvent as EventType }), {
         loading: "Updating event...",
         success: (_) => {
           setEditingEvent(null);
@@ -669,7 +665,7 @@ export default function Settings({
                       </div>
                       <FormControl>
                         <Switch
-                          checked={field.value}
+                          checked={field.value!}
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
@@ -692,7 +688,7 @@ export default function Settings({
                       </div>
                       <FormControl>
                         <Switch
-                          checked={field.value}
+                          checked={field.value!}
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
@@ -839,7 +835,7 @@ export default function Settings({
                       checked={enabled}
                       onCheckedChange={() => {
                         setEnabled(false);
-                        DisableAnnouncement({ id: activeAnnouncement.id });
+                        DisableAnnouncement({ id: activeAnnouncement.id! });
                       }}
                     />
                   </div>

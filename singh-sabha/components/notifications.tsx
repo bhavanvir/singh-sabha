@@ -28,11 +28,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
 
-import type { Event } from "@/lib/types/event";
+import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
-export interface ConflictingEvent extends Event {
-  conflict: Event[];
+export interface ConflictingEvent extends EventWithType {
+  conflict: EventWithType[];
 }
 
 interface NotificationsProps {

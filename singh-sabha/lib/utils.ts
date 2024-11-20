@@ -2,14 +2,16 @@ import { RRule } from "rrule";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import type { Event } from "@/lib/types/event";
+import type { EventWithType } from "@/db/schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const generateRecurringEvents = (events: Event[]): Event[] => {
-  const allGeneratedEvents: Event[] = [];
+export const generateRecurringEvents = (
+  events: EventWithType[],
+): EventWithType[] => {
+  const allGeneratedEvents: EventWithType[] = [];
 
   events.forEach((event) => {
     const { start, end, frequencyRule } = event;

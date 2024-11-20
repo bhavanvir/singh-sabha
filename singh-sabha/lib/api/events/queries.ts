@@ -5,8 +5,9 @@ import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-// TODO: Fix types
-export const GetAllVerifiedEvents = cache(async (): Promise<any> => {
+import type { Event } from "@/db/schema";
+
+export const GetAllVerifiedEvents = cache(async (): Promise<Event[]> => {
   try {
     const events = await db
       .select()
@@ -25,7 +26,7 @@ export const GetAllVerifiedEvents = cache(async (): Promise<any> => {
   }
 });
 
-export const GetAllUnverifiedEvents = cache(async (): Promise<any> => {
+export const GetAllUnverifiedEvents = cache(async (): Promise<Event[]> => {
   try {
     const events = await db
       .select()
@@ -44,7 +45,7 @@ export const GetAllUnverifiedEvents = cache(async (): Promise<any> => {
   }
 });
 
-export const GetAllEvents = cache(async (): Promise<any> => {
+export const GetAllEvents = cache(async (): Promise<Event[]> => {
   try {
     const events = await db
       .select()

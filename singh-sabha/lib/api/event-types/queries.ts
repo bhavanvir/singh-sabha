@@ -4,7 +4,9 @@ import { cache } from "react";
 import { db } from "@/db/db";
 import { eventTypeTable } from "@/db/schema";
 
-export const GetAllEventTypes = cache(async (): Promise<any> => {
+import type { EventType } from "@/db/schema";
+
+export const GetAllEventTypes = cache(async (): Promise<EventType[]> => {
   try {
     const eventTypes = await db.select().from(eventTypeTable);
     return eventTypes;

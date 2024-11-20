@@ -6,12 +6,12 @@ import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 import { hash } from "@node-rs/argon2";
 
-import { User as DatabaseUser } from "@/lib/types/user";
+import type { User } from "@/db/schema";
 
 export const UpdateUserPrivilege = async ({
   user,
 }: {
-  user: DatabaseUser;
+  user: Omit<User, "passwordHash">;
 }): Promise<void> => {
   if (!user.id) {
     throw new Error("Missing required parameter to update a user's privilege");

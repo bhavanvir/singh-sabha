@@ -5,12 +5,12 @@ import { eventTypeTable } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
-import type { EventType } from "@/lib/types/event-type";
+import type { EventType } from "@/db/schema";
 
 export const CreateEventType = async ({
   eventType,
 }: {
-  eventType: EventType;
+  eventType: Omit<EventType, "id">;
 }): Promise<void> => {
   if (!eventType.displayName) {
     throw new Error("Missing required parameter to create an event type");
