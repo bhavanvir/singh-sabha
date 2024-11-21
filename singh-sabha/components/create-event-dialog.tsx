@@ -30,11 +30,11 @@ interface CreateEventDialogProps {
   eventTypes: EventType[];
 }
 
-const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
+export default function CreateEventDialog({
   isOpen,
   onClose,
   eventTypes,
-}) => {
+}: CreateEventDialogProps) {
   const form = useForm<z.infer<typeof superUserEventSchema>>({
     resolver: zodResolver(superUserEventSchema),
     defaultValues: {
@@ -146,6 +146,4 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       </DialogContent>
     </Dialog>
   );
-};
-
-export default CreateEventDialog;
+}

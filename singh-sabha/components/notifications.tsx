@@ -39,7 +39,9 @@ interface NotificationsProps {
   notifications: ConflictingEvent[];
 }
 
-export default function Component({ notifications = [] }: NotificationsProps) {
+export default function Notifications({
+  notifications = [],
+}: NotificationsProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedEvent, setSelectedEvent] =
     React.useState<ConflictingEvent | null>(null);

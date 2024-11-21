@@ -36,7 +36,7 @@ interface RequestEventDialogProps {
   eventTypes: EventType[];
 }
 
-function RequestEventDialog({
+export default function RequestEventDialog({
   isOpen,
   onClose,
   eventTypes,
@@ -184,5 +184,3 @@ function RequestEventDialog({
     </Dialog>
   );
 }
-
-export default RequestEventDialog;

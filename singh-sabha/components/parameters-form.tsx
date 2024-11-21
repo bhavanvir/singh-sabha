@@ -37,9 +37,7 @@ interface ParametersFormProps {
   eventTypes: EventType[];
 }
 
-export const ParametersForm: React.FC<ParametersFormProps> = ({
-  eventTypes,
-}) => {
+export function ParametersForm({ eventTypes }: ParametersFormProps) {
   const { control } = useFormContext();
 
   const formatTimeValue = (value: number) => {
@@ -218,4 +216,4 @@ export const ParametersForm: React.FC<ParametersFormProps> = ({
       />
     </div>
   );
-};
+}

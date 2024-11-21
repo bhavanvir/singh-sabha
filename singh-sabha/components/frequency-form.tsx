@@ -40,10 +40,7 @@ interface FrequencyFormProps {
   form: any;
 }
 
-const FrequencyForm: React.FC<FrequencyFormProps> = ({
-  watchFrequency,
-  form,
-}) => {
+export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
   const { control } = useFormContext();
   return (
     <>
@@ -185,6 +182,6 @@ const FrequencyForm: React.FC<FrequencyFormProps> = ({
       </div>
     </>
   );
-};
+}
 
 export default FrequencyForm;

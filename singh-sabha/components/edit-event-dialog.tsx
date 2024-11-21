@@ -31,7 +31,7 @@ interface EditEventDialogProps {
   eventTypes: EventType[];
 }
 
-function EditEventDialog({
+export default function EditEventDialog({
   isOpen,
   onClose,
   event,
@@ -211,5 +211,3 @@ function EditEventDialog({
     </Dialog>
   );
 }
-
-export default EditEventDialog;
