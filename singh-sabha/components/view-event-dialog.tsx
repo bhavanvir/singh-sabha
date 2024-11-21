@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
-import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
+
+import type { EventWithType } from "@/db/schema";
 
 interface ViewEventDialogProps {
   isOpen: boolean;
