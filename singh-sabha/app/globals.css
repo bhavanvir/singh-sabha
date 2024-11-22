@@ -76,6 +76,19 @@ body {
     @apply bg-background text-foreground;
   }
 }
+I html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
 
 /* React-Big-Calendar Styling */
 .rbc-time-view {
