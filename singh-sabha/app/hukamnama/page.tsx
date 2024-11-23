@@ -90,7 +90,7 @@ export default function Hukamnama() {
               </span>
             </div>
 
-            <ScrollArea className="h-[calc(100vh-16.25rem)] sm:h-[calc(100vh-10.75rem)] mt-4 rounded-md border p-4">
+            <ScrollArea className="h-[calc(100vh-16.5rem)] sm:h-[calc(100vh-11rem)] mt-4 rounded-md border p-4 mb-4">
               <section className="grid grid-cols-1 gap-4">
                 {hukamnama.hukamnama.map((item, index) => (
                   <div key={index}>
