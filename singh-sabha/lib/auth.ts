@@ -117,13 +117,6 @@ export async function validateRequest(): Promise<SessionValidationResult> {
   return validateSessionToken(sessionToken);
 }
 
-export interface DatabaseUser {
-  fullName: string;
-  email: string;
-  isAdmin: boolean;
-  isMod: boolean;
-}
-
 export type SessionValidationResult =
   | { session: Session; user: User }
   | { session: null; user: null };
