@@ -27,6 +27,7 @@ import moment from "moment";
 import { ParametersForm } from "@/components/parameters-form";
 import { userEventSchema } from "@/lib/event-schema";
 import { CreateEvent } from "@/lib/api/events/mutations";
+import { sendEventEmails } from "@/lib/send-event-email";
 
 import type { Event, EventType } from "@/db/schema";
 
@@ -91,6 +92,13 @@ export default function RequestEventDialog({
       success: "Event request submitted successfully!",
       error: "Failed to submit an event request.",
     });
+
+    toast.promise(sendEventEmails(newEvent, "/api/send/confirmation"), {
+      loading: "Sending confirmation email...",
+      success: "Confirmation email sent successfully! Please check your inbox.",
+      error: "Failed to send confirmation email",
+    });
+
     handleClose();
   };
 
