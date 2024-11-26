@@ -94,8 +94,8 @@ export default function Notifications({
                             }}
                           >
                             {notification.eventType?.isSpecial
-                              ? "Regular"
-                              : "Special"}
+                              ? "Special"
+                              : "Regular"}
                           </Badge>
                           <Badge>{notification.eventType?.displayName}</Badge>
                         </div>
@@ -207,7 +207,7 @@ export default function Notifications({
                         : EventColors.regular,
                     }}
                   >
-                    {conflictEvent.eventType?.isSpecial ? "Regular" : "Special"}
+                    {conflictEvent.eventType?.isSpecial ? "Special" : "Regular"}
                   </Badge>
                   <Badge>{conflictEvent.eventType?.displayName}</Badge>
                 </div>
