@@ -25,8 +25,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { toast } from "sonner";
+
+import { sendEventEmails } from "@/lib/send-event-email";
+import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
@@ -64,13 +66,25 @@ export default function Notifications({
     });
     setIsOpen(false);
     setUnderstood(false);
+
+    toast.promise(sendEventEmails(event, "/api/send/approved"), {
+      loading: "Sending approval email...",
+      success: "Approval email sent successfully!",
+      error: "Failed to send approval email",
+    });
   };
 
-  const handleDismiss = (id: string) => {
-    toast.promise(DeleteEvent({ id }), {
+  const handleDismiss = (event: ConflictingEvent) => {
+    toast.promise(DeleteEvent({ id: event.id }), {
       loading: "Dismissing event...",
       success: "Event dismissed successfully!",
       error: "Failed to dismiss event.",
+    });
+
+    toast.promise(sendEventEmails(event, "/api/send/denied"), {
+      loading: "Sending denial email...",
+      success: "Denial email sent successfully!",
+      error: "Failed to send denial email",
     });
   };
 
@@ -161,7 +175,7 @@ export default function Notifications({
                       <div className="flex justify-end space-x-2 mt-4">
                         <Button
                           variant="outline"
-                          onClick={() => handleDismiss(notification.id!)}
+                          onClick={() => handleDismiss(notification)}
                         >
                           <X />
                           Dismiss
