@@ -89,7 +89,7 @@ export function Footer() {
           </p>
           <div className="flex items-center mt-4 sm:mt-0 text-sm text-muted-foreground">
             <Link
-              href="https://github.com/bhavanvir"
+              href="https://github.com/bhavanvir/singh-sabha"
               className="hover:text-primary transition-colors flex items-center"
             >
               <svg
