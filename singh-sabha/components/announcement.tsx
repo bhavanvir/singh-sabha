@@ -19,7 +19,7 @@ export function ActiveAnnouncement({
   }
 
   return (
-    <Alert className="flex flex-row justify-between">
+    <Alert className="fixed top-4 left-4 right-4 flex flex-row justify-between p-4 z-50 w-[calc(100%-2rem)]">
       <Rss className="h-4 w-4 animate-pulse" />
       <div>
         <AlertTitle>{announcement.title}</AlertTitle>
