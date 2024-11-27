@@ -1,6 +1,7 @@
 import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
 import NavBar from "@/components/navbar";
 import { ActiveAnnouncement } from "@/components/announcement";
+import Hero from "@/components/hero";
 
 export default async function Home() {
   const [announcement] = await GetActiveAnnouncement();
@@ -8,8 +9,9 @@ export default async function Home() {
   return (
     <>
       <NavBar currentLink="" />
-      <main className="p-4">
-        <ActiveAnnouncement announcement={announcement} />
+      <ActiveAnnouncement announcement={announcement} />
+      <main>
+        <Hero />
       </main>
     </>
   );
