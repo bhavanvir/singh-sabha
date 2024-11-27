@@ -1,12 +1,16 @@
 "use client";
 
 import * as React from "react";
-import NavBar from "@/components/navbar";
-import type { HukamnamaRoot } from "@/lib/types/hukamnama";
+import { clsx } from "clsx";
 import { Book, Pen, Loader2, Music2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+
+import NavBar from "@/components/navbar";
+import { notoSansGurmukhi } from "../fonts";
+
+import type { HukamnamaRoot } from "@/lib/types/hukamnama";
 
 export default function Hukamnama() {
   const [hukamnama, setHukamnama] = React.useState<HukamnamaRoot | null>(null);
@@ -94,7 +98,9 @@ export default function Hukamnama() {
               <section className="grid grid-cols-1 gap-4">
                 {hukamnama.hukamnama.map((item, index) => (
                   <div key={index}>
-                    <p className="text-xl">{item.line.gurmukhi.unicode}</p>
+                    <p className={clsx(notoSansGurmukhi.className, "text-xl")}>
+                      {item.line.gurmukhi.unicode}
+                    </p>
                     <p className="text-md text-muted-foreground italic">
                       {item.line.transliteration.english.text}
                     </p>
