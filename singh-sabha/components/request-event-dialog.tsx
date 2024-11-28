@@ -87,17 +87,19 @@ export default function RequestEventDialog({
       isPublic: data.isPublic,
     };
 
-    toast.promise(CreateEvent({ newEvent }), {
-      loading: "Submitting event request...",
-      success: "Event request submitted successfully!",
-      error: "Failed to submit an event request.",
-    });
-
-    toast.promise(sendEventEmails(newEvent, "/api/send/confirmation"), {
-      loading: "Sending confirmation email...",
-      success: "Confirmation email sent successfully! Please check your inbox.",
-      error: "Failed to send confirmation email",
-    });
+    toast.promise(
+      async () => {
+        const createdEvent = await CreateEvent({ newEvent });
+        await sendEventEmails(newEvent, "/api/send/confirmation");
+        return createdEvent;
+      },
+      {
+        loading: "Submitting event and sending confirmation...",
+        success:
+          "Event request submitted and confirmation email sent successfully!",
+        error: "Failed to submit event request or send confirmation email",
+      },
+    );
 
     handleClose();
   };

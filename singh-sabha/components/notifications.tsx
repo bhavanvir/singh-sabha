@@ -59,33 +59,37 @@ export default function Notifications({
   };
 
   const approveEvent = (event: ConflictingEvent) => {
-    toast.promise(UpdateEvent({ updatedEvent: { ...event, verified: true } }), {
-      loading: "Approving event...",
-      success: "Event approved successfully!",
-      error: "Failed to approve event.",
-    });
-    setIsOpen(false);
-    setUnderstood(false);
-
-    toast.promise(sendEventEmails(event, "/api/send/approved"), {
-      loading: "Sending approval email...",
-      success: "Approval email sent successfully!",
-      error: "Failed to send approval email",
-    });
+    toast.promise(
+      async () => {
+        const updatedEvent = await UpdateEvent({
+          updatedEvent: { ...event, verified: true },
+        });
+        await sendEventEmails(event, "/api/send/approved");
+        setIsOpen(false);
+        setUnderstood(false);
+        return updatedEvent;
+      },
+      {
+        loading: "Approving event and sending notification...",
+        success: "Event approved and notification sent successfully!",
+        error: "Failed to approve event or send notification.",
+      },
+    );
   };
 
   const handleDismiss = (event: ConflictingEvent) => {
-    toast.promise(DeleteEvent({ id: event.id }), {
-      loading: "Dismissing event...",
-      success: "Event dismissed successfully!",
-      error: "Failed to dismiss event.",
-    });
-
-    toast.promise(sendEventEmails(event, "/api/send/denied"), {
-      loading: "Sending denial email...",
-      success: "Denial email sent successfully!",
-      error: "Failed to send denial email",
-    });
+    toast.promise(
+      async () => {
+        await DeleteEvent({ id: event.id });
+        await sendEventEmails(event, "/api/send/denied");
+        return event;
+      },
+      {
+        loading: "Dismissing event and sending notification...",
+        success: "Event dismissed and notification sent successfully!",
+        error: "Failed to dismiss event or send notification.",
+      },
+    );
   };
 
   return (
