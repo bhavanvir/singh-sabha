@@ -2,7 +2,6 @@
 
 import { clsx } from "clsx";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { notoSansGurmukhi } from "@/app/fonts";
 
 import { ChevronDown, HandPlatter, HandCoins } from "lucide-react";
