@@ -4,7 +4,8 @@ import { clsx } from "clsx";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notoSansGurmukhi } from "@/app/fonts";
-import { ChevronDown } from "lucide-react";
+
+import { ChevronDown, HandPlatter, HandCoins } from "lucide-react";
 
 export default function Hero() {
   const scrollToContent = () => {
@@ -34,11 +35,13 @@ export default function Hero() {
             </p>
           </span>
           <div className="flex flex-wrap gap-4">
-            <Button asChild size="lg">
-              <Link href="#services">Our Services</Link>
+            <Button size="lg">
+              <HandPlatter className="h-5 w-5" />
+              Our Services
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="#donate">Donate</Link>
+            <Button variant="outline" size="lg">
+              <HandCoins />
+              Donate
             </Button>
           </div>
         </div>
