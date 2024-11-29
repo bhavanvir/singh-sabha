@@ -16,7 +16,7 @@ export default function Hero() {
 
   return (
     <section className="relative bg-[url('/gurdwara-hero.jpg')] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-md filter grayscale" />
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-md filter" />
       <div className="relative mx-auto min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-center items-center">
         <div className="w-full max-w-3xl mx-auto grid grid-cols-flow gap-4">
           <span>
