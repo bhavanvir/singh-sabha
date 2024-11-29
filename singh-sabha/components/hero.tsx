@@ -18,20 +18,22 @@ export default function Hero() {
     <section className="relative bg-[url('/gurdwara-hero.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-md filter grayscale" />
       <div className="relative mx-auto min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-center items-center">
-        <div className="w-full max-w-3xl mx-auto">
-          <h1
-            className={clsx(
-              notoSansGurmukhi.className,
-              "text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white",
-            )}
-          >
-            ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ
-          </h1>
-          <p className="text-xl sm:text-2xl text-white/80 mt-4">
-            Come, O beloved Sikhs of the True Guru, and sing the True Word of
-            His Bani
-          </p>
-          <div className="flex flex-wrap gap-4 mt-8">
+        <div className="w-full max-w-3xl mx-auto grid grid-cols-flow gap-4">
+          <span>
+            <h1
+              className={clsx(
+                notoSansGurmukhi.className,
+                "text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white",
+              )}
+            >
+              ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ
+            </h1>
+            <p className="text-xl sm:text-2xl text-white/80">
+              Come, O beloved Sikhs of the True Guru, and sing the True Word of
+              His Bani
+            </p>
+          </span>
+          <div className="flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="#services">Our Services</Link>
             </Button>
