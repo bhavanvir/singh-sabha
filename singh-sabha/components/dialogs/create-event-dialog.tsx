@@ -17,8 +17,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import moment from "moment";
 
-import FrequencyForm from "@/components/frequency-form";
-import { ParametersForm } from "@/components/parameters-form";
+import FrequencyForm from "@/components/forms/frequency-form";
+import { ParametersForm } from "@/components/forms/parameters-form";
 import { superUserEventSchema } from "@/lib/event-schema";
 import { CreateEvent } from "@/lib/api/events/mutations";
 

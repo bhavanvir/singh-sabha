@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   Tooltip,
   TooltipContent,
@@ -9,6 +10,9 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Calendar, momentLocalizer, View } from "react-big-calendar";
+import moment from "moment";
+
 import {
   ChevronLeft,
   ChevronRight,
@@ -20,13 +24,11 @@ import {
   CalendarRange,
   CalendarDays,
 } from "lucide-react";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, momentLocalizer, View } from "react-big-calendar";
-import moment from "moment";
-import CreateEventDialog from "@/components/create-event-dialog";
-import EditEventDialog from "@/components/edit-event-dialog";
-import RequestEventDialog from "@/components/request-event-dialog";
-import ViewEventDialog from "@/components/view-event-dialog";
+
+import CreateEventDialog from "@/components/dialogs/create-event-dialog";
+import EditEventDialog from "@/components/dialogs/edit-event-dialog";
+import RequestEventDialog from "@/components/dialogs/request-event-dialog";
+import ViewEventDialog from "@/components/dialogs/view-event-dialog";
 import { EventColors } from "@/lib/types/event-colours";
 
 import type { ToolbarProps } from "react-big-calendar";

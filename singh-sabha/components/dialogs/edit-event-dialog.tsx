@@ -17,8 +17,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import FrequencyForm from "@/components/frequency-form";
-import { ParametersForm } from "@/components/parameters-form";
+import FrequencyForm from "@/components/forms/frequency-form";
+import { ParametersForm } from "@/components/forms/parameters-form";
 import { superUserEventSchema } from "@/lib/event-schema";
 import { UpdateEvent, DeleteEvent } from "@/lib/api/events/mutations";
 

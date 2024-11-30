@@ -24,7 +24,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import moment from "moment";
 
-import { ParametersForm } from "@/components/parameters-form";
+import { ParametersForm } from "@/components/forms/parameters-form";
 import { userEventSchema } from "@/lib/event-schema";
 import { CreateEvent } from "@/lib/api/events/mutations";
 import { sendEventEmails } from "@/lib/send-event-email";
