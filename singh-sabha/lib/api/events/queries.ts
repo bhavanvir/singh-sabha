@@ -68,38 +68,36 @@ export const GetAllEvents = cache(async (): Promise<EventWithType[]> => {
   }
 });
 
-export const GetEventsBetweenDates = cache(
-  async ({
-    startDate,
-    endDate,
-  }: {
-    startDate: string;
-    endDate: string;
-  }): Promise<EventWithType[]> => {
-    try {
-      if (!startDate || !endDate) {
-        throw new Error("Missing start date or end date or both");
-      }
-      const events = await db
-        .select({
-          events: eventTable,
-          event_types: eventTypeTable,
-        })
-        .from(eventTable)
-        .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-        .where(
-          and(
-            gte(eventTable.start, new Date(startDate)),
-            lte(eventTable.end, new Date(endDate)),
-            eq(eventTable.isPublic, true),
-          ),
-        );
-      return events.map(({ events, event_types }) => ({
-        ...events,
-        eventType: event_types ?? undefined,
-      }));
-    } catch (err) {
-      throw new Error(`Could not fetch events: ${err}`);
+export const GetEventsBetweenDates = async ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}): Promise<EventWithType[]> => {
+  try {
+    if (!startDate || !endDate) {
+      throw new Error("Missing start date or end date or both");
     }
-  },
-);
+    const events = await db
+      .select({
+        events: eventTable,
+        event_types: eventTypeTable,
+      })
+      .from(eventTable)
+      .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
+      .where(
+        and(
+          gte(eventTable.start, new Date(startDate)),
+          lte(eventTable.end, new Date(endDate)),
+          eq(eventTable.isPublic, true),
+        ),
+      );
+    return events.map(({ events, event_types }) => ({
+      ...events,
+      eventType: event_types ?? undefined,
+    }));
+  } catch (err) {
+    throw new Error(`Could not fetch events: ${err}`);
+  }
+};
