@@ -20,13 +20,31 @@ const staggerContainer = {
   },
 };
 
+const fadeInWithDelay = (delay = 0) => ({
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      delay,
+    },
+  },
+});
+
+const scaleInWithDelay = (delay = 0) => ({
+  hidden: { scaleX: 0, opacity: 0 },
+  show: {
+    scaleX: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      delay,
+      duration: 0.4,
+    },
+  },
+});
+
 export default function Hero() {
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   const scrollToContent = () => {
     window.scrollTo({
       top: window.innerHeight,
@@ -47,48 +65,46 @@ export default function Hero() {
           className="w-full max-w-4xl mx-auto text-center space-y-8"
           variants={staggerContainer}
         >
-          <motion.div
-            variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
-          >
+          <motion.div className="relative" variants={fadeInWithDelay(0.1)}>
             <h2 className="text-2xl sm:text-3xl font-medium text-white/90 mb-2">
               <FadeText text="Gurdwara Singh Sabha of Victoria" />
             </h2>
             <motion.div
-              className="h-1 w-20 bg-primary mx-auto rounded-full mb-6"
-              variants={{ hidden: { scaleX: 0 }, show: { scaleX: 1 } }}
+              className="h-1 w-20 bg-primary mx-auto rounded-full"
+              variants={scaleInWithDelay(0.2)}
               style={{ originX: 0.5 }}
             />
           </motion.div>
 
-          <FadeText
-            text="ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ"
-            className={cn(
-              notoSansGurmukhi.className,
-              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4",
-            )}
-            direction="up"
-          />
+          <motion.div variants={fadeInWithDelay(0.3)}>
+            <FadeText
+              text="ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ"
+              className={cn(
+                notoSansGurmukhi.className,
+                "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4",
+              )}
+              direction="up"
+            />
+          </motion.div>
 
-          <FadeText
-            text="Come, O beloved Sikhs of the True Guru, and sing the True Word of His Bani"
-            className="text-xl sm:text-2xl text-white/80 mb-8"
-          />
+          <motion.div variants={fadeInWithDelay(0.5)}>
+            <FadeText
+              text="Come, O beloved Sikhs of the True Guru, and sing the True Word of His Bani"
+              className="text-xl sm:text-2xl text-white/80 mb-8"
+            />
+          </motion.div>
 
           <motion.div
             className="flex flex-wrap justify-center gap-4"
             variants={staggerContainer}
           >
-            <motion.div
-              variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
-            >
+            <motion.div variants={fadeInWithDelay(0.7)}>
               <Button size="lg" className="text-lg">
                 <HandPlatter className="mr-2 h-5 w-5" />
                 Our Services
               </Button>
             </motion.div>
-            <motion.div
-              variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
-            >
+            <motion.div variants={fadeInWithDelay(0.9)}>
               <Button variant="secondary" size="lg" className="text-lg">
                 <HandCoins className="mr-2 h-5 w-5" />
                 Donate
@@ -101,7 +117,7 @@ export default function Hero() {
           onClick={scrollToContent}
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 hover:text-white transition-colors duration-300 focus:outline-none"
           aria-label="Scroll to content"
-          variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
+          variants={fadeInWithDelay(1.1)}
         >
           <ChevronDown className="w-8 h-8 animate-bounce" />
         </motion.button>
