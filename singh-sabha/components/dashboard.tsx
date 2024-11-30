@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { CircleUser, Menu, LogOut, FlagTriangleLeft } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,12 +12,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { logout } from "@/components/actions/logout-action";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
+
+import { Menu, LogOut, FlagTriangleLeft } from "lucide-react";
+
+import { logout } from "@/components/actions/logout-action";
 import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
-
 import type { ConflictingEvent } from "@/components/notifications";
 import type {
   User,
@@ -145,10 +147,12 @@ export function Dashboard({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
+              <Avatar className="cursor-pointer">
+                <AvatarImage
+                  src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(user.email)}&round=50&backgroundType=solid`}
+                />
+                <AvatarFallback>{user.fullName[0]}</AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
