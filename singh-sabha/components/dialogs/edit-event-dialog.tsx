@@ -160,7 +160,7 @@ export default function EditEventDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription>
@@ -184,6 +184,7 @@ export default function EditEventDialog({
                 <ParametersForm eventTypes={eventTypes} />
                 <DialogFooter className="flex">
                   <Button
+                    type="button"
                     variant="destructive"
                     onClick={handleDeleteEventSubmit}
                   >
