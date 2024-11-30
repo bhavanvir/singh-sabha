@@ -10,7 +10,7 @@ import { FadeText } from "./animations/fade-text";
 
 import { ChevronDown, HandPlatter, HandCoins } from "lucide-react";
 
-const staggerContainer = {
+export const staggerContainer = {
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
@@ -20,7 +20,7 @@ const staggerContainer = {
   },
 };
 
-const fadeInWithDelay = (delay = 0) => ({
+export const fadeInWithDelay = (delay = 0) => ({
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -31,7 +31,7 @@ const fadeInWithDelay = (delay = 0) => ({
   },
 });
 
-const scaleInWithDelay = (delay = 0) => ({
+export const scaleInWithDelay = (delay = 0) => ({
   hidden: { scaleX: 0, opacity: 0 },
   show: {
     scaleX: 1,
@@ -44,7 +44,7 @@ const scaleInWithDelay = (delay = 0) => ({
   },
 });
 
-export default function Hero() {
+export default function HeroSection() {
   const scrollToContent = () => {
     window.scrollTo({
       top: window.innerHeight,
