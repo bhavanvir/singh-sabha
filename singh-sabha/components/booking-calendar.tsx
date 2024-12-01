@@ -159,7 +159,7 @@ export default function BookingCalendar({
             <CalendarPlus />
             {user ? "Create" : "Request"} Event
           </Button>
-          <div className="hidden sm:block">
+          <div className="hidden lg:block">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
