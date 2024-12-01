@@ -47,7 +47,7 @@ export function Footer() {
                 470 Cecelia Rd Victoria, BC V8T 4T5
               </span>
               <span className="flex items-center">
-                <Phone className="h-5 w-5 mr-1" /> + 1 250 589-2751
+                <Phone className="h-5 w-5 mr-1" /> + 1 250 475-2280
               </span>
               <span className="flex items-center">
                 <Mail className="h-5 w-5 mr-1" /> singhsabhayyj@gmail.com
