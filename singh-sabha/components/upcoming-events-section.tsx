@@ -8,11 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-import {
-  staggerContainer,
-  fadeInWithDelay,
-  scaleInWithDelay,
-} from "./hero-section";
+import { ChevronsLeftRight } from "lucide-react";
+
+import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
@@ -34,7 +32,7 @@ export default function UpcomingEventsSection({
   }, [isInView, controls]);
 
   return (
-    <section className="py-16 bg-background" ref={ref}>
+    <section className="border-t py-16 bg-background" ref={ref}>
       <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -64,6 +62,7 @@ export default function UpcomingEventsSection({
                   >
                     <Card className="w-96 flex-shrink-0">
                       <CardHeader>
+                        <CardTitle className="mt-2">{event.title}</CardTitle>
                         <div className="space-x-2 flex items-center">
                           <Badge
                             style={{
@@ -76,7 +75,6 @@ export default function UpcomingEventsSection({
                           </Badge>
                           <Badge>{event.eventType?.displayName}</Badge>
                         </div>
-                        <CardTitle className="mt-2">{event.title}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="flex items-center text-sm text-muted-foreground">
@@ -100,6 +98,9 @@ export default function UpcomingEventsSection({
               </motion.div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
+            <div className="flex justify-center mt-2">
+              <ChevronsLeftRight className="text-muted-foreground h-8 w-8" />
+            </div>
           </motion.div>
         </motion.div>
       </div>
