@@ -98,9 +98,15 @@ export default function UpcomingEventsSection({
               </motion.div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
-            <div className="flex justify-center mt-2">
+            <motion.div
+              className="flex flex-col items-center mt-2"
+              variants={fadeInWithDelay(0.5)}
+            >
               <ChevronsLeftRight className="text-muted-foreground h-8 w-8" />
-            </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Scroll to explore
+              </p>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
