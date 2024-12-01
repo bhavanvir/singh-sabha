@@ -6,6 +6,8 @@ import NavBar from "@/components/navbar";
 import { ActiveAnnouncement } from "@/components/announcement";
 import HeroSection from "@/components/hero-section";
 import UpcomingEventsSection from "@/components/upcoming-events-section";
+import { GetAllEventTypes } from "@/lib/api/event-types/queries";
+import ServicesSection from "@/components/services-section";
 
 export default async function Home() {
   moment.locale("en-CA");
@@ -19,6 +21,7 @@ export default async function Home() {
     startDate: weekStart,
     endDate: weekEnd,
   });
+  const eventTypes = await GetAllEventTypes();
 
   return (
     <>
@@ -29,6 +32,7 @@ export default async function Home() {
         {upcomingEvents.length > 0 && (
           <UpcomingEventsSection upcomingEvents={upcomingEvents} />
         )}
+        <ServicesSection eventTypes={eventTypes} />
       </main>
     </>
   );
