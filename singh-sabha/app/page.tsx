@@ -7,6 +7,8 @@ import { ActiveAnnouncement } from "@/components/announcement";
 import HeroSection from "@/components/hero-section";
 import UpcomingEventsSection from "@/components/upcoming-events-section";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const currentDate = moment();
   const weekStart = currentDate.startOf("week").toISOString();

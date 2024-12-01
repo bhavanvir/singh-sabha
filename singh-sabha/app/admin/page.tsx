@@ -12,6 +12,8 @@ import moment from "moment";
 import type { ConflictingEvent } from "@/components/notifications";
 import type { EventWithType } from "@/db/schema";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) {
