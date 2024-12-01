@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Menu, FlagTriangleLeft } from "lucide-react";
 
 interface NavBarProps {
@@ -21,7 +21,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
           className="flex items-center text-lg font-semibold md:text-base"
         >
           <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
-          Gurdwara Singh Sabha
+          <span>Gurdwara Singh Sabha</span>
         </Link>
         {links.map((link) => (
           <Link
@@ -37,18 +37,18 @@ export default function NavBar({ currentLink }: NavBarProps) {
           </Link>
         ))}
       </nav>
-      <Sheet>
-        <SheetTrigger asChild>
+      <Drawer>
+        <DrawerTrigger asChild>
           <Button variant="ghost" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <nav className="grid gap-6 text-lg font-medium">
+        </DrawerTrigger>
+        <DrawerContent>
+          <nav className="grid gap-6 text-lg font-medium p-6">
             <Link href="/" className="flex items-center text-lg font-semibold">
               <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
-              Gurdwara Singh Sabha
+              <span>Gurdwara Singh Sabha</span>
             </Link>
             {links.map((link) => (
               <Link
@@ -64,8 +64,8 @@ export default function NavBar({ currentLink }: NavBarProps) {
               </Link>
             ))}
           </nav>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     </header>
   );
 }

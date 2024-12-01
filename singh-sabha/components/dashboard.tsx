@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
@@ -58,6 +58,7 @@ export function Dashboard({
   announcements,
 }: DashboardProps) {
   const [activePage, setActivePage] = React.useState<PageKey>("CALENDAR");
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   const pageComponents = {
     CALENDAR: (
@@ -83,13 +84,22 @@ export function Dashboard({
     });
   };
 
-  const NavLink = ({ page }: { page: PageKey }) => (
+  const NavLink = ({
+    page,
+    onClick,
+  }: {
+    page: PageKey;
+    onClick?: () => void;
+  }) => (
     <Link
       href="#"
       className={`transition-colors hover:text-foreground ${
         activePage === page ? "text-foreground" : "text-muted-foreground"
       }`}
-      onClick={() => setActivePage(page)}
+      onClick={() => {
+        setActivePage(page);
+        onClick?.();
+      }}
     >
       {PAGES[page]}
     </Link>
@@ -117,8 +127,8 @@ export function Dashboard({
 
         <div className="flex w-full items-center justify-between md:justify-end space-x-4">
           <div className="flex items-center">
-            <Sheet>
-              <SheetTrigger asChild>
+            <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+              <DrawerTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -127,9 +137,9 @@ export function Dashboard({
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <nav className="grid gap-6 text-lg font-medium mt-6">
+              </DrawerTrigger>
+              <DrawerContent>
+                <nav className="grid gap-6 text-lg font-medium p-6">
                   <Link
                     href="/"
                     className="flex items-center space-x-2 text-lg font-semibold"
@@ -138,11 +148,15 @@ export function Dashboard({
                     Gurdwara Singh Sabha
                   </Link>
                   {Object.keys(PAGES).map((page) => (
-                    <NavLink key={page} page={page as PageKey} />
+                    <NavLink
+                      key={page}
+                      page={page as PageKey}
+                      onClick={() => setIsDrawerOpen(false)}
+                    />
                   ))}
                 </nav>
-              </SheetContent>
-            </Sheet>
+              </DrawerContent>
+            </Drawer>
           </div>
 
           <DropdownMenu>
