@@ -2,13 +2,7 @@
 
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
@@ -58,21 +52,21 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
                 <Card className="h-full">
                   <CardHeader>
                     <CardTitle>{eventType.displayName}</CardTitle>
-                    <CardDescription>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Badge
-                          style={{
-                            backgroundColor: eventType.isSpecial
-                              ? EventColors.special
-                              : EventColors.regular,
-                          }}
-                        >
-                          {eventType.isSpecial ? "Special" : "Regular"}
-                        </Badge>
-                        {eventType.isRequestable && <Badge>Requestable</Badge>}
-                      </div>
-                    </CardDescription>
                   </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap items-center space-x-2">
+                      <Badge
+                        style={{
+                          backgroundColor: eventType.isSpecial
+                            ? EventColors.special
+                            : EventColors.regular,
+                        }}
+                      >
+                        {eventType.isSpecial ? "Special" : "Regular"}
+                      </Badge>
+                      {eventType.isRequestable && <Badge>Requestable</Badge>}
+                    </div>
+                  </CardContent>
                 </Card>
               </motion.div>
             ))}
