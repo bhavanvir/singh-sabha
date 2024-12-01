@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { announcementTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -27,6 +28,9 @@ export const CreateAnnouncement = async ({
       isActive: true,
       createdAt: new Date(),
     });
+
+    revalidatePath("/");
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Failed to create an announcement: ${err}`);
   }
@@ -46,6 +50,9 @@ export const DisableAnnouncement = async ({
       .update(announcementTable)
       .set({ isActive: false })
       .where(eq(announcementTable.id, id));
+
+    revalidatePath("/");
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Failed to disable an announcement: ${err}`);
   }

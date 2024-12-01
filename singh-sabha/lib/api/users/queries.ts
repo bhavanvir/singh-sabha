@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { userTable } from "@/db/schema";
 
@@ -16,6 +17,9 @@ export const GetAllUsers = async (): Promise<Omit<User, "passwordHash">[]> => {
         isMod: userTable.isMod,
       })
       .from(userTable);
+
+    revalidatePath("/admin");
+
     return users;
   } catch (err) {
     throw new Error(`Could not fetch users: ${err}`);

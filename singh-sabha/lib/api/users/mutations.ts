@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { userTable, otpTable } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
@@ -24,6 +25,8 @@ export const UpdateUserPrivilege = async ({
         isAdmin: user.isAdmin,
       })
       .where(eq(userTable.id, user.id));
+
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update user's privileges: ${err}`);
   }
@@ -36,6 +39,8 @@ export const DeleteUser = async ({ id }: { id: string }): Promise<void> => {
 
   try {
     await db.delete(userTable).where(eq(userTable.id, id));
+
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not delete user: ${err}`);
   }
@@ -68,6 +73,8 @@ export const CreateMod = async ({
       passwordHash: passwordHash,
       isMod: true,
     });
+
+    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not create a user: ${err}`);
   }

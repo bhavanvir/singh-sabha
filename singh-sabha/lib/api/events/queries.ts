@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
 import { eq, and, gte, lte } from "drizzle-orm";
@@ -15,6 +16,8 @@ export const GetAllVerifiedEvents = async (): Promise<EventWithType[]> => {
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
       .where(eq(eventTable.verified, true));
+
+    revalidatePath("/calendar");
 
     return events.map(({ events, event_types }) => ({
       ...events,
@@ -36,6 +39,8 @@ export const GetAllUnverifiedEvents = async (): Promise<EventWithType[]> => {
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
       .where(eq(eventTable.verified, false));
 
+    revalidatePath("/admin");
+
     return events.map(({ events, event_types }) => ({
       ...events,
       eventType: event_types ?? undefined,
@@ -54,6 +59,8 @@ export const GetAllEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id));
+
+    revalidatePath("/admin");
 
     return events.map(({ events, event_types }) => ({
       ...events,
@@ -89,6 +96,9 @@ export const GetEventsBetweenDates = async ({
           eq(eventTable.isPublic, true),
         ),
       );
+
+    revalidatePath("/");
+
     return events.map(({ events, event_types }) => ({
       ...events,
       eventType: event_types ?? undefined,
