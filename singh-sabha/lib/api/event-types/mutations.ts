@@ -2,7 +2,6 @@
 
 import { db } from "@/db/db";
 import { eventTypeTable } from "@/db/schema";
-import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
 import type { EventType } from "@/db/schema";
@@ -22,7 +21,6 @@ export const CreateEventType = async ({
       isSpecial: eventType.isSpecial,
       isRequestable: eventType.isRequestable,
     });
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not create event type: ${err}`);
   }
@@ -46,7 +44,6 @@ export const UpdateEventType = async ({
         isRequestable: eventType.isRequestable,
       })
       .where(eq(eventTypeTable.id, eventType.id!));
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update event type: ${err}`);
   }
@@ -63,7 +60,6 @@ export const DeleteEventType = async ({
 
   try {
     await db.delete(eventTypeTable).where(eq(eventTypeTable.id, id));
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update event type: ${err}`);
   }

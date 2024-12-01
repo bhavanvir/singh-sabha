@@ -2,7 +2,6 @@
 
 import { db } from "@/db/db";
 import { userTable, otpTable } from "@/db/schema";
-import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 import { hash } from "@node-rs/argon2";
 
@@ -25,7 +24,6 @@ export const UpdateUserPrivilege = async ({
         isAdmin: user.isAdmin,
       })
       .where(eq(userTable.id, user.id));
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update user's privileges: ${err}`);
   }
@@ -38,7 +36,6 @@ export const DeleteUser = async ({ id }: { id: string }): Promise<void> => {
 
   try {
     await db.delete(userTable).where(eq(userTable.id, id));
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not delete user: ${err}`);
   }

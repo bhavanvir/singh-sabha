@@ -2,7 +2,6 @@
 
 import { db } from "@/db/db";
 import { mailTable } from "@/db/schema";
-import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
 export const AddEmail = async ({ email }: { email: string }): Promise<void> => {
@@ -12,7 +11,6 @@ export const AddEmail = async ({ email }: { email: string }): Promise<void> => {
 
   try {
     await db.insert(mailTable).values({ email });
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update password: ${err}`);
   }
@@ -25,7 +23,6 @@ export const RemoveEmail = async ({ id }: { id: string }): Promise<void> => {
 
   try {
     await db.delete(mailTable).where(eq(mailTable.id, id));
-    revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not update password: ${err}`);
   }
