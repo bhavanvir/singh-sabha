@@ -293,8 +293,6 @@ export default function BookingCalendar({
     [user],
   );
 
-  const requestableEvents = eventTypes.filter((item) => item.isRequestable);
-
   return isLoading ? (
     <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin" />
@@ -332,7 +330,7 @@ export default function BookingCalendar({
       <RequestEventDialog
         isOpen={isRequestEventDialogOpen}
         onClose={() => setRequestEventDialogOpen(false)}
-        eventTypes={requestableEvents}
+        eventTypes={eventTypes}
       />
       <ViewEventDialog
         isOpen={isViewEventDialogOpen}
