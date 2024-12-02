@@ -8,6 +8,7 @@ import HeroSection from "@/components/sections/hero-section";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
 import ServicesSection from "@/components/sections/services-section";
+import { DonationsSection } from "@/components/sections/donations-section";
 
 export default async function Home() {
   moment.locale("en-CA");
@@ -33,6 +34,7 @@ export default async function Home() {
           <UpcomingEventsSection upcomingEvents={upcomingEvents} />
         )}
         <ServicesSection eventTypes={eventTypes} />
+        <DonationsSection />
       </main>
     </>
   );
