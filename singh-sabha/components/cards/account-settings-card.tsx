@@ -16,7 +16,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { RefreshCw, Info, Copy, Edit, Check } from "lucide-react";
+import { RefreshCw, Info, Clipboard, Edit, Check } from "lucide-react";
 
 import { AddOtp, ChangeEmail, ChangePassword } from "@/lib/api/users/mutations";
 import { User } from "@/db/schema";
@@ -180,14 +180,18 @@ export default function AccountSettingsForm({
                 type="text"
                 value={otp}
                 readOnly
-                className="flex-grow"
+                className="flex-grow font-mono"
               />
               <Button type="button" onClick={generateOtp}>
                 <RefreshCw />
                 Generate
               </Button>
-              <Button type="button" onClick={copyToClipboard} disabled={!otp}>
-                <Copy
+              <Button
+                onClick={copyToClipboard}
+                disabled={!otp}
+                className="h-10 w-10"
+              >
+                <Clipboard
                   className={`h-4 w-4 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-100"}`}
                 />
                 <Check

@@ -3,8 +3,9 @@ import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Copy } from "lucide-react";
+import { Check, Clipboard } from "lucide-react";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
+import { Input } from "../ui/input";
 
 export function DonationsSection() {
   const ref = React.useRef(null);
@@ -62,23 +63,21 @@ export function DonationsSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <div className="bg-muted/50 p-3 rounded-md flex-grow">
-                    <span className="font-mono text-sm text-foreground">
-                      singhsabhayyj@gmail.com
-                    </span>
-                  </div>
+                  <Input
+                    readOnly
+                    value="singhsabhayyj@gmail.com"
+                    className="font-mono flex-grow"
+                  />
 
                   <motion.div variants={fadeInWithDelay(0.5)}>
-                    <Button
-                      onClick={handleCopy}
-                      size="icon"
-                      className="h-10 w-10"
-                    >
-                      {copied ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
+                    <Button onClick={handleCopy} className="h-10 w-10">
+                      <Clipboard
+                        className={`h-4 w-4 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-100"}`}
+                      />
+                      <Check
+                        className={`h-4 w-4 absolute transition-opacity duration-300 ${copied ? "opacity-100" : "opacity-0"}`}
+                      />
+                      <span className="sr-only">Copy to clipboard</span>
                     </Button>
                   </motion.div>
                 </div>
