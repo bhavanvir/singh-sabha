@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -31,6 +32,7 @@ import { EventColors } from "@/lib/types/event-colours";
 
 const eventTypeSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
+  description: z.string().nullish(),
   isRequestable: z.boolean().nullable().default(false),
   isSpecial: z.boolean().nullable().default(false),
 });
@@ -50,6 +52,7 @@ export default function EventManagementCard({
     resolver: zodResolver(eventTypeSchema),
     defaultValues: {
       displayName: "",
+      description: undefined,
       isRequestable: false,
       isSpecial: false,
     },
@@ -58,12 +61,13 @@ export default function EventManagementCard({
   const handleCreateEventType: SubmitHandler<
     z.infer<typeof eventTypeSchema>
   > = (data) => {
-    toast.promise(CreateEventType({ eventType: data }), {
+    const eventTypeData = {
+      ...data,
+      description: data.description || null,
+    };
+    toast.promise(CreateEventType({ eventType: eventTypeData }), {
       loading: "Creating event type...",
-      success: (_) => {
-        eventTypeForm.reset();
-        return `Created ${data.displayName}.`;
-      },
+      success: `Created ${data.displayName}.`,
       error: "Failed to create an event.",
     });
   };
@@ -72,16 +76,15 @@ export default function EventManagementCard({
     data,
   ) => {
     if (editingEvent) {
-      const updatedEvent: Partial<EventType> = data;
-      updatedEvent["id"] = editingEvent.id;
+      const updatedEvent: Partial<EventType> = {
+        ...data,
+        description: data.description || null,
+        id: editingEvent.id,
+      };
 
       toast.promise(UpdateEventType({ eventType: updatedEvent as EventType }), {
         loading: "Updating event...",
-        success: (_) => {
-          setEditingEvent(null);
-          eventTypeForm.reset();
-          return "Event updated successfully!";
-        },
+        success: "Event updated successfully!",
         error: "Failed to update event.",
       });
     }
@@ -116,6 +119,24 @@ export default function EventManagementCard({
                   <FormLabel>Display Name</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="New event type" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={eventTypeForm.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      value={field.value ?? ""}
+                      placeholder="Enter event description"
+                      className="min-h-[100px]"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -205,6 +226,7 @@ export default function EventManagementCard({
                       >
                         {type.isSpecial ? "Special" : "Regular"}
                       </Badge>
+                      {type.isRequestable && <Badge>Requestable</Badge>}
                       <span>{type.displayName}</span>
                     </div>
 
