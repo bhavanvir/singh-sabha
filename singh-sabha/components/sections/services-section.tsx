@@ -3,11 +3,9 @@
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventType } from "@/db/schema";
-import { EventColors } from "@/lib/types/event-colours";
 
 interface ServicesSectionProps {
   eventTypes: EventType[];
@@ -25,7 +23,7 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
   }, [isInView, controls]);
 
   return (
-    <section className="border-t py-16 bg-background" ref={ref}>
+    <section className="border-t py-16 bg-background" ref={ref} id="services">
       <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -42,31 +40,19 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
 
           <motion.div
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+            className="flex flex-wrap justify-center gap-4"
           >
-            {eventTypes.map((eventType, index) => (
+            {eventTypes.map((type, index) => (
               <motion.div
-                key={eventType.id}
+                key={type.id}
                 variants={fadeInWithDelay(0.3 + index * 0.1)}
+                className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)]"
               >
                 <Card className="h-full">
                   <CardHeader>
-                    <CardTitle>{eventType.displayName}</CardTitle>
+                    <CardTitle>{type.displayName}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap items-center space-x-2">
-                      <Badge
-                        style={{
-                          backgroundColor: eventType.isSpecial
-                            ? EventColors.special
-                            : EventColors.regular,
-                        }}
-                      >
-                        {eventType.isSpecial ? "Special" : "Regular"}
-                      </Badge>
-                      {eventType.isRequestable && <Badge>Requestable</Badge>}
-                    </div>
-                  </CardContent>
+                  <CardContent>{type.description}</CardContent>
                 </Card>
               </motion.div>
             ))}

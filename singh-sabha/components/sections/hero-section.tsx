@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import { notoSansGurmukhi } from "@/app/fonts";
-import { FadeText } from "./animations/fade-text";
+import { FadeText } from "../animations/fade-text";
 
 import { ChevronDown, HandPlatter, HandCoins } from "lucide-react";
 
@@ -48,7 +49,6 @@ export default function HeroSection() {
   const scrollToContent = () => {
     window.scrollTo({
       top: window.innerHeight,
-      behavior: "smooth",
     });
   };
 
@@ -99,9 +99,11 @@ export default function HeroSection() {
             variants={staggerContainer}
           >
             <motion.div variants={fadeInWithDelay(0.7)}>
-              <Button size="lg" className="text-lg">
-                <HandPlatter className="mr-2 h-5 w-5" />
-                Our Services
+              <Button size="lg" className="text-lg" asChild>
+                <Link href="#services" scroll={true}>
+                  <HandPlatter className="mr-2 h-5 w-5" />
+                  Our Services
+                </Link>
               </Button>
             </motion.div>
             <motion.div variants={fadeInWithDelay(0.9)}>

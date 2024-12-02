@@ -6,9 +6,13 @@ import { format } from "date-fns";
 import { Calendar, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
-import { ChevronsLeftRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
@@ -49,18 +53,21 @@ export default function UpcomingEventsSection({
             </p>
           </motion.div>
 
-          <motion.div>
-            <ScrollArea className="w-full whitespace-nowrap">
-              <motion.div
-                className="flex w-max space-x-4"
-                variants={staggerContainer}
-              >
-                {upcomingEvents.map((event, index) => (
-                  <motion.div
+          <motion.div variants={fadeInWithDelay(0.3)}>
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {upcomingEvents.map((event) => (
+                  <CarouselItem
                     key={event.id}
-                    variants={fadeInWithDelay(0.3 + index * 0.2)}
+                    className="md:basis-1/2 lg:basis-1/3"
                   >
-                    <Card className="w-96 flex-shrink-0">
+                    <Card className="h-full">
                       <CardHeader>
                         <CardTitle className="mt-2">{event.title}</CardTitle>
                         <div className="space-x-2 flex items-center">
@@ -93,20 +100,12 @@ export default function UpcomingEventsSection({
                         </div>
                       </CardContent>
                     </Card>
-                  </motion.div>
+                  </CarouselItem>
                 ))}
-              </motion.div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-            <motion.div
-              className="flex flex-col items-center mt-2"
-              variants={fadeInWithDelay(0.5)}
-            >
-              <ChevronsLeftRight className="text-muted-foreground h-8 w-8" />
-              <p className="text-sm text-muted-foreground mt-1">
-                Scroll to explore
-              </p>
-            </motion.div>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </motion.div>
         </motion.div>
       </div>
