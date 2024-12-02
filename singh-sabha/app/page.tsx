@@ -4,10 +4,10 @@ import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
 import { GetEventsBetweenDates } from "@/lib/api/events/queries";
 import NavBar from "@/components/navbar";
 import { ActiveAnnouncement } from "@/components/announcement";
-import HeroSection from "@/components/hero-section";
-import UpcomingEventsSection from "@/components/upcoming-events-section";
-import { GetAllEventTypes } from "@/lib/api/event-types/queries";
-import ServicesSection from "@/components/services-section";
+import HeroSection from "@/components/sections/hero-section";
+import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
+import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
+import ServicesSection from "@/components/sections/services-section";
 
 export default async function Home() {
   moment.locale("en-CA");
@@ -21,7 +21,7 @@ export default async function Home() {
     startDate: weekStart,
     endDate: weekEnd,
   });
-  const eventTypes = await GetAllEventTypes();
+  const eventTypes = await GetAllRequestableEventTypes();
 
   return (
     <>
