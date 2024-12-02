@@ -19,6 +19,7 @@ export const CreateEventType = async ({
   try {
     await db.insert(eventTypeTable).values({
       displayName: eventType.displayName,
+      description: eventType.description,
       isSpecial: eventType.isSpecial,
       isRequestable: eventType.isRequestable,
     });
@@ -43,6 +44,7 @@ export const UpdateEventType = async ({
       .update(eventTypeTable)
       .set({
         displayName: eventType.displayName,
+        description: eventType.description,
         isSpecial: eventType.isSpecial,
         isRequestable: eventType.isRequestable,
       })
