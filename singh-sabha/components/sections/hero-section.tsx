@@ -107,9 +107,11 @@ export default function HeroSection() {
               </Button>
             </motion.div>
             <motion.div variants={fadeInWithDelay(0.9)}>
-              <Button variant="secondary" size="lg" className="text-lg">
-                <HandCoins className="mr-2 h-5 w-5" />
-                Donate
+              <Button variant="secondary" size="lg" className="text-lg" asChild>
+                <Link href="#donations" scroll={true}>
+                  <HandCoins className="mr-2 h-5 w-5" />
+                  Donate
+                </Link>
               </Button>
             </motion.div>
           </motion.div>
