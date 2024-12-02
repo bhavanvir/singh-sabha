@@ -10,9 +10,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
@@ -28,6 +27,8 @@ export default function UpcomingEventsSection({
   const ref = React.useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
 
   React.useEffect(() => {
     if (isInView) {
@@ -54,13 +55,7 @@ export default function UpcomingEventsSection({
           </motion.div>
 
           <motion.div variants={fadeInWithDelay(0.3)}>
-            <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
+            <Carousel className="w-full" plugins={[plugin.current]}>
               <CarouselContent>
                 {upcomingEvents.map((event) => (
                   <CarouselItem
@@ -103,8 +98,6 @@ export default function UpcomingEventsSection({
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
             </Carousel>
           </motion.div>
         </motion.div>
