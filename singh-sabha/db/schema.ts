@@ -38,6 +38,7 @@ export const eventTypeTable = pgTable("event_types", {
     .primaryKey()
     .$defaultFn(() => createId()),
   displayName: text("display_name").notNull(),
+  description: text("description"),
   isRequestable: boolean("is_requestable").default(false),
   isSpecial: boolean("is_special").default(false),
 });
