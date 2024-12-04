@@ -1,0 +1,1 @@
+ALTER TABLE "events" RENAME COLUMN "verified" TO "is_verified";
