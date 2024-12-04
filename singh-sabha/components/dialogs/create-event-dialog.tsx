@@ -88,7 +88,7 @@ export default function CreateEventDialog({
       allDay: startDateTime === endDateTime,
       title: data.title,
       note: data.note,
-      verified: true,
+      isVerified: true,
       frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,
     };

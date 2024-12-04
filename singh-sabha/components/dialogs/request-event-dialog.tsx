@@ -82,7 +82,7 @@ export default function RequestEventDialog({
       allDay: startDateTime === endDateTime,
       title: data.title,
       note: data.note,
-      verified: false,
+      isVerified: false,
       frequencyRule: null,
       isPublic: data.isPublic,
     };
