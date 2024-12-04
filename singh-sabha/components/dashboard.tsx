@@ -21,6 +21,8 @@ import { logout } from "@/components/actions/logout-action";
 import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
+import AnalyticsDashboard from "@/components/analytics-dashboard";
+
 import type { ConflictingEvent } from "@/components/notifications";
 import type {
   User,
@@ -29,11 +31,13 @@ import type {
   EventType,
   Announcement,
 } from "@/db/schema";
+import { Analytics } from "@/lib/types/analytics";
 
 const PAGES = {
   CALENDAR: "Calendar",
   NOTIFICATIONS: "Notifications",
   SETTINGS: "Settings",
+  ANALYTICS: "Analytics",
 } as const;
 
 type PageKey = keyof typeof PAGES;
@@ -46,6 +50,7 @@ interface DashboardProps {
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
+  analytics: Analytics;
 }
 
 export function Dashboard({
@@ -56,6 +61,7 @@ export function Dashboard({
   mailingList,
   eventTypes,
   announcements,
+  analytics,
 }: DashboardProps) {
   const [activePage, setActivePage] = React.useState<PageKey>("CALENDAR");
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -74,6 +80,7 @@ export function Dashboard({
         announcements={announcements}
       />
     ),
+    ANALYTICS: <AnalyticsDashboard analytics={analytics} />,
   };
 
   const handleLogOut = () => {

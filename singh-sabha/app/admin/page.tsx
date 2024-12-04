@@ -1,6 +1,10 @@
 import { validateRequest } from "@/lib/auth";
 import { Dashboard } from "@/components/dashboard";
-import { GetAllEvents, GetAllUnverifiedEvents } from "@/lib/api/events/queries";
+import {
+  GetAllEvents,
+  GetAllUnverifiedEvents,
+  GetEventsOverTime,
+} from "@/lib/api/events/queries";
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 import { GetAllEventTypes } from "@/lib/api/event-types/queries";
 import { GetAllUsers } from "@/lib/api/users/queries";
@@ -11,6 +15,7 @@ import moment from "moment";
 
 import type { ConflictingEvent } from "@/components/notifications";
 import type { EventWithType } from "@/db/schema";
+import type { Analytics } from "@/lib/types/analytics";
 
 export default async function Page() {
   const { user } = await validateRequest();
@@ -24,6 +29,10 @@ export default async function Page() {
   const mailingList = await GetMailingList();
   const eventTypes = await GetAllEventTypes();
   const announcements = await GetAllAnnouncements();
+
+  const analytics: Analytics = {};
+  const eventsOverTime = await GetEventsOverTime();
+  analytics.EventsOverTime = eventsOverTime;
 
   // Applies all reoccurence rules
   const allGeneratedEvents = generateRecurringEvents(events);
@@ -62,6 +71,7 @@ export default async function Page() {
         mailingList={mailingList}
         eventTypes={eventTypes}
         announcements={announcements}
+        analytics={analytics}
       />
     </>
   );
