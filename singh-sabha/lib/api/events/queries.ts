@@ -15,7 +15,7 @@ export const GetAllVerifiedEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.verified, true));
+      .where(eq(eventTable.isVerified, true));
 
     revalidatePath("/calendar");
 
@@ -37,7 +37,7 @@ export const GetAllUnverifiedEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.verified, false));
+      .where(eq(eventTable.isVerified, false));
 
     revalidatePath("/admin");
 

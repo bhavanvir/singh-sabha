@@ -279,7 +279,7 @@ export default function BookingCalendar({
           : EventColors.regular,
         borderRadius: "0.375rem", // Tailwind rounded-md
         border: "none",
-        opacity: event.verified ? "1" : ".5",
+        opacity: event.isVerified ? "1" : ".5",
       };
 
       if (!event.isPublic && !user)

@@ -29,7 +29,7 @@ export default async function Page() {
   const allGeneratedEvents = generateRecurringEvents(events);
 
   const verifiedEvents = events.filter(
-    (event: EventWithType) => event.verified === true,
+    (event: EventWithType) => event.isVerified === true,
   );
 
   for (let i = 0; i < notifications.length; i++) {

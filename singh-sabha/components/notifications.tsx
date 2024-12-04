@@ -62,7 +62,7 @@ export default function Notifications({
     toast.promise(
       async () => {
         const updatedEvent = await UpdateEvent({
-          updatedEvent: { ...event, verified: true },
+          updatedEvent: { ...event, isVerified: true },
         });
         await sendEventEmails(event, "/api/send/approved");
         setIsOpen(false);

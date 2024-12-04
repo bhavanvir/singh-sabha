@@ -58,7 +58,7 @@ export const eventTable = pgTable("events", {
   allDay: boolean("all_day").notNull().default(false),
   title: text("title").notNull(),
   note: text("note"),
-  verified: boolean("verified").default(false),
+  isVerified: boolean("is_verified").default(false),
   frequencyRule: text("frequency_rule"),
   isPublic: boolean("is_public").default(false),
 });
