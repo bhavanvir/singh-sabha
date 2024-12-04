@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
-import { eq, and, gte, lte } from "drizzle-orm";
+import { eq, and, gte, lte, sql, count } from "drizzle-orm";
+
 import type { EventWithType } from "@/db/schema";
 
 export const GetAllVerifiedEvents = async (): Promise<EventWithType[]> => {
@@ -105,5 +106,33 @@ export const GetEventsBetweenDates = async ({
     }));
   } catch (err) {
     throw new Error(`Could not fetch events: ${err}`);
+  }
+};
+
+export const GetEventsOverTime = async (): Promise<
+  {
+    date: string;
+    count: number;
+  }[]
+> => {
+  try {
+    const eventsOverTime = await db
+      .select({
+        date: sql<string>`DATE(${eventTable.start})`.as("date"),
+        count: count(),
+      })
+      .from(eventTable)
+      .where(
+        and(
+          eq(eventTable.isVerified, true),
+          sql`${eventTable.start} >= CURRENT_DATE - INTERVAL '30 days'`,
+        ),
+      )
+      .groupBy(sql`DATE(${eventTable.start})`)
+      .orderBy(sql`DATE(${eventTable.start})`);
+
+    return eventsOverTime;
+  } catch (err) {
+    throw new Error(`Could not fetch events over time: ${err}`);
   }
 };
