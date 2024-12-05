@@ -148,9 +148,9 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
             <FormLabel required>Type</FormLabel>
             <FormControl>
               <Select
+                value={field.value}
+                name={field.name}
                 onValueChange={field.onChange}
-                defaultValue={field.value}
-                {...field}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select an event type" />
