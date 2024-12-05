@@ -18,6 +18,7 @@ export default function EventConfirmationEmail({
   registrantFullName,
   type,
   start,
+  end,
   title,
 }: Partial<Event>) {
   return (
@@ -44,6 +45,9 @@ export default function EventConfirmationEmail({
                 <Text className="text-sm text-card-foreground">
                   <span className="font-medium">Date:</span>{" "}
                   {format(start!, "MMMM d, yyyy")}
+                  {format(start!, "MMMM d, yyyy") !==
+                    format(end!, "MMMM d, yyyy") &&
+                    ` - ${format(end!, "MMMM d, yyyy")}`}
                 </Text>
               </div>
             </Section>
