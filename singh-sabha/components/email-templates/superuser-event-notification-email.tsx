@@ -20,8 +20,6 @@ export default function SuperuserEventNotificationEmail({
   registrantPhoneNumber,
   type,
   start,
-  end,
-  allDay,
   title,
   note,
   isPublic,
@@ -50,12 +48,6 @@ export default function SuperuserEventNotificationEmail({
                 <Text className="text-sm text-card-foreground">
                   <span className="font-medium">Date:</span>{" "}
                   {format(start!, "MMMM d, yyyy")}
-                </Text>
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Time:</span>{" "}
-                  {allDay
-                    ? "All Day"
-                    : `${format(start!, "h:mm a")} - ${format(end!, "h:mm a")}`}
                 </Text>
                 <Text className="text-sm text-card-foreground">
                   <span className="font-medium">Public:</span>{" "}
