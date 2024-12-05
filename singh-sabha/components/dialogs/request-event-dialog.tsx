@@ -22,7 +22,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import moment from "moment";
+import { startOfDay, endOfDay } from "date-fns";
 
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { userEventSchema } from "@/lib/event-schema";
@@ -51,8 +51,11 @@ export default function RequestEventDialog({
       title: "",
       type: "",
       note: "",
-      timeRange: [9 * 4, 17 * 4],
       isPublic: false,
+      dateRange: {
+        from: undefined,
+        to: undefined,
+      },
     },
   });
 
@@ -64,22 +67,17 @@ export default function RequestEventDialog({
   const handleSubmit: SubmitHandler<z.infer<typeof userEventSchema>> = (
     data,
   ) => {
-    const startDateTime = moment(data.dateRange.from)
-      .hour(Math.floor(data.timeRange[0] / 4))
-      .minute((data.timeRange[0] % 4) * 15);
-
-    const endDateTime = moment(data.dateRange.to)
-      .hour(Math.floor(data.timeRange[1] / 4))
-      .minute((data.timeRange[1] % 4) * 15);
+    const startDateTime = startOfDay(data.dateRange.from);
+    const endDateTime = endOfDay(data.dateRange.to || data.dateRange.from);
 
     const newEvent: Omit<Event, "id"> = {
       registrantFullName: data.name,
       registrantEmail: data.email,
       registrantPhoneNumber: data.phoneNumber ?? null,
       type: data.type,
-      start: startDateTime.toDate(),
-      end: endDateTime.toDate(),
-      allDay: startDateTime === endDateTime,
+      start: startDateTime,
+      end: endDateTime,
+      allDay: true,
       title: data.title,
       note: data.note,
       isVerified: false,
@@ -181,7 +179,7 @@ export default function RequestEventDialog({
 
               {/* Right column */}
               <div className="grid grid-cols-1 gap-4 w-full md:w-2/3">
-                <ParametersForm eventTypes={eventTypes} />
+                <ParametersForm eventTypes={eventTypes} role="user" />
               </div>
             </div>
 

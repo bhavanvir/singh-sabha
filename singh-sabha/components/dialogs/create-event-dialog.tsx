@@ -15,9 +15,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import moment from "moment";
+import { set } from "date-fns";
 
-import FrequencyForm from "@/components/forms/frequency-form";
+import { FrequencyForm } from "@/components/forms/frequency-form";
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { superUserEventSchema } from "@/lib/event-schema";
 import { CreateEvent } from "@/lib/api/events/mutations";
@@ -41,12 +41,17 @@ export default function CreateEventDialog({
       title: "",
       type: "",
       note: "",
+      dateRange: {
+        from: undefined,
+        to: undefined,
+      },
+      startTime: "",
+      endTime: "",
       frequency: "",
       selectedDays: [],
       selectedMonths: [],
       count: undefined,
       interval: undefined,
-      timeRange: [9 * 4, 17 * 4],
       isPublic: true,
     },
   });
@@ -59,13 +64,18 @@ export default function CreateEventDialog({
   const handleSubmit: SubmitHandler<z.infer<typeof superUserEventSchema>> = (
     data,
   ) => {
-    const startDateTime = moment(data.dateRange.from)
-      .hour(Math.floor(data.timeRange[0] / 4))
-      .minute((data.timeRange[0] % 4) * 15);
+    const startDate = data.dateRange.from;
+    const endDate = data.dateRange.to || data.dateRange.from;
 
-    const endDateTime = moment(data.dateRange.to)
-      .hour(Math.floor(data.timeRange[1] / 4))
-      .minute((data.timeRange[1] % 4) * 15);
+    const startDateTime = set(startDate, {
+      hours: parseInt(data.startTime!.split(":")[0]),
+      minutes: parseInt(data.startTime!.split(":")[1]),
+    });
+
+    const endDateTime = set(endDate, {
+      hours: parseInt(data.endTime!.split(":")[0]),
+      minutes: parseInt(data.endTime!.split(":")[1]),
+    });
 
     const rule = data.frequency
       ? new RRule({
@@ -74,7 +84,7 @@ export default function CreateEventDialog({
           count: data.count,
           byweekday: data.selectedDays?.map((day) => Number(day)),
           bymonth: data.selectedMonths?.map((month) => Number(month)),
-          dtstart: startDateTime.toDate(),
+          dtstart: startDateTime,
         })
       : null;
 
@@ -83,9 +93,9 @@ export default function CreateEventDialog({
       "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
     > = {
       type: data.type,
-      start: startDateTime.toDate(),
-      end: endDateTime.toDate(),
-      allDay: startDateTime === endDateTime,
+      start: startDateTime,
+      end: endDateTime,
+      allDay: false,
       title: data.title,
       note: data.note,
       isVerified: true,
@@ -125,7 +135,7 @@ export default function CreateEventDialog({
                 className="grid grid-cols-1 gap-4"
                 autoComplete="off"
               >
-                <ParametersForm eventTypes={eventTypes} />
+                <ParametersForm eventTypes={eventTypes} role="admin" />
                 <DialogFooter>
                   <Button type="submit">Create</Button>
                 </DialogFooter>
