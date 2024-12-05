@@ -21,11 +21,11 @@ const baseEventSchema = z.object({
   startTime: z
     .string()
     .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid start time format")
-    .optional(),
+    .nullable(),
   endTime: z
     .string()
     .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid end time format")
-    .optional(),
+    .nullable(),
   isPublic: z.boolean().default(true),
 });
 
