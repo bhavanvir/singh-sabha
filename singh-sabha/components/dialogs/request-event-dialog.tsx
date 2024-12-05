@@ -52,6 +52,8 @@ export default function RequestEventDialog({
       type: "",
       note: "",
       isPublic: false,
+      startTime: null,
+      endTime: null,
     },
   });
 
@@ -175,7 +177,7 @@ export default function RequestEventDialog({
 
               {/* Right column */}
               <div className="grid grid-cols-1 gap-4 w-full md:w-2/3">
-                <ParametersForm eventTypes={eventTypes} role="user" />
+                <ParametersForm eventTypes={eventTypes} role={"user"} />
               </div>
             </div>
 
