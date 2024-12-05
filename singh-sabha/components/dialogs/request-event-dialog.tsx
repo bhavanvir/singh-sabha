@@ -52,10 +52,6 @@ export default function RequestEventDialog({
       type: "",
       note: "",
       isPublic: false,
-      dateRange: {
-        from: undefined,
-        to: undefined,
-      },
     },
   });
 
