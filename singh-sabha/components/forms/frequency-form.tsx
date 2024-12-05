@@ -183,5 +183,3 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
     </>
   );
 }
-
-export default FrequencyForm;

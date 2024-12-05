@@ -18,8 +18,6 @@ export default function EventConfirmationEmail({
   registrantFullName,
   type,
   start,
-  end,
-  allDay,
   title,
 }: Partial<Event>) {
   return (
@@ -47,16 +45,11 @@ export default function EventConfirmationEmail({
                   <span className="font-medium">Date:</span>{" "}
                   {format(start!, "MMMM d, yyyy")}
                 </Text>
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Time:</span>{" "}
-                  {allDay
-                    ? "All Day"
-                    : `${format(start!, "h:mm a")} - ${format(end!, "h:mm a")}`}
-                </Text>
               </div>
             </Section>
             <Text className="text-muted-foreground mt-6">
-              We&apos;ll review your request and get back to you soon.
+              We&apos;ll review your request, find an available time slot, and
+              get back to you soon.
             </Text>
             <Hr className="my-6 border-border" />
             <Text className="text-sm text-muted-foreground">

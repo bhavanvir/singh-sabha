@@ -36,8 +36,6 @@ export async function POST(request: Request) {
           registrantFullName: event.registrantFullName,
           type: eventType ?? event.type,
           start: event.start,
-          end: event.end,
-          allDay: event.allDay,
           title: event.title,
         }),
       });
@@ -64,8 +62,6 @@ export async function POST(request: Request) {
             registrantPhoneNumber: event.registrantPhoneNumber,
             type: eventType ?? event.type,
             start: event.start,
-            end: event.end,
-            allDay: event.allDay,
             title: event.title,
             note: event.note,
             isPublic: event.isPublic,

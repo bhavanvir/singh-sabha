@@ -18,7 +18,6 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, Info } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,20 +34,12 @@ import type { EventType } from "@/db/schema";
 
 interface ParametersFormProps {
   eventTypes: EventType[];
+  role: "admin" | "user";
 }
 
-export function ParametersForm({ eventTypes }: ParametersFormProps) {
+export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
+  const isAdmin = role === "admin";
   const { control } = useFormContext();
-
-  const formatTimeValue = (value: number) => {
-    const hours = Math.floor(value / 4);
-    const minutes = (value % 4) * 15;
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours % 12 || 12;
-    return `${formattedHours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")} ${ampm}`;
-  };
 
   return (
     <div className="grid grid-cols-1 gap-4">
@@ -118,32 +109,36 @@ export function ParametersForm({ eventTypes }: ParametersFormProps) {
           )}
         />
 
-        <FormField
-          control={control}
-          name="timeRange"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>Time Range</FormLabel>
-              <FormControl>
-                <div className="space-y-2">
-                  <Slider
-                    min={0}
-                    max={95}
-                    step={1}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{formatTimeValue(field.value[0])}</span>
-                    <span>{formatTimeValue(field.value[1])}</span>
-                  </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {isAdmin && (
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={control}
+              name="startTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel required>Start Time</FormLabel>
+                  <FormControl>
+                    <Input type="time" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="endTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel required>End Time</FormLabel>
+                  <FormControl>
+                    <Input type="time" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
       </div>
       <FormField
         control={control}
@@ -153,9 +148,9 @@ export function ParametersForm({ eventTypes }: ParametersFormProps) {
             <FormLabel required>Type</FormLabel>
             <FormControl>
               <Select
+                value={field.value}
+                name={field.name}
                 onValueChange={field.onChange}
-                defaultValue={field.value}
-                {...field}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select an event type" />

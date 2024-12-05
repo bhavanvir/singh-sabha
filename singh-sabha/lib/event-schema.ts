@@ -18,7 +18,14 @@ const baseEventSchema = z.object({
       required_error: "Date range missing",
     },
   ),
-  timeRange: z.array(z.number()).length(2),
+  startTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid start time format")
+    .nullable(),
+  endTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid end time format")
+    .nullable(),
   isPublic: z.boolean().default(true),
 });
 
