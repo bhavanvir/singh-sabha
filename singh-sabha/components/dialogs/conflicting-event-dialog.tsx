@@ -1,18 +1,6 @@
 import * as React from "react";
 import { format } from "date-fns";
-import {
-  Mail,
-  Phone,
-  Clock,
-  Bell,
-  CalendarCheck2,
-  CalendarX2,
-  Check,
-  User,
-  X,
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -25,7 +13,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
 
 import { EventColors } from "@/lib/types/event-colours";
 
