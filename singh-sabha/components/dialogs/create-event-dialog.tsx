@@ -41,10 +41,6 @@ export default function CreateEventDialog({
       title: "",
       type: "",
       note: "",
-      dateRange: {
-        from: undefined,
-        to: undefined,
-      },
       startTime: "",
       endTime: "",
       frequency: "",
