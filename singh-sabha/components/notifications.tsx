@@ -16,18 +16,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
 import { sendEventEmails } from "@/lib/send-event-email";
+import ConflictingEventDialog from "./dialogs/conflicting-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 
 import type { EventWithType } from "@/db/schema";
@@ -44,10 +36,10 @@ interface NotificationsProps {
 export default function Notifications({
   notifications = [],
 }: NotificationsProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] =
     React.useState<ConflictingEvent | null>(null);
-  const [understood, setUnderstood] = React.useState(false);
+  const [understood, setUnderstood] = React.useState<boolean>(false);
 
   const handleApprove = (event: ConflictingEvent) => {
     if (event.conflict.length > 0) {
@@ -205,63 +197,14 @@ export default function Notifications({
           </div>
         )}
       </ScrollArea>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm Event Approval</DialogTitle>
-            <DialogDescription>
-              This event conflicts with existing events. Please review and
-              confirm.
-            </DialogDescription>
-          </DialogHeader>
-          <ScrollArea className="mt-4 max-h-[60vh]">
-            {selectedEvent?.conflict.map((conflictEvent, index) => (
-              <div key={index} className="mb-4 p-4 border rounded-md">
-                <div className="space-x-2">
-                  <Badge
-                    style={{
-                      backgroundColor: conflictEvent.eventType?.isSpecial
-                        ? EventColors.special
-                        : EventColors.regular,
-                    }}
-                  >
-                    {conflictEvent.eventType?.isSpecial ? "Special" : "Regular"}
-                  </Badge>
-                  <Badge>{conflictEvent.eventType?.displayName}</Badge>
-                </div>
-                <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
-                <span className="flex items-center text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4 mr-1" />
-                  {format(conflictEvent.start, "EEE, MMM d, h:mm a")} -{" "}
-                  {format(conflictEvent.end, "h:mm a")}
-                </span>
-              </div>
-            ))}
-          </ScrollArea>
-          <div className="flex items-center space-x-2 mt-4">
-            <Checkbox
-              id="understood"
-              checked={understood}
-              onCheckedChange={(checked) => setUnderstood(checked as boolean)}
-            />
-            <label htmlFor="understood" className="text-sm">
-              I understand the conflicts and want to approve this event.
-            </label>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => selectedEvent && approveEvent(selectedEvent)}
-              disabled={!understood}
-            >
-              Approve
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {selectedEvent && (
+        <ConflictingEventDialog
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          selectedEvent={selectedEvent}
+          approveEvent={approveEvent}
+        />
+      )}
     </>
   );
 }
