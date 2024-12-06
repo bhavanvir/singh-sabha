@@ -5,11 +5,12 @@ import {
   Phone,
   Clock,
   Bell,
-  CalendarCheck2,
-  CalendarX2,
+  Calendar,
+  CalendarSearch,
   Check,
   User,
   X,
+  Search,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,38 +20,33 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
 import { sendEventEmails } from "@/lib/send-event-email";
-import ConflictingEventDialog from "./dialogs/conflicting-event-dialog";
+import ReviewEventDialog from "./dialogs/review-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
-export interface ConflictingEvent extends EventWithType {
-  conflict: EventWithType[];
-}
-
 interface NotificationsProps {
-  notifications: ConflictingEvent[];
+  notifications: EventWithType[];
+  verifiedEvents: EventWithType[];
 }
 
 export default function Notifications({
-  notifications = [],
+  notifications,
+  verifiedEvents,
 }: NotificationsProps) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] =
-    React.useState<ConflictingEvent | null>(null);
+    React.useState<EventWithType | null>(null);
   const [understood, setUnderstood] = React.useState<boolean>(false);
+  const [isReviewed, setIsReviewed] = React.useState<boolean>(false);
 
-  const handleApprove = (event: ConflictingEvent) => {
-    if (event.conflict.length > 0) {
-      setSelectedEvent(event);
-      setIsOpen(true);
-    } else {
-      approveEvent(event);
-    }
+  const handleApprove = (event: EventWithType) => {
+    setSelectedEvent(event);
+    setIsOpen(true);
   };
 
-  const approveEvent = (event: ConflictingEvent) => {
+  const approveEvent = (event: EventWithType) => {
     toast.promise(
       async () => {
         const updatedEvent = await UpdateEvent({
@@ -69,7 +65,7 @@ export default function Notifications({
     );
   };
 
-  const handleDismiss = (event: ConflictingEvent) => {
+  const handleDismiss = (event: EventWithType) => {
     toast.promise(
       async () => {
         await DeleteEvent({ id: event.id });
@@ -109,22 +105,22 @@ export default function Notifications({
                           </Badge>
                           <Badge>{notification.eventType?.displayName}</Badge>
                         </div>
-                        {notification.conflict.length > 0 ? (
-                          <CalendarX2 className="h-5 w-5 stroke-destructive" />
-                        ) : (
-                          <CalendarCheck2 className="h-5 w-5 stroke-green-500" />
+                        {!isReviewed && (
+                          <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
                         )}
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
                         {notification.title}
                       </h3>
-                      <p className="flex items-center text-sm text-muted-foreground mb-2">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {format(
-                          notification.start,
-                          "EEE, MMM d, h:mm a",
-                        )} - {format(notification.end, "h:mm a")}
-                      </p>
+                      <div>
+                        <p className="flex items-center text-sm text-muted-foreground mb-2">
+                          <Calendar className="h-4 w-4 mr-1" />
+                          {format(notification.start, "MMMM d, yyyy")}
+                          {format(notification.start, "MMMM d, yyyy") !==
+                            format(notification.end, "MMMM d, yyyy") &&
+                            ` - ${format(notification.end, "MMMM d, yyyy")}`}
+                        </p>
+                      </div>
                       {(notification.registrantFullName ||
                         notification.registrantEmail ||
                         notification.registrantPhoneNumber) && (
@@ -177,8 +173,8 @@ export default function Notifications({
                           Dismiss
                         </Button>
                         <Button onClick={() => handleApprove(notification)}>
-                          <Check />
-                          Approve
+                          <Search />
+                          Review
                         </Button>
                       </div>
                     </div>
@@ -198,11 +194,12 @@ export default function Notifications({
         )}
       </ScrollArea>
       {selectedEvent && (
-        <ConflictingEventDialog
+        <ReviewEventDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           selectedEvent={selectedEvent}
           approveEvent={approveEvent}
+          verifiedEvents={verifiedEvents}
         />
       )}
     </>
