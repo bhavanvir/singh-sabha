@@ -23,13 +23,13 @@ import Notifications from "@/components/notifications";
 import Settings from "@/components/settings";
 import AnalyticsDashboard from "@/components/analytics-dashboard";
 
-import type { ConflictingEvent } from "@/components/notifications";
 import type {
   User,
   Event,
   MailingList,
   EventType,
   Announcement,
+  EventWithType,
 } from "@/db/schema";
 import { Analytics } from "@/lib/types/analytics";
 
@@ -46,7 +46,7 @@ interface DashboardProps {
   user: User;
   users: Omit<User, "passwordHash">[];
   events: Event[];
-  notifications: ConflictingEvent[];
+  notifications: EventWithType[];
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
@@ -66,11 +66,20 @@ export function Dashboard({
   const [activePage, setActivePage] = React.useState<PageKey>("CALENDAR");
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
+  const verifiedEvents = events.filter(
+    (event: EventWithType) => event.isVerified === true,
+  );
+
   const pageComponents = {
     CALENDAR: (
       <BookingCalendar user={user} events={events} eventTypes={eventTypes} />
     ),
-    NOTIFICATIONS: <Notifications notifications={notifications} />,
+    NOTIFICATIONS: (
+      <Notifications
+        notifications={notifications}
+        verifiedEvents={verifiedEvents}
+      />
+    ),
     SETTINGS: (
       <Settings
         user={user}
