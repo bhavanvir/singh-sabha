@@ -69,6 +69,12 @@ export default function ReviewEventDialog({
     console.log(updatedEvent);
   };
 
+  const handleClose = () => {
+    setStartTime(null);
+    setEndTime(null);
+    onClose();
+  };
+
   React.useEffect(() => {
     if (startTime && endTime && selectedEvent) {
       const updateEventTime = (originalDate: Date, timeString: string) => {
@@ -92,7 +98,7 @@ export default function ReviewEventDialog({
   }, [startTime, endTime, selectedEvent, verifiedEvents]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Review Event</DialogTitle>
@@ -191,7 +197,7 @@ export default function ReviewEventDialog({
             )}
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => onClose()}>
+              <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
               <Button type="submit" disabled={!areTimesFilled || !understood}>
