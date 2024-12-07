@@ -22,6 +22,9 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
     }
   }, [isInView, controls]);
 
+  const alphaSortedEventTypes = eventTypes.sort((a, b) =>
+    a.displayName.localeCompare(b.displayName),
+  );
   return (
     <section className="border-t py-16 bg-background" ref={ref} id="services">
       <div className="container mx-auto px-4">
@@ -42,7 +45,7 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
             variants={staggerContainer}
             className="flex flex-wrap justify-center gap-4"
           >
-            {eventTypes.map((type, index) => (
+            {alphaSortedEventTypes.map((type, index) => (
               <motion.div
                 key={type.id}
                 variants={fadeInWithDelay(0.3 + index * 0.1)}
