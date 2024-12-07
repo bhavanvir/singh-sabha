@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTypeTable } from "@/db/schema";
+import { asc, desc } from "drizzle-orm";
 
 import type { EventType } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -24,7 +25,8 @@ export const GetAllRequestableEventTypes = async (): Promise<EventType[]> => {
     const eventTypes = await db
       .select()
       .from(eventTypeTable)
-      .where(eq(eventTypeTable.isRequestable, true));
+      .where(eq(eventTypeTable.isRequestable, true))
+      .orderBy(asc(eventTypeTable.displayName));
 
     revalidatePath("/admin");
 

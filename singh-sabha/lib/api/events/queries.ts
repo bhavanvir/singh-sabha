@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
-import { eq, and, gte, lte, sql, count } from "drizzle-orm";
+import { eq, and, gte, lte, sql, count, asc } from "drizzle-orm";
 
 import type { EventWithType } from "@/db/schema";
 
@@ -38,7 +38,8 @@ export const GetAllUnverifiedEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.isVerified, false));
+      .where(eq(eventTable.isVerified, false))
+      .orderBy(asc(eventTable.start));
 
     revalidatePath("/admin");
 
