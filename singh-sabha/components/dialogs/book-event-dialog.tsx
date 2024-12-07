@@ -31,17 +31,17 @@ import { sendEventEmails } from "@/lib/send-event-email";
 
 import type { Event, EventType } from "@/db/schema";
 
-interface RequestEventDialogProps {
+interface BookEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   eventTypes: EventType[];
 }
 
-export default function RequestEventDialog({
+export default function BookEventDialog({
   isOpen,
   onClose,
   eventTypes,
-}: RequestEventDialogProps) {
+}: BookEventDialogProps) {
   const form = useForm<z.infer<typeof userEventSchema>>({
     resolver: zodResolver(userEventSchema),
     defaultValues: {
@@ -56,6 +56,14 @@ export default function RequestEventDialog({
       endTime: null,
     },
   });
+
+  React.useEffect(() => {
+    if (eventTypes && eventTypes.length === 1) {
+      form.reset({
+        type: eventTypes[0].id,
+      });
+    }
+  }, [eventTypes, form]);
 
   const handleClose = () => {
     form.reset();
@@ -86,14 +94,14 @@ export default function RequestEventDialog({
     toast.promise(
       async () => {
         const createdEvent = await CreateEvent({ newEvent });
-        await sendEventEmails(newEvent, "/api/send/confirmation");
+        // await sendEventEmails(newEvent, "/api/send/confirmation");
         return createdEvent;
       },
       {
         loading: "Submitting event and sending confirmation...",
         success:
-          "Event request submitted and confirmation email sent successfully!",
-        error: "Failed to submit event request or send confirmation email",
+          "Event booking submitted and confirmation email sent successfully!",
+        error: "Failed to submit event booking or send confirmation email",
       },
     );
 
@@ -104,7 +112,7 @@ export default function RequestEventDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Request Event</DialogTitle>
+          <DialogTitle>Book Event</DialogTitle>
           <DialogDescription>
             Parameters based on your selection. Click submit when you&apos;re
             done.
