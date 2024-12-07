@@ -1,6 +1,6 @@
 import * as React from "react";
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
+import { Clock, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,15 +22,23 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { Calendar } from "lucide-react";
+
+import { findConflicts } from "@/lib/utils";
 import { timeRangeSchema } from "@/lib/event-schema";
 
 import { EventColors } from "@/lib/types/event-colours";
-import { EventWithType } from "@/db/schema";
-import { findConflicts } from "@/lib/utils";
+import type { EventWithType } from "@/db/schema";
 
 interface ReviewEventDialogProps {
   isOpen: boolean;
@@ -48,14 +56,10 @@ export default function ReviewEventDialog({
   verifiedEvents,
 }: ReviewEventDialogProps) {
   const [understood, setUnderstood] = React.useState<boolean>(false);
-  const [startTime, setStartTime] = React.useState<string | null>(null);
-  const [endTime, setEndTime] = React.useState<string | null>(null);
   const [conflicts, setConflicts] = React.useState<EventWithType[]>([]);
   const [updatedEvent, setUpdatedEvent] = React.useState<EventWithType | null>(
     null,
   );
-
-  const areTimesFilled = startTime && endTime;
 
   const form = useForm<z.infer<typeof timeRangeSchema>>({
     resolver: zodResolver(timeRangeSchema),
@@ -65,15 +69,24 @@ export default function ReviewEventDialog({
     },
   });
 
-  const handleSubmit: SubmitHandler<z.infer<typeof timeRangeSchema>> = () => {
-    console.log(updatedEvent);
+  const handleSubmit: SubmitHandler<z.infer<typeof timeRangeSchema>> = (
+    data,
+  ) => {
+    if (updatedEvent && (conflicts.length === 0 || understood)) {
+      // approveEvent(updatedEvent);
+      handleClose();
+    }
   };
 
   const handleClose = () => {
-    setStartTime(null);
-    setEndTime(null);
+    form.reset();
+    setUnderstood(false);
+    setConflicts([]);
     onClose();
   };
+
+  const startTime = form.watch("startTime");
+  const endTime = form.watch("endTime");
 
   React.useEffect(() => {
     if (startTime && endTime && selectedEvent) {
@@ -94,8 +107,10 @@ export default function ReviewEventDialog({
 
       const conflicts = findConflicts(updatedEvent, verifiedEvents);
       setConflicts(conflicts);
+    } else {
+      setConflicts([]);
     }
-  }, [startTime, endTime, selectedEvent, verifiedEvents]);
+  }, [startTime, endTime, selectedEvent, verifiedEvents, form]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -115,6 +130,7 @@ export default function ReviewEventDialog({
           >
             <div className="grid grid-cols-2 gap-4">
               <FormField
+                control={form.control}
                 name="startTime"
                 render={({ field }) => (
                   <FormItem>
@@ -123,8 +139,11 @@ export default function ReviewEventDialog({
                       <Input
                         type="time"
                         {...field}
-                        value={startTime || ""}
-                        onChange={(e) => setStartTime(e.target.value)}
+                        value={field.value || ""}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.setValue("startTime", e.target.value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -132,6 +151,7 @@ export default function ReviewEventDialog({
                 )}
               />
               <FormField
+                control={form.control}
                 name="endTime"
                 render={({ field }) => (
                   <FormItem>
@@ -140,8 +160,11 @@ export default function ReviewEventDialog({
                       <Input
                         type="time"
                         {...field}
-                        value={endTime || ""}
-                        onChange={(e) => setEndTime(e.target.value)}
+                        value={field.value || ""}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.setValue("endTime", e.target.value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -150,57 +173,87 @@ export default function ReviewEventDialog({
               />
             </div>
 
-            {conflicts.length > 0 && (
-              <>
-                <ScrollArea className="mt-4 max-h-[60vh]">
-                  {conflicts.map((conflictEvent, index) => (
-                    <div key={index} className="mb-4 p-4 border rounded-md">
-                      <div className="space-x-2">
-                        <Badge
+            <Accordion type="multiple" className="space-y-2">
+              {conflicts.map((conflict) => (
+                <AccordionItem
+                  key={conflict.id}
+                  value={conflict.id}
+                  className="border rounded-lg"
+                >
+                  <AccordionTrigger className="hover:no-underline p-4">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className="h-2 w-2 rounded-full"
                           style={{
-                            backgroundColor: conflictEvent.eventType?.isSpecial
+                            backgroundColor: conflict.eventType?.isSpecial
                               ? EventColors.special
                               : EventColors.regular,
                           }}
-                        >
-                          {conflictEvent.eventType?.isSpecial
-                            ? "Special"
-                            : "Regular"}
-                        </Badge>
-                        <Badge>{conflictEvent.eventType?.displayName}</Badge>
+                        />
+                        <span className="font-medium">{conflict.title}</span>
                       </div>
-                      <h4 className="font-bold mt-2">{conflictEvent.title}</h4>
-                      <span className="flex items-center text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {format(
-                          conflictEvent.start,
-                          "EEE, MMM d, h:mm a",
-                        )} - {format(conflictEvent.end, "h:mm a")}
-                      </span>
                     </div>
-                  ))}
-                </ScrollArea>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="text-sm text-muted-foreground space-y-1 px-4">
+                      <div className="flex items-center">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <span>
+                          {format(conflict.start, "MMM d, yyyy")}
+                          {format(conflict.start, "MMM d") !==
+                            format(conflict.end, "MMM d") &&
+                            ` - ${format(conflict.end, "MMM d, yyyy")}`}
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="mr-2 h-4 w-4" />
+                        <span>
+                          {format(conflict.start, "h:mm a")} -{" "}
+                          {format(conflict.end, "h:mm a")}
+                        </span>
+                      </div>
+                      <Badge
+                        variant={
+                          conflict.eventType?.isSpecial
+                            ? "secondary"
+                            : "default"
+                        }
+                      >
+                        {conflict.eventType?.displayName}
+                      </Badge>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
 
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="understood"
-                    checked={understood}
-                    onCheckedChange={(checked) =>
-                      setUnderstood(checked as boolean)
-                    }
-                  />
-                  <label htmlFor="understood" className="text-sm">
-                    I understand the conflicts and want to approve this event.
-                  </label>
-                </div>
-              </>
+            {conflicts.length > 0 && (
+              <div className="flex items-center space-x-2 mt-4">
+                <Checkbox
+                  id="understood"
+                  checked={understood}
+                  onCheckedChange={(checked) =>
+                    setUnderstood(checked as boolean)
+                  }
+                />
+                <label
+                  htmlFor="understood"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I understand the conflicts and want to approve this event.
+                </label>
+              </div>
             )}
 
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={!areTimesFilled || !understood}>
+              <Button
+                type="submit"
+                disabled={conflicts.length > 0 && !understood}
+              >
                 Approve
               </Button>
             </DialogFooter>
