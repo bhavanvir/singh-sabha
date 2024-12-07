@@ -32,7 +32,7 @@ import { EventColors } from "@/lib/types/event-colours";
 
 const eventTypeSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
-  description: z.string().nullish(),
+  description: z.string().max(150, "Description too long").nullish(),
   isRequestable: z.boolean().nullable().default(false),
   isSpecial: z.boolean().nullable().default(false),
 });

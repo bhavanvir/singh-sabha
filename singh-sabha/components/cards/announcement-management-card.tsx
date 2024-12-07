@@ -33,7 +33,7 @@ const announcementSchema = z.object({
   message: z
     .string()
     .min(1, "Message is required")
-    .max(256, "Message too long"),
+    .max(150, "Message too long"),
 });
 
 interface AnnouncementManagementCardProps {
