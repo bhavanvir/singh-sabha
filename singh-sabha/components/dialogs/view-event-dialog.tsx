@@ -36,7 +36,7 @@ export default function ViewEventDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
-            {event.title}
+            {event.occassion}
           </DialogTitle>
           <DialogDescription className="space-x-2">
             <Badge

@@ -45,12 +45,12 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
     <div className="grid grid-cols-1 gap-4">
       <FormField
         control={control}
-        name="title"
+        name="occassion"
         render={({ field }) => (
           <FormItem>
-            <FormLabel required>Title</FormLabel>
+            <FormLabel required>Occassion</FormLabel>
             <FormControl>
-              <Input type="text" placeholder="Add title" {...field} />
+              <Input type="text" placeholder="Add occassion" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

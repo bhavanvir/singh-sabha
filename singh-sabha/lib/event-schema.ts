@@ -13,11 +13,11 @@ export const timeRangeSchema = z.object({
 });
 
 export const baseEventSchema = timeRangeSchema.extend({
-  title: z
+  occassion: z
     .string()
-    .min(1, "Title missing")
-    .min(6, "Title too short")
-    .max(64, "Title too long"),
+    .min(1, "Occassion missing")
+    .min(6, "Occassion too short")
+    .max(64, "Occassion too long"),
   type: z.string().min(1, "Type missing"),
   note: z.string().max(128, "Note too long"),
   dateRange: z.object(

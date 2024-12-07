@@ -119,7 +119,7 @@ export default function Notifications({
                         )}
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
-                        {notification.title}
+                        {notification.occassion}
                       </h3>
                       <div>
                         <p className="flex items-center text-sm text-muted-foreground mb-2">

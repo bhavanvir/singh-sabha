@@ -21,14 +21,14 @@ export default function SuperuserEventNotificationEmail({
   type,
   start,
   end,
-  title,
+  occassion,
   note,
   isPublic,
 }: Partial<Event>) {
   return (
     <Html>
       <Head />
-      <Preview>New event request: {title!}</Preview>
+      <Preview>New event request: {occassion!}</Preview>
       <Tailwind>
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
@@ -40,7 +40,7 @@ export default function SuperuserEventNotificationEmail({
             </Text>
             <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
               <Text className="text-lg font-semibold text-card-foreground mb-4">
-                {title}
+                {occassion}
               </Text>
               <div className="space-y-2">
                 <Text className="text-sm text-card-foreground">

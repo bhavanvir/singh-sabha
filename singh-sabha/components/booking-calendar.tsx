@@ -242,7 +242,7 @@ export default function BookingCalendar({
       <div className="flex justify-between items-center w-full text-xs sm:text-sm">
         {isEventVisible ? (
           <>
-            <span className="truncate">{event.title}</span>
+            <span className="truncate">{event.occassion}</span>
             {eventDuration > 24 && (
               <span className="hidden sm:inline-block text-xs">
                 {moment(event.start).format("HH:mm")} -{" "}

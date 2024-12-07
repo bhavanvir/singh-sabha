@@ -40,7 +40,7 @@ export default function EditEventDialog({
   const form = useForm<z.infer<typeof superUserEventSchema>>({
     resolver: zodResolver(superUserEventSchema),
     defaultValues: {
-      title: event?.title ?? "",
+      occassion: event?.occassion ?? "",
       type: event?.type ?? "",
       note: event?.note ?? "",
       dateRange: {
@@ -79,7 +79,7 @@ export default function EditEventDialog({
       }
 
       form.reset({
-        title: event.title,
+        occassion: event.occassion,
         type: event.type,
         note: event.note ?? "",
         dateRange: {
@@ -138,7 +138,7 @@ export default function EditEventDialog({
       start: startDateTime,
       end: endDateTime,
       allDay: false,
-      title: data.title,
+      occassion: data.occassion,
       note: data.note,
       frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,

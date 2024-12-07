@@ -21,7 +21,7 @@ export default function DeniedEventEmail({
   start,
   end,
   allDay,
-  title,
+  occassion,
 }: Partial<Event>) {
   return (
     <Html>
@@ -39,7 +39,7 @@ export default function DeniedEventEmail({
             </Text>
             <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
               <Text className="text-lg font-semibold text-card-foreground mb-4">
-                {title}
+                {occassion}
               </Text>
               <div className="space-y-2">
                 <Text className="text-sm text-card-foreground">

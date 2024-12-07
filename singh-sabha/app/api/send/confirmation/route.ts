@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     if (
       !event.registrantEmail ||
       !event.registrantFullName ||
-      !event.title ||
+      !event.occassion ||
       !event.start ||
       !event.end
     ) {
@@ -31,13 +31,13 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail,
-        subject: `Event Confirmation: ${event.title}`,
+        subject: `Event Confirmation: ${event.occassion}`,
         react: EventConfirmationEmail({
           registrantFullName: event.registrantFullName,
           type: eventType ?? event.type,
           start: event.start,
           end: event.end,
-          title: event.title,
+          occassion: event.occassion,
         }),
       });
 
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         await resend.emails.send({
           from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
           to: mailingList,
-          subject: `New Event Request: ${event.title}`,
+          subject: `New Event Request: ${event.occassion}`,
           react: SuperuserEventNotificationEmail({
             registrantFullName: event.registrantFullName,
             registrantEmail: event.registrantEmail,
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
             type: eventType ?? event.type,
             start: event.start,
             end: event.end,
-            title: event.title,
+            occassion: event.occassion,
             note: event.note,
             isPublic: event.isPublic,
           }),

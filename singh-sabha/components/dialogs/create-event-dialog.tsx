@@ -38,7 +38,7 @@ export default function CreateEventDialog({
   const form = useForm<z.infer<typeof superUserEventSchema>>({
     resolver: zodResolver(superUserEventSchema),
     defaultValues: {
-      title: "",
+      occassion: "",
       type: "",
       note: "",
       startTime: "",
@@ -92,7 +92,7 @@ export default function CreateEventDialog({
       start: startDateTime,
       end: endDateTime,
       allDay: false,
-      title: data.title,
+      occassion: data.occassion,
       note: data.note,
       isVerified: true,
       frequencyRule: rule ? rule.toString() : null,

@@ -19,12 +19,12 @@ export default function EventConfirmationEmail({
   type,
   start,
   end,
-  title,
+  occassion,
 }: Partial<Event>) {
   return (
     <Html>
       <Head />
-      <Preview>Event request received: {title!}</Preview>
+      <Preview>Event request received: {occassion!}</Preview>
       <Tailwind>
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
@@ -36,7 +36,7 @@ export default function EventConfirmationEmail({
             </Text>
             <Section className="bg-card rounded-lg p-6 shadow-sm border border-border">
               <Text className="text-lg font-semibold text-card-foreground mb-4">
-                {title}
+                {occassion}
               </Text>
               <div className="space-y-2">
                 <Text className="text-sm text-card-foreground">

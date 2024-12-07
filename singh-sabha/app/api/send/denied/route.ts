@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     if (
       !event.registrantEmail ||
       !event.registrantFullName ||
-      !event.title ||
+      !event.occassion ||
       !event.start ||
       !event.end
     ) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
           start: event.start,
           end: event.end,
           allDay: event.allDay,
-          title: event.title,
+          occassion: event.occassion,
         }),
       });
 

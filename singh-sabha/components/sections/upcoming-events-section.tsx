@@ -64,7 +64,9 @@ export default function UpcomingEventsSection({
                   >
                     <Card className="h-full">
                       <CardHeader>
-                        <CardTitle className="mt-2">{event.title}</CardTitle>
+                        <CardTitle className="mt-2">
+                          {event.occassion}
+                        </CardTitle>
                         <div className="space-x-2 flex items-center">
                           <Badge
                             style={{

@@ -162,6 +162,13 @@
       "when": 1733350755161,
       "tag": "0022_hard_jackpot",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1733543480229,
+      "tag": "0023_blue_golden_guardian",
+      "breakpoints": true
     }
   ]
 }
