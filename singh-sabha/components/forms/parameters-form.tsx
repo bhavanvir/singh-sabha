@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 
 import type { EventType } from "@/db/schema";
+import { EventColors } from "@/lib/types/event-colours";
 
 interface ParametersFormProps {
   eventTypes: EventType[];
@@ -162,9 +163,20 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                         value={type.id}
                         key={type.id || type.displayName}
                       >
-                        <span className="flex items-center gap-2">
-                          {type.displayName}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{
+                              backgroundColor: type.isSpecial
+                                ? EventColors.special
+                                : EventColors.regular,
+                            }}
+                          />
+
+                          <span className="flex items-center gap-2">
+                            {type.displayName}
+                          </span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectGroup>
