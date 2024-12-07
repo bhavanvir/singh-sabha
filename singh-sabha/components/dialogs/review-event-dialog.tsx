@@ -1,9 +1,8 @@
 import * as React from "react";
 import { format } from "date-fns";
-import { Clock, Info } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -69,9 +68,7 @@ export default function ReviewEventDialog({
     },
   });
 
-  const handleSubmit: SubmitHandler<z.infer<typeof timeRangeSchema>> = (
-    data,
-  ) => {
+  const handleSubmit: SubmitHandler<z.infer<typeof timeRangeSchema>> = () => {
     if (updatedEvent && (conflicts.length === 0 || understood)) {
       approveEvent(updatedEvent);
       handleClose();
@@ -191,7 +188,9 @@ export default function ReviewEventDialog({
                               : EventColors.regular,
                           }}
                         />
-                        <span className="font-medium">{conflict.title}</span>
+                        <span className="font-medium">
+                          {conflict.occassion}
+                        </span>
                       </div>
                     </div>
                   </AccordionTrigger>
