@@ -118,7 +118,6 @@ export default function RequestEventDialog({
             autoComplete="off"
           >
             <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
-              {/* Left column */}
               <div className="grid grid-cols-1 gap-4 h-fit w-full md:w-1/3">
                 <FormField
                   control={form.control}
@@ -171,11 +170,9 @@ export default function RequestEventDialog({
                 />
               </div>
 
-              {/* Separator */}
               <Separator className="md:hidden" />
               <Separator orientation="vertical" className="hidden md:block" />
 
-              {/* Right column */}
               <div className="grid grid-cols-1 gap-4 w-full md:w-2/3">
                 <ParametersForm eventTypes={eventTypes} role={"user"} />
               </div>
