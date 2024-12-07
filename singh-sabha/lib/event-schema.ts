@@ -1,7 +1,18 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { z } from "zod";
 
-const baseEventSchema = z.object({
+export const timeRangeSchema = z.object({
+  startTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid start time format")
+    .nullable(),
+  endTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid end time format")
+    .nullable(),
+});
+
+export const baseEventSchema = timeRangeSchema.extend({
   title: z
     .string()
     .min(1, "Title missing")
@@ -18,18 +29,10 @@ const baseEventSchema = z.object({
       required_error: "Date range missing",
     },
   ),
-  startTime: z
-    .string()
-    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid start time format")
-    .nullable(),
-  endTime: z
-    .string()
-    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid end time format")
-    .nullable(),
   isPublic: z.boolean().default(true),
 });
 
-const superUserEventSchema = baseEventSchema.extend({
+export const superUserEventSchema = baseEventSchema.extend({
   frequency: z.string(),
   selectedDays: z.array(z.string()).optional(),
   selectedMonths: z.array(z.string()).optional(),
@@ -45,7 +48,7 @@ const superUserEventSchema = baseEventSchema.extend({
     .optional(),
 });
 
-const userEventSchema = baseEventSchema.extend({
+export const userEventSchema = baseEventSchema.extend({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
   email: z.string().min(1, "Email missing").email("Invalid email"),
   phoneNumber: z
@@ -62,5 +65,3 @@ const userEventSchema = baseEventSchema.extend({
       return phoneNumber ? phoneNumber.formatInternational() : value;
     }),
 });
-
-export { baseEventSchema, superUserEventSchema, userEventSchema };

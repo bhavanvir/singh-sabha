@@ -1,3 +1,4 @@
+import moment from "moment";
 import { RRule } from "rrule";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -37,3 +38,25 @@ export const generateRecurringEvents = (
 
   return allGeneratedEvents;
 };
+
+export function findConflicts(
+  notification: EventWithType,
+  verifiedEvents: EventWithType[],
+) {
+  const startA = moment(notification.start);
+  const endA = moment(notification.end);
+
+  const conflicts: EventWithType[] = [];
+  verifiedEvents.forEach((verifiedEvent) => {
+    const startB = moment(verifiedEvent.start);
+    const endB = moment(verifiedEvent.end);
+
+    if (
+      startA.isBetween(startB, endB, null, "[)") ||
+      startB.isBetween(startA, endA, null, "[)")
+    ) {
+      conflicts.push(verifiedEvent);
+    }
+  });
+  return conflicts;
+}
