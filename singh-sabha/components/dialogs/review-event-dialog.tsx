@@ -73,7 +73,7 @@ export default function ReviewEventDialog({
     data,
   ) => {
     if (updatedEvent && (conflicts.length === 0 || understood)) {
-      // approveEvent(updatedEvent);
+      approveEvent(updatedEvent);
       handleClose();
     }
   };
