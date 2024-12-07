@@ -3,15 +3,14 @@ import { format } from "date-fns";
 import {
   Mail,
   Phone,
-  Clock,
   Bell,
   Calendar,
   CalendarSearch,
-  Check,
   User,
   X,
   Search,
 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider } from "./ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,6 +24,7 @@ import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 interface NotificationsProps {
   notifications: EventWithType[];
@@ -106,7 +106,16 @@ export default function Notifications({
                           <Badge>{notification.eventType?.displayName}</Badge>
                         </div>
                         {!isReviewed && (
-                          <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Event requires review</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         )}
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
