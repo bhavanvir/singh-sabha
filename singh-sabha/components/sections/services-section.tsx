@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventType } from "@/db/schema";
+import { RainbowBorder } from "../animations/rainbow-border";
+import BookEventDialog from "../dialogs/book-event-dialog";
 
 interface ServicesSectionProps {
   eventTypes: EventType[];
@@ -15,6 +17,8 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
   const ref = React.useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [selectedService, setSelectedService] = React.useState<EventType[]>([]);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (isInView) {
@@ -22,9 +26,11 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
     }
   }, [isInView, controls]);
 
-  const alphaSortedEventTypes = eventTypes.sort((a, b) =>
-    a.displayName.localeCompare(b.displayName),
-  );
+  const handleBookService = (service: EventType) => {
+    setSelectedService([service]);
+    setIsOpen(true);
+  };
+
   return (
     <section className="border-t py-16 bg-background" ref={ref} id="services">
       <div className="container mx-auto px-4">
@@ -45,23 +51,33 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
             variants={staggerContainer}
             className="flex flex-wrap justify-center gap-4"
           >
-            {alphaSortedEventTypes.map((type, index) => (
+            {eventTypes.map((type, index) => (
               <motion.div
                 key={type.id}
                 variants={fadeInWithDelay(0.3 + index * 0.1)}
                 className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)]"
               >
-                <Card className="h-full">
-                  <CardHeader>
-                    <CardTitle>{type.displayName}</CardTitle>
-                  </CardHeader>
-                  <CardContent>{type.description}</CardContent>
-                </Card>
+                <RainbowBorder>
+                  <Card
+                    className="relative bg-background cursor-pointer"
+                    onClick={() => handleBookService(type)}
+                  >
+                    <CardHeader>
+                      <CardTitle>{type.displayName}</CardTitle>
+                    </CardHeader>
+                    <CardContent>{type.description}</CardContent>
+                  </Card>
+                </RainbowBorder>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </div>
+      <BookEventDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        eventTypes={selectedService}
+      />
     </section>
   );
 }
