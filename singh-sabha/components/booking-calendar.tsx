@@ -27,7 +27,7 @@ import {
 
 import CreateEventDialog from "@/components/dialogs/create-event-dialog";
 import EditEventDialog from "@/components/dialogs/edit-event-dialog";
-import RequestEventDialog from "@/components/dialogs/request-event-dialog";
+import BookEventDialog from "@/components/dialogs/book-event-dialog";
 import ViewEventDialog from "@/components/dialogs/view-event-dialog";
 import { EventColors } from "@/lib/types/event-colours";
 
@@ -52,8 +52,7 @@ export default function BookingCalendar({
   const [isCreateEventDialogOpen, setCreateEventDialogOpen] =
     React.useState(false);
   const [isEditEventDialogOpen, setEditEventDialogOpen] = React.useState(false);
-  const [isRequestEventDialogOpen, setRequestEventDialogOpen] =
-    React.useState(false);
+  const [isBookEventDialogOpen, setBookEventDialogOpen] = React.useState(false);
   const [isViewEventDialogOpen, setViewEventDialogOpen] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [currentView, setCurrentView] = React.useState<View>("month");
@@ -89,7 +88,7 @@ export default function BookingCalendar({
       if (user) {
         setCreateEventDialogOpen(true);
       } else {
-        setRequestEventDialogOpen(true);
+        setBookEventDialogOpen(true);
       }
     };
 
@@ -327,9 +326,9 @@ export default function BookingCalendar({
         event={selectedEvent}
         eventTypes={eventTypes}
       />
-      <RequestEventDialog
-        isOpen={isRequestEventDialogOpen}
-        onClose={() => setRequestEventDialogOpen(false)}
+      <BookEventDialog
+        isOpen={isBookEventDialogOpen}
+        onClose={() => setBookEventDialogOpen(false)}
         eventTypes={eventTypes}
       />
       <ViewEventDialog
