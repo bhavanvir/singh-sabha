@@ -36,8 +36,8 @@ import { Analytics } from "@/lib/types/analytics";
 const PAGES = {
   CALENDAR: "Calendar",
   NOTIFICATIONS: "Notifications",
-  SETTINGS: "Settings",
   ANALYTICS: "Analytics",
+  SETTINGS: "Settings",
 } as const;
 
 type PageKey = keyof typeof PAGES;
