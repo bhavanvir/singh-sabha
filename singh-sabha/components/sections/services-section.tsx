@@ -7,7 +7,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventType } from "@/db/schema";
 import BookEventDialog from "../dialogs/book-event-dialog";
