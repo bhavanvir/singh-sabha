@@ -179,7 +179,7 @@ export function Dashboard({
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
                 <AvatarImage
-                  src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(user.email)}&round=50&backgroundType=solid`}
+                  src={`https://api.dicebear.com/9.x/identicon/svg?seed=${encodeURIComponent(user.email)}&round=50&backgroundType=solid`}
                 />
                 <AvatarFallback>{user.fullName[0]}</AvatarFallback>
               </Avatar>
