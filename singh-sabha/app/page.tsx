@@ -30,9 +30,7 @@ export default async function Home() {
       <ActiveAnnouncement announcement={announcement} />
       <main>
         <HeroSection />
-        {upcomingEvents.length > 0 && (
-          <UpcomingEventsSection upcomingEvents={upcomingEvents} />
-        )}
+        <UpcomingEventsSection upcomingEvents={upcomingEvents} />
         <ServicesSection eventTypes={eventTypes} />
         <DonationsSection />
       </main>
