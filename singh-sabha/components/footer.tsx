@@ -79,7 +79,7 @@ export function Footer() {
                 </svg>
                 <span className="sr-only">Facebook</span>
               </Link>
-              <Link href="">
+              <Link href="https://chat.whatsapp.com/EHUVUDyJ2AT9ftM3k48BBN">
                 <svg
                   role="img"
                   viewBox="0 0 24 24"
