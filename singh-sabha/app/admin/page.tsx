@@ -17,7 +17,7 @@ import type { Analytics } from "@/lib/types/analytics";
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) {
-    redirect("/admin/signin");
+    redirect("/admin/sign-in");
   }
 
   const users = await GetAllUsers();

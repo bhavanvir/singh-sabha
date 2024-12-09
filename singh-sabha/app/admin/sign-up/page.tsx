@@ -110,7 +110,7 @@ function OTPCard({ onValidOTP }: { onValidOTP: () => void }) {
       </CardContent>
       <CardFooter>
         <Button asChild variant="outline" className="w-full">
-          <Link href="/admin/signin">Already have an account? Sign in</Link>
+          <Link href="/admin/sign-in">Already have an account? Sign in</Link>
         </Button>
       </CardFooter>
     </Card>
@@ -206,7 +206,7 @@ function SignUpCard() {
       </CardContent>
       <CardFooter>
         <Button asChild variant="outline" className="w-full">
-          <Link href="/admin/signin">Already have an account? Sign in</Link>
+          <Link href="/admin/sign-in">Already have an account? Sign in</Link>
         </Button>
       </CardFooter>
     </Card>
