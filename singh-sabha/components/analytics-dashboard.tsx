@@ -12,7 +12,7 @@ export default function AnalyticsDashboard({
   analytics: Analytics;
 }) {
   return (
-    <div className="mx-auto p-2">
+    <div className="mx-auto container px-4 md:px-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <EventsOverTimeCard data={analytics.EventsOverTime} />
       </div>

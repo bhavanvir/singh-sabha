@@ -39,7 +39,7 @@ export default function Hukamnama() {
   return (
     <>
       <NavBar currentLink="Hukamnama" />
-      <main className="p-4 max-w-full mx-2">
+      <main className="mx-auto container py-4 px-4 md:px-6">
         {isLoading && (
           <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />
