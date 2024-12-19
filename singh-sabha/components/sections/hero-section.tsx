@@ -84,7 +84,7 @@ export default function HeroSection() {
               text="ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ"
               className={cn(
                 notoSansGurmukhi.className,
-                "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4",
+                "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white",
               )}
               direction="up"
             />
@@ -93,7 +93,7 @@ export default function HeroSection() {
           <motion.div variants={fadeInWithDelay(0.5)}>
             <FadeText
               text="Come, O beloved Sikhs of the True Guru, and sing the True Word of His Bani"
-              className="text-xl sm:text-2xl text-white/80 mb-8"
+              className="text-xl sm:text-2xl text-white/80"
             />
           </motion.div>
 
