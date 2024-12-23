@@ -22,12 +22,12 @@ export default function Settings({
 }: SettingsProps) {
   return (
     <div className="container mx-auto px-4 md:px-6">
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AccountSettingsCard user={user} />
-        {user?.isAdmin && <UserManagementCard users={users} />}
         <MailingListCard mailingList={mailingList} />
         <EventManagementCard eventTypes={eventTypes} />
         <AnnouncementManagementCard announcements={announcements} />
+        {user?.isAdmin && <UserManagementCard users={users} />}
       </div>
     </div>
   );
