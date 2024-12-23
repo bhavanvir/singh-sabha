@@ -14,6 +14,10 @@ import { redirect } from "next/navigation";
 
 import type { Analytics } from "@/lib/types/analytics";
 
+export const metadata = {
+  title: "Admin",
+};
+
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) {

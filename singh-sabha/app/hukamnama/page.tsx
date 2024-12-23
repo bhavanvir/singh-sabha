@@ -11,6 +11,9 @@ import { notoSansGurmukhi } from "../fonts";
 import { cn } from "@/lib/utils";
 
 import type { HukamnamaRoot } from "@/lib/types/hukamnama";
+export const metadata = {
+  title: "Hukamnama",
+};
 
 export default function Hukamnama() {
   const [hukamnama, setHukamnama] = React.useState<HukamnamaRoot | null>(null);

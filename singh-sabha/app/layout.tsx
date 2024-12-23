@@ -8,7 +8,10 @@ import { inter } from "./fonts";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Gurdwara Singh Sabha",
+  title: {
+    default: "Gurdwara Singh Sabha",
+    template: "%s | Gurdwara Singh Sabha",
+  },
   description: "Serving the Sikh community with devotion and compassion.",
 };
 
