@@ -51,7 +51,7 @@ export default function BookEventDialog({
       occassion: "",
       type: "",
       note: "",
-      isPublic: false,
+      isPublic: true,
       startTime: null,
       endTime: null,
     },
@@ -94,7 +94,7 @@ export default function BookEventDialog({
     toast.promise(
       async () => {
         const createdEvent = await CreateEvent({ newEvent });
-        // await sendEventEmails(newEvent, "/api/send/confirmation");
+        await sendEventEmails(newEvent, "/api/send/confirmation");
         return createdEvent;
       },
       {
@@ -114,8 +114,8 @@ export default function BookEventDialog({
         <DialogHeader>
           <DialogTitle>Book Event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click submit when you&apos;re
-            done.
+            Fill out the form based on your request. Click submit when
+            you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 
