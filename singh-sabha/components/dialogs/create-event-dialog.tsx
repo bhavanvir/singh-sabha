@@ -114,8 +114,8 @@ export default function CreateEventDialog({
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
           <DialogDescription>
-            Parameters based on your selection. Click create when you&apos;re
-            done.
+            Fill out the form based on your request. Click submit when
+            you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 
