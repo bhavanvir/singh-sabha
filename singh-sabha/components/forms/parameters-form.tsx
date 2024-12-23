@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, Info } from "lucide-react";
+import { CalendarIcon, Info, CircleAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/select";
 
 import type { EventType } from "@/db/schema";
-import { EventColors } from "@/lib/types/event-colours";
 
 interface ParametersFormProps {
   eventTypes: EventType[];
@@ -42,8 +41,11 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
   const isAdmin = role === "admin";
   const { control } = useFormContext();
 
+  const selectedType = useWatch({ control, name: "type" });
+  const selectedEventType = eventTypes.find((type) => type.id === selectedType);
+
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-6">
       <FormField
         control={control}
         name="occassion"
@@ -51,7 +53,7 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
           <FormItem>
             <FormLabel required>Occassion</FormLabel>
             <FormControl>
-              <Input type="text" placeholder="Add occassion" {...field} />
+              <Input type="text" placeholder="Add the occasion" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -63,7 +65,7 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
           name="dateRange"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel required>Date Range</FormLabel>
+              <FormLabel required>Date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -84,7 +86,7 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                           format(field.value.from, "LLL dd, y")
                         )
                       ) : (
-                        <span>Pick a date range</span>
+                        <span>Pick a date</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -109,7 +111,6 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
             </FormItem>
           )}
         />
-
         {isAdmin && (
           <div className="grid grid-cols-2 gap-4">
             <FormField
@@ -163,20 +164,7 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                         value={type.id}
                         key={type.id || type.displayName}
                       >
-                        <div className="flex items-center space-x-2">
-                          <div
-                            className="h-2 w-2 rounded-full"
-                            style={{
-                              backgroundColor: type.isSpecial
-                                ? EventColors.special
-                                : EventColors.regular,
-                            }}
-                          />
-
-                          <span className="flex items-center gap-2">
-                            {type.displayName}
-                          </span>
-                        </div>
+                        {type.displayName}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -184,6 +172,18 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
               </Select>
             </FormControl>
             <FormMessage />
+
+            {!isAdmin &&
+              selectedEventType &&
+              selectedEventType.deposit > 0.0 && (
+                <p className="pt-1 text-sm text-muted-foreground flex items-center">
+                  <CircleAlert className="h-4 w-4 mr-1" />
+                  You will be charged a ${selectedEventType.deposit.toFixed(
+                    2,
+                  )}{" "}
+                  non-refundable deposit.
+                </p>
+              )}
           </FormItem>
         )}
       />
