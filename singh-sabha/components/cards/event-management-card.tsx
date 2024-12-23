@@ -35,6 +35,10 @@ const eventTypeSchema = z.object({
   description: z.string().max(150, "Description too long").nullish(),
   isRequestable: z.boolean().nullable().default(false),
   isSpecial: z.boolean().nullable().default(false),
+  deposit: z
+    .number()
+    .min(0, "Deposit amount cannot be negative")
+    .max(1000, "Deposit amount must be smaller than $1000"),
 });
 
 interface EventManagementCardProps {
@@ -55,6 +59,7 @@ export default function EventManagementCard({
       description: undefined,
       isRequestable: false,
       isSpecial: false,
+      deposit: 0,
     },
   });
 
@@ -142,6 +147,35 @@ export default function EventManagementCard({
                 </FormItem>
               )}
             />
+            {eventTypeForm.watch("isRequestable") && (
+              <FormField
+                control={eventTypeForm.control}
+                name="deposit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Deposit</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-muted-foreground">
+                          $
+                        </span>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          className="pl-7"
+                          value={field.value}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? 0 : value);
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={eventTypeForm.control}
               name="isRequestable"
@@ -169,7 +203,7 @@ export default function EventManagementCard({
               control={eventTypeForm.control}
               name="isSpecial"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 ">
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div>
                     <FormLabel className="text-base">Special Event</FormLabel>
                     <FormDescription className="flex items-center">
