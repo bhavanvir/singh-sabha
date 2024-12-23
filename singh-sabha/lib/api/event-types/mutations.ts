@@ -22,6 +22,7 @@ export const CreateEventType = async ({
       description: eventType.description,
       isSpecial: eventType.isSpecial,
       isRequestable: eventType.isRequestable,
+      deposit: eventType.deposit,
     });
 
     revalidatePath("/admin");
@@ -47,6 +48,7 @@ export const UpdateEventType = async ({
         description: eventType.description,
         isSpecial: eventType.isSpecial,
         isRequestable: eventType.isRequestable,
+        deposit: eventType.deposit,
       })
       .where(eq(eventTypeTable.id, eventType.id!));
 

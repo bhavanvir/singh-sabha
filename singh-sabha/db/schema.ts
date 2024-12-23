@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, pgTable, real, text, timestamp } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
 
 export const userTable = pgTable("users", {
@@ -41,6 +41,7 @@ export const eventTypeTable = pgTable("event_types", {
   description: text("description"),
   isRequestable: boolean("is_requestable").default(false),
   isSpecial: boolean("is_special").default(false),
+  deposit: real("deposit").default(0.0).notNull(),
 });
 
 export const eventTable = pgTable("events", {
