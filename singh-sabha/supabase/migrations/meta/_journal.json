@@ -169,6 +169,20 @@
       "when": 1733543480229,
       "tag": "0023_blue_golden_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1734915851283,
+      "tag": "0024_quiet_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1734929078057,
+      "tag": "0025_brief_black_cat",
+      "breakpoints": true
     }
   ]
 }
