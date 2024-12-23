@@ -140,7 +140,7 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
         name="count"
         render={({ field }) => (
           <FormItem>
-            <FormLabel required>Repeat Count</FormLabel>
+            <FormLabel required>Number of Repeats</FormLabel>
             <FormControl>
               <Input
                 type="number"
@@ -150,6 +150,10 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
                 onChange={(e) => field.onChange(Number(e.target.value))}
               />
             </FormControl>
+            <p className="pt-1 text-muted-foreground text-sm flex items-center">
+              <Info className="mr-1 h-4 w-4" />
+              Total number of times this event will occur.
+            </p>
             <FormMessage />
           </FormItem>
         )}
@@ -161,7 +165,7 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
           name="interval"
           render={({ field }) => (
             <FormItem>
-              <FormLabel required>Repeat Every</FormLabel>
+              <FormLabel required>Repeat Interval</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -171,14 +175,15 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
+
+              <p className="pt-1 text-muted-foreground text-sm flex items-center">
+                <Info className="mr-1 h-4 w-4" />
+                Specifies how often the event repeats.
+              </p>
               <FormMessage />
             </FormItem>
           )}
         />
-        <p className="pt-1 text-muted-foreground text-sm flex items-center">
-          <Info className="mr-1 h-4 w-4" />
-          Specifies how often the event repeats within the given frequency.
-        </p>
       </div>
     </>
   );
