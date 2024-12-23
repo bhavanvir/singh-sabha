@@ -112,6 +112,7 @@ export function Dashboard({
       className={`transition-colors hover:text-foreground ${
         activePage === page ? "text-foreground" : "text-muted-foreground"
       }`}
+      scroll={false}
       onClick={() => {
         setActivePage(page);
         onClick?.();
@@ -130,6 +131,7 @@ export function Dashboard({
               <Link
                 href="/"
                 className="flex items-center space-x-2 text-lg font-semibold md:text-base"
+                scroll={false}
               >
                 <span className="whitespace-nowrap flex items-center">
                   <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
@@ -160,6 +162,7 @@ export function Dashboard({
                     <Link
                       href="/"
                       className="flex items-center space-x-2 text-lg font-semibold"
+                      scroll={false}
                     >
                       <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
                       Gurdwara Singh Sabha

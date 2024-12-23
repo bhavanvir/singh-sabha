@@ -19,6 +19,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
         <Link
           href="/"
           className="flex items-center text-lg font-semibold md:text-base"
+          scroll={false}
         >
           <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
           <span>Gurdwara Singh Sabha</span>
@@ -32,6 +33,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
                 ? "text-primary"
                 : "text-muted-foreground"
             }`}
+            scroll={false}
           >
             {link.label}
           </Link>
@@ -59,6 +61,7 @@ export default function NavBar({ currentLink }: NavBarProps) {
                     ? "text-primary"
                     : "text-muted-foreground"
                 }`}
+                scroll={false}
               >
                 {link.label}
               </Link>
