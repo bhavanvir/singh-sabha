@@ -156,7 +156,7 @@ export default function BookingCalendar({
             onClick={handleAddEvent}
           >
             <CalendarPlus />
-            {user ? "Create" : "Request"} Event
+            {user ? "Create" : "Book"} Event
           </Button>
           <div className="hidden lg:block">
             <TooltipProvider>

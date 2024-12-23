@@ -31,7 +31,7 @@ export default function DeniedEventEmail({
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
             <Heading className="text-3xl font-bold text-foreground mb-6">
-              Event Request Update
+              Event Booking Update
             </Heading>
             <Text className="text-muted-foreground mb-6">
               Dear {registrantFullName}, we regret to inform you that we are

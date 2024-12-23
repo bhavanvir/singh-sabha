@@ -26,16 +26,16 @@ export default function ApprovedEventEmail({
   return (
     <Html>
       <Head />
-      <Preview>Your event request has been approved!</Preview>
+      <Preview>Your event booking has been approved!</Preview>
       <Tailwind>
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
             <Heading className="text-3xl font-bold text-foreground mb-6">
-              Event Approved
+              Event Booking Approved
             </Heading>
             <Text className="text-muted-foreground mb-6">
               Dear {registrantFullName}, we&apos;re pleased to inform you that
-              your event request has been approved.
+              your event booking request has been approved.
             </Text>
             <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
               <Text className="text-lg font-semibold text-card-foreground mb-4">

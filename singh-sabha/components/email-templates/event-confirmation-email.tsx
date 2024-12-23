@@ -24,12 +24,12 @@ export default function EventConfirmationEmail({
   return (
     <Html>
       <Head />
-      <Preview>Event request received: {occassion!}</Preview>
+      <Preview>Event booking request recieved: {occassion!}</Preview>
       <Tailwind>
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
             <Heading className="text-3xl font-bold text-foreground mb-6">
-              Event Confirmation
+              Event Booking Confirmation
             </Heading>
             <Text className="text-muted-foreground mb-6">
               Hi {registrantFullName}, we&apos;ve received your event request.

@@ -28,15 +28,16 @@ export default function SuperuserEventNotificationEmail({
   return (
     <Html>
       <Head />
-      <Preview>New event request: {occassion!}</Preview>
+      <Preview>New event booking request: {occassion!}</Preview>
       <Tailwind>
         <Body className="bg-background font-sans">
           <Container className="mx-auto my-8 p-8 max-w-xl">
             <Heading className="text-3xl font-bold text-foreground mb-6">
-              New Event Request
+              Event Booking Request
             </Heading>
             <Text className="text-muted-foreground mb-6">
-              A new event request has been submitted and requires your review.
+              A new event booking request has been submitted and requires your
+              review.
             </Text>
             <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
               <Text className="text-lg font-semibold text-card-foreground mb-4">
