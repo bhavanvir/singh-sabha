@@ -62,6 +62,8 @@ export const eventTable = pgTable("events", {
   isVerified: boolean("is_verified").default(false),
   frequencyRule: text("frequency_rule"),
   isPublic: boolean("is_public").default(false),
+  isDepositPaid: boolean("is_deposit_paid").default(false),
+  isBalancePaid: boolean("is_balance_paid").default(false),
 });
 
 export const mailTable = pgTable("mailing_list", {
