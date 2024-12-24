@@ -1,11 +1,11 @@
-import type { Event } from "@/db/schema";
+import type { EventWithType } from "@/db/schema";
 
 export async function sendEventEmails(
-  newEvent: Omit<Event, "id">,
+  newEvent: EventWithType,
   endpoint: string,
 ): Promise<void> {
   try {
-    const response = await fetch(endpoint, {
+    const resp = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -13,11 +13,10 @@ export async function sendEventEmails(
       body: JSON.stringify(newEvent),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to send confirmation emails");
+    if (!resp.ok) {
+      throw new Error("Failed to send email");
     }
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw new Error(`Came across an error when trying to send emails: ${err}`);
   }
 }
