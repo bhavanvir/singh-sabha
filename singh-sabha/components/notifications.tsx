@@ -10,7 +10,12 @@ import {
   X,
   Search,
 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider } from "./ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +29,6 @@ import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
-import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 interface NotificationsProps {
   notifications: EventWithType[];
