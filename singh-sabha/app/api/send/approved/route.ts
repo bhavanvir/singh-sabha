@@ -1,39 +1,30 @@
 import { Resend } from "resend";
 
 import ApprovedEventEmail from "@/components/email-templates/approved-event-email";
-import { GetEventType } from "@/lib/api/event-types/queries";
 
-import type { Event } from "@/db/schema";
+import type { EventWithType } from "@/db/schema";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const event: Event = await request.json();
+    const event: EventWithType = await request.json();
 
-    if (
-      !event.registrantEmail ||
-      !event.registrantFullName ||
-      !event.occassion ||
-      !event.start ||
-      !event.end
-    ) {
+    if (!event) {
       return Response.json(
         { error: "Missing required data for sending emails." },
         { status: 400 },
       );
     }
 
-    const eventType = await GetEventType({ id: event.type });
-
     const { data: userEmailData, error: userEmailError } =
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
-        to: event.registrantEmail,
+        to: event.registrantEmail!,
         subject: "Your event request has been approved!",
         react: ApprovedEventEmail({
-          registrantFullName: event.registrantFullName,
-          type: eventType ?? event.type,
+          registrantFullName: event.registrantFullName!,
+          type: event.eventType?.displayName,
           start: event.start,
           end: event.end,
           allDay: event.allDay,
