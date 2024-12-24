@@ -35,15 +35,3 @@ export const GetAllRequestableEventTypes = async (): Promise<EventType[]> => {
     throw new Error(`Could not fetch event types: ${err}`);
   }
 };
-
-export const GetEventType = async ({ id }: { id: string }): Promise<string> => {
-  try {
-    const [eventType] = await db
-      .select()
-      .from(eventTypeTable)
-      .where(eq(eventTypeTable.id, id));
-    return eventType.displayName;
-  } catch (err) {
-    throw new Error(`Could not fetch event type: ${err}`);
-  }
-};
