@@ -96,6 +96,7 @@ export const GetEventsBetweenDates = async ({
           gte(eventTable.start, new Date(startDate)),
           lte(eventTable.end, new Date(endDate)),
           eq(eventTable.isPublic, true),
+          eq(eventTable.isVerified, true),
         ),
       );
 
