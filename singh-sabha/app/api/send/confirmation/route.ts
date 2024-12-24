@@ -3,38 +3,29 @@ import EventConfirmationEmail from "@/components/email-templates/event-confirmat
 import SuperuserEventNotificationEmail from "@/components/email-templates/superuser-event-notification-email";
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 
-import type { Event } from "@/db/schema";
-import { GetEventType } from "@/lib/api/event-types/queries";
+import type { EventWithType } from "@/db/schema";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const event: Event = await request.json();
+    const event: EventWithType = await request.json();
 
-    if (
-      !event.registrantEmail ||
-      !event.registrantFullName ||
-      !event.occassion ||
-      !event.start ||
-      !event.end
-    ) {
+    if (!event) {
       return Response.json(
         { error: "Missing required data for sending emails." },
         { status: 400 },
       );
     }
 
-    const eventType = await GetEventType({ id: event.type });
-
     const { data: userEmailData, error: userEmailError } =
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
-        to: event.registrantEmail,
-        subject: `Event Confirmation: ${event.occassion}`,
+        to: event.registrantEmail!,
+        subject: `Event Booking Confirmation: ${event.occassion}`,
         react: EventConfirmationEmail({
           registrantFullName: event.registrantFullName,
-          type: eventType ?? event.type,
+          type: event.eventType!.displayName,
           start: event.start,
           end: event.end,
           occassion: event.occassion,
@@ -61,7 +52,7 @@ export async function POST(request: Request) {
             registrantFullName: event.registrantFullName,
             registrantEmail: event.registrantEmail,
             registrantPhoneNumber: event.registrantPhoneNumber,
-            type: eventType ?? event.type,
+            type: event.eventType!.displayName,
             start: event.start,
             end: event.end,
             occassion: event.occassion,
