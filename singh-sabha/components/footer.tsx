@@ -99,7 +99,7 @@ export function Footer() {
         <div className="mt-8 border-t pt-8 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
             <span className="flex items-center">
-              <Copyright className="h-5 w-5 mr-1" /> {currentYear} Gurdwara
+              <Copyright className="h-4 w-4 mr-1" /> {currentYear} Gurdwara
               Singh Sabha. All rights reserved.
             </span>
           </p>
