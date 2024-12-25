@@ -9,6 +9,7 @@ import {
   User,
   X,
   Search,
+  HandCoins,
 } from "lucide-react";
 import {
   Tooltip,
@@ -26,6 +27,7 @@ import { toast } from "sonner";
 import { sendEventEmails } from "@/lib/send-event-email";
 import ReviewEventDialog from "./dialogs/review-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
+import { cn } from "@/lib/utils";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
@@ -112,18 +114,44 @@ export default function Notifications({
                           </Badge>
                           <Badge>{notification.eventType?.displayName}</Badge>
                         </div>
-                        {!isReviewed && (
+                        <div className="flex items-center space-x-2">
+                          {!isReviewed && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Event requires review</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
+                                <HandCoins
+                                  className={cn(
+                                    "h-5 w-5",
+                                    {
+                                      "stroke-green-500":
+                                        notification.isDepositPaid,
+                                    },
+                                    {
+                                      "stroke-red-500":
+                                        !notification.isDepositPaid,
+                                    },
+                                  )}
+                                />
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>Event requires review</p>
+                                {notification.isDepositPaid
+                                  ? "Deposit paid"
+                                  : "Deposit not paid"}
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        )}
+                        </div>
                       </div>
                       <h3 className="text-lg font-semibold mb-1">
                         {notification.occassion}
@@ -188,7 +216,10 @@ export default function Notifications({
                           <X />
                           Dismiss
                         </Button>
-                        <Button onClick={() => handleApprove(notification)}>
+                        <Button
+                          onClick={() => handleApprove(notification)}
+                          disabled={!notification.isDepositPaid}
+                        >
                           <Search />
                           Review
                         </Button>
