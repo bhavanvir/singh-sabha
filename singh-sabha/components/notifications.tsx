@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -90,7 +90,10 @@ export default function Notifications({
         {notifications.length > 0 ? (
           <div className="space-y-4">
             {notifications.map((notification) => (
-              <Card key={notification.id} className="overflow-hidden">
+              <Card
+                key={notification.id}
+                className="overflow-hidden shadow-lg "
+              >
                 <CardContent className="p-0">
                   <div className="flex items-stretch">
                     <div className="flex-grow p-4">
@@ -197,12 +200,21 @@ export default function Notifications({
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <Bell className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No notifications</h3>
-            <p className="text-sm text-muted-foreground">
-              You&apos;re all caught up! Check back later for new notifications.
-            </p>
+          <div className="flex flex-col items-center justify-center h-full">
+            <Card className="max-w-md shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <Bell className="w-12 h-12 text-muted-foreground" />
+                  <CardTitle className="text-2xl font-semibold tracking-tight">
+                    No Notifications
+                  </CardTitle>
+                  <p className="text-muted-foreground">
+                    You&apos;re all caught up! Check back later for new
+                    notifications.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </ScrollArea>
