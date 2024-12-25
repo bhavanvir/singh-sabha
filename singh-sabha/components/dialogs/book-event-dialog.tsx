@@ -72,7 +72,11 @@ export default function BookEventDialog({
     onClose();
   };
 
-  const stripePayment = async (eventType: EventType, eventId: string) => {
+  const stripePayment = async (
+    eventType: EventType,
+    eventId: string,
+    email: string,
+  ) => {
     try {
       const stripeResponse = await fetch("/api/stripe/payment-intent", {
         method: "POST",
@@ -80,6 +84,7 @@ export default function BookEventDialog({
         body: JSON.stringify({
           eventType,
           eventId,
+          email,
         }),
       });
 
@@ -123,16 +128,15 @@ export default function BookEventDialog({
     const eventType = eventTypes.find((type) => type.id === data.type);
 
     try {
-      const eventId = await CreateEvent({ newEvent });
+      const [eventId, email] = await CreateEvent({ newEvent });
 
-      await stripePayment(eventType!, eventId);
+      await stripePayment(eventType!, eventId, email);
     } catch (err) {
       throw new Error(
         `An error occured while trying to process the payment: ${err}`,
       );
     } finally {
       setIsLoading(false);
-      handleClose();
     }
   };
 
