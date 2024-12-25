@@ -1,4 +1,4 @@
-import { EventsOverTimeCard } from "./cards/events-overtime-card";
+import { EventsOverTimeCard } from "../cards/admin-dashboard/events-overtime-card";
 
 import type { Analytics } from "@/lib/types/analytics";
 

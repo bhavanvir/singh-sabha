@@ -1,5 +1,5 @@
 import { validateRequest } from "@/lib/auth";
-import { Dashboard } from "@/components/dashboard";
+import { AdminDashboard } from "@/components/admin-dashboard/admin-dashboard";
 import {
   GetAllEvents,
   GetAllUnverifiedEvents,
@@ -40,7 +40,7 @@ export default async function Admin() {
 
   return (
     <>
-      <Dashboard
+      <AdminDashboard
         user={user}
         users={users}
         events={allGeneratedEvents}

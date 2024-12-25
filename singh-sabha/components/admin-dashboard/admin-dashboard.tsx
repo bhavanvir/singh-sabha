@@ -19,9 +19,9 @@ import { Menu, LogOut, FlagTriangleLeft } from "lucide-react";
 
 import { logout } from "@/components/actions/logout-action";
 import BookingCalendar from "@/components/booking-calendar";
-import Notifications from "@/components/notifications";
-import Settings from "@/components/settings";
-import AnalyticsDashboard from "@/components/analytics-dashboard";
+import Notifications from "@/components/admin-dashboard/notifications";
+import Settings from "@/components/admin-dashboard/settings";
+import AnalyticsDashboard from "@/components/admin-dashboard/analytics-dashboard";
 
 import type {
   User,
@@ -53,7 +53,7 @@ interface DashboardProps {
   analytics: Analytics;
 }
 
-export function Dashboard({
+export function AdminDashboard({
   user,
   users,
   events,

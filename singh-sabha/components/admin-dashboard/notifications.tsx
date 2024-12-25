@@ -16,7 +16,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from "@/components//ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
 import { sendEventEmails } from "@/lib/send-event-email";
-import ReviewEventDialog from "./dialogs/review-event-dialog";
+import ReviewEventDialog from "@/components/dialogs/review-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { cn } from "@/lib/utils";
 

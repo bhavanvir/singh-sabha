@@ -1,4 +1,4 @@
-import PaymentVerification from "@/components/payment-verification";
+import PaymentVerification from "@/components/cards/payment/payment-verification-card";
 
 export const metadata = {
   title: "Payment Verification",

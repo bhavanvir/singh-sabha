@@ -3,7 +3,6 @@ import UserManagementCard from "@/components/cards/admin-dashboard/user-manageme
 import MailingListCard from "@/components/cards/admin-dashboard/mailing-list-card";
 import EventManagementCard from "@/components/cards/admin-dashboard/event-management-card";
 import AnnouncementManagementCard from "@/components/cards/admin-dashboard/announcement-management-card";
-
 import { User, MailingList, EventType, Announcement } from "@/db/schema";
 
 interface SettingsProps {
