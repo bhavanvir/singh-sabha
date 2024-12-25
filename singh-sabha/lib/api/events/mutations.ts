@@ -109,10 +109,10 @@ export const processDeposit = async (id: string): Promise<void> => {
           isDepositPaid: true,
         },
       });
-      // sendEventEmails(
-      //   eventWithType,
-      //   `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/confirmation`,
-      // );
+      sendEventEmails(
+        eventWithType,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/confirmation`,
+      );
     }
   } catch (err) {
     throw new Error(`Could not process deposit: ${err}`);
