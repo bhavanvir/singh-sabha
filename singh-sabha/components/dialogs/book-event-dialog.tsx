@@ -119,7 +119,6 @@ export default function BookEventDialog({
       frequencyRule: null,
       isPublic: data.isPublic,
       isDepositPaid: false,
-      isBalancePaid: false,
     };
 
     const eventType = eventTypes.find((type) => type.id === data.type);
