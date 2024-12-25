@@ -16,14 +16,17 @@ export const CreateEvent = async ({
     Event,
     "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
   >;
-}): Promise<string> => {
+}): Promise<string[]> => {
   try {
     const { ...eventData } = newEvent;
 
     const [insertedEvent] = await db
       .insert(eventTable)
       .values(eventData)
-      .returning({ id: eventTable.id });
+      .returning({
+        id: eventTable.id,
+        email: eventTable.registrantEmail,
+      });
 
     if (!insertedEvent) {
       throw new Error("Event insertion failed, no ID returned");
@@ -32,7 +35,8 @@ export const CreateEvent = async ({
     revalidatePath("/calendar");
     revalidatePath("/admin");
 
-    return insertedEvent.id;
+    // When creating the event in Admin-mode there is no email
+    return [insertedEvent.id, insertedEvent.email ?? ""];
   } catch (err) {
     throw new Error(`Could not add an event: ${err}`);
   }
@@ -105,10 +109,10 @@ export const processDeposit = async (id: string): Promise<void> => {
           isDepositPaid: true,
         },
       });
-      sendEventEmails(
-        eventWithType,
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/confirmation`,
-      );
+      // sendEventEmails(
+      //   eventWithType,
+      //   `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/confirmation`,
+      // );
     }
   } catch (err) {
     throw new Error(`Could not process deposit: ${err}`);
