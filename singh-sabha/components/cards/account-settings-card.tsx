@@ -104,7 +104,7 @@ export default function AccountSettingsForm({
   };
 
   return (
-    <Card>
+    <Card className="shadow-lg">
       <CardHeader>
         <CardTitle>Account</CardTitle>
       </CardHeader>

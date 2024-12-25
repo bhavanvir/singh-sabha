@@ -56,7 +56,7 @@ export default function MailingListCard({ mailingList }: MailingListCardProps) {
   };
 
   return (
-    <Card>
+    <Card className="shadow-lg">
       <CardHeader>
         <CardTitle>Mailing</CardTitle>
       </CardHeader>
