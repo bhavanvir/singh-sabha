@@ -97,6 +97,8 @@ export default function CreateEventDialog({
       isVerified: true,
       frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,
+      isDepositPaid: true,
+      isBalancePaid: true,
     };
 
     toast.promise(CreateEvent({ newEvent }), {

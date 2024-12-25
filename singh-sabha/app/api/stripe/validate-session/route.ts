@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     } else {
       return new Response(JSON.stringify({ error: "Payment not succesfull" }));
     }
-  } catch (error) {
-    return new Response({ error: error.message });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: (err as Error).message }));
   }
 }

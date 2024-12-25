@@ -26,8 +26,8 @@ export async function POST(request: Request) {
     });
 
     return new Response(JSON.stringify({ url: session.url }), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+  } catch (err) {
+    return new Response(JSON.stringify({ error: (err as Error).message }), {
       status: 500,
     });
   }
