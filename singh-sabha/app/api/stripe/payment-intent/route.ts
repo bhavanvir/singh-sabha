@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         },
       ],
       success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}&event_id=${eventId}`,
-      cancel_url: `${request.headers.get("origin")}/cancel`,
+      cancel_url: `${request.headers.get("origin")}/cancel?event_id=${eventId}`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), { status: 200 });
