@@ -21,7 +21,6 @@ import { Separator } from "@/components/ui/separator";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "sonner";
 import { startOfDay, endOfDay } from "date-fns";
 
 import { Loader2 } from "lucide-react";
@@ -97,7 +96,7 @@ export default function BookEventDialog({
     }
   };
 
-  const handleSubmit: SubmitHandler<z.infer<typeof userEventSchema>> = (
+  const handleSubmit: SubmitHandler<z.infer<typeof userEventSchema>> = async (
     data,
   ) => {
     setIsLoading(true);
@@ -123,19 +122,18 @@ export default function BookEventDialog({
 
     const eventType = eventTypes.find((type) => type.id === data.type);
 
-    toast.promise(
-      async () => {
-        const eventId = await CreateEvent({ newEvent });
-        const paymentSuccess = await stripePayment(eventType!, eventId);
-        setIsLoading(false);
-        return paymentSuccess;
-      },
-      {
-        loading: "Submitting event...",
-        success: "Event booking submitted successfully!",
-        error: "Failed to submit event booking",
-      },
-    );
+    try {
+      const eventId = await CreateEvent({ newEvent });
+
+      await stripePayment(eventType!, eventId);
+    } catch (err) {
+      throw new Error(
+        `An error occured while trying to process the payment: ${err}`,
+      );
+    } finally {
+      setIsLoading(false);
+      handleClose();
+    }
   };
 
   return (
