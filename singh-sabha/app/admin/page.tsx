@@ -18,7 +18,7 @@ export const metadata = {
   title: "Admin",
 };
 
-export default async function Page() {
+export default async function Admin() {
   const { user } = await validateRequest();
   if (!user) {
     redirect("/admin/sign-in");
