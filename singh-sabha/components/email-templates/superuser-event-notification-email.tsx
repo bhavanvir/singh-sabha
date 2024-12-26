@@ -5,98 +5,98 @@ import {
   Heading,
   Html,
   Preview,
-  Section,
   Text,
   Tailwind,
   Link,
+  Img,
 } from "@react-email/components";
 import { format } from "date-fns";
 
-import type { Event } from "@/db/schema";
+import type { EventWithType } from "@/db/schema";
 
 export default function SuperuserEventNotificationEmail({
-  registrantFullName,
-  registrantEmail,
-  registrantPhoneNumber,
-  type,
-  start,
-  end,
-  occassion,
-  note,
-  isPublic,
-}: Partial<Event>) {
+  event,
+}: {
+  event: EventWithType;
+}) {
   return (
     <Html>
       <Head />
-      <Preview>New event booking request: {occassion!}</Preview>
+      <Preview>New event booking request: {event.occassion}</Preview>
       <Tailwind>
-        <Body className="bg-background font-sans">
-          <Container className="mx-auto my-8 p-8 max-w-xl">
-            <Heading className="text-3xl font-bold text-foreground mb-6">
+        <Body className="bg-white font-sans">
+          <Container className="mx-auto my-8 px-4 max-w-xl">
+            <Heading className="text-2xl font-bold text-gray-800 my-8">
               Event Booking Request
             </Heading>
-            <Text className="text-muted-foreground mb-6">
+            <Text className="text-gray-700 text-base mb-6">
               A new event booking request has been submitted and requires your
               review.
             </Text>
-            <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
-              <Text className="text-lg font-semibold text-card-foreground mb-4">
-                {occassion}
+            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+              <Text className="text-lg font-semibold text-gray-800 mb-4">
+                {event.occassion}
               </Text>
-              <div className="space-y-2">
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Type:</span> {type}
-                </Text>
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Date:</span>{" "}
-                  {format(start!, "MMMM d, yyyy")}
-                  {format(start!, "MMMM d, yyyy") !==
-                    format(end!, "MMMM d, yyyy") &&
-                    ` - ${format(end!, "MMMM d, yyyy")}`}
-                </Text>
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Public:</span>{" "}
-                  {isPublic ? "Yes" : "No"}
-                </Text>
-              </div>
-            </Section>
-            <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
-              <Text className="text-lg font-semibold text-card-foreground mb-4">
+              <Text className="text-gray-700 text-sm mb-2">
+                <span className="font-medium">Event ID:</span> {event.id}
+              </Text>
+              <Text className="text-gray-700 text-sm mb-2">
+                <span className="font-medium">Type:</span>{" "}
+                {event.eventType?.displayName}
+              </Text>
+              <Text className="text-gray-700 text-sm mb-2">
+                <span className="font-medium">Date:</span>{" "}
+                {format(event.start, "MMMM d, yyyy")}
+                {format(event.start, "MMMM d, yyyy") !==
+                  format(event.end, "MMMM d, yyyy") &&
+                  ` - ${format(event.end, "MMMM d, yyyy")}`}
+              </Text>
+              <Text className="text-gray-700 text-sm">
+                <span className="font-medium">Public:</span>{" "}
+                {event.isPublic ? "Yes" : "No"}
+              </Text>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+              <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Registrant Details
               </Text>
-              <div className="space-y-2">
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Name:</span>{" "}
-                  {registrantFullName}
-                </Text>
-                <Text className="text-sm text-card-foreground">
-                  <span className="font-medium">Email:</span> {registrantEmail}
-                </Text>
-                {registrantPhoneNumber && (
-                  <Text className="text-sm text-card-foreground">
-                    <span className="font-medium">Phone:</span>{" "}
-                    {registrantPhoneNumber}
-                  </Text>
-                )}
-              </div>
-            </Section>
-            {note && (
-              <Section className="bg-card rounded-lg p-6 shadow-sm border border-border mb-6">
-                <Text className="text-lg font-semibold text-card-foreground mb-2">
+              <Text className="text-gray-700 text-sm mb-2">
+                <span className="font-medium">Name:</span>{" "}
+                {event.registrantFullName}
+              </Text>
+              <Text className="text-gray-700 text-sm mb-2">
+                <span className="font-medium">Email:</span>{" "}
+                {event.registrantEmail}
+              </Text>
+              <Text className="text-gray-700 text-sm">
+                <span className="font-medium">Phone:</span>{" "}
+                {event.registrantPhoneNumber}
+              </Text>
+            </div>
+            {event.note && (
+              <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+                <Text className="text-lg font-semibold text-gray-800 mb-2">
                   Additional Notes
                 </Text>
-                <Text className="text-sm text-card-foreground">{note}</Text>
-              </Section>
+                <Text className="text-gray-700 text-sm">{event.note}</Text>
+              </div>
             )}
-            <Text className="text-muted-foreground mb-4">
+            <Text className="text-gray-700 text-base mb-6">
               Please review this event request and take appropriate action.
             </Text>
-            <Link
-              href="https://singhsabha.net/admin"
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium inline-block"
-            >
-              Review Event
-            </Link>
+            <Text className="text-gray-500 text-xs leading-relaxed mt-6">
+              <Img
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}/singhsabha-logo.png`}
+                height="24"
+                width="24"
+                alt="Singh Sabha Logo"
+                className="h-16 w-16"
+              />
+              <Link href="https://singhsabha.net/" target="_blank">
+                SinghSabha.net
+              </Link>
+              , serving the Sikh community with devotion and compassion.
+            </Text>
           </Container>
         </Body>
       </Tailwind>
