@@ -21,15 +21,8 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail!,
-        subject: "Update on your event request",
-        react: DeniedEventEmail({
-          registrantFullName: event.registrantFullName,
-          type: event.eventType!.displayName,
-          start: event.start,
-          end: event.end,
-          allDay: event.allDay,
-          occassion: event.occassion,
-        }),
+        subject: "Your event request has been denied",
+        react: DeniedEventEmail({ event }),
       });
 
     if (userEmailError) {

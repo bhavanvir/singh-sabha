@@ -22,14 +22,7 @@ export async function POST(request: Request) {
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail!,
         subject: "Your event request has been approved!",
-        react: ApprovedEventEmail({
-          registrantFullName: event.registrantFullName!,
-          type: event.eventType?.displayName,
-          start: event.start,
-          end: event.end,
-          allDay: event.allDay,
-          occassion: event.occassion,
-        }),
+        react: ApprovedEventEmail({ event }),
       });
 
     if (userEmailError) {

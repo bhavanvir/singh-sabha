@@ -22,14 +22,8 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail!,
-        subject: `Event Booking Confirmation: ${event.occassion}`,
-        react: EventConfirmationEmail({
-          registrantFullName: event.registrantFullName,
-          type: event.eventType!.displayName,
-          start: event.start,
-          end: event.end,
-          occassion: event.occassion,
-        }),
+        subject: `Event booking confirmation: ${event.occassion}`,
+        react: EventConfirmationEmail({ event }),
       });
 
     if (userEmailError) {
@@ -47,18 +41,8 @@ export async function POST(request: Request) {
         await resend.emails.send({
           from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
           to: mailingList,
-          subject: `New Event Request: ${event.occassion}`,
-          react: SuperuserEventNotificationEmail({
-            registrantFullName: event.registrantFullName,
-            registrantEmail: event.registrantEmail,
-            registrantPhoneNumber: event.registrantPhoneNumber,
-            type: event.eventType!.displayName,
-            start: event.start,
-            end: event.end,
-            occassion: event.occassion,
-            note: event.note,
-            isPublic: event.isPublic,
-          }),
+          subject: `New event request: ${event.occassion}`,
+          react: SuperuserEventNotificationEmail({ event }),
         });
 
       if (superUserEmailError) {
