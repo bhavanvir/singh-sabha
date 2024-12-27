@@ -216,10 +216,7 @@ export default function Notifications({
                           <X />
                           Dismiss
                         </Button>
-                        <Button
-                          onClick={() => handleApprove(notification)}
-                          disabled={!notification.isDepositPaid}
-                        >
+                        <Button onClick={() => handleApprove(notification)}>
                           <Search />
                           Review
                         </Button>
