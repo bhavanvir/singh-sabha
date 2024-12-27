@@ -9,7 +9,6 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const event: EventWithType = await request.json();
-
     if (!event) {
       return Response.json(
         { error: "Missing required data for sending emails." },
@@ -17,12 +16,29 @@ export async function POST(request: Request) {
       );
     }
 
+    const stripeResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/stripe/payment-intent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event,
+        }),
+      },
+    );
+
+    if (!stripeResponse.ok) {
+      throw new Error("Failed to create Stripe session URL");
+    }
+
+    const { url } = await stripeResponse.json();
+
     const { data: userEmailData, error: userEmailError } =
       await resend.emails.send({
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail!,
         subject: "Your event request has been approved!",
-        react: ApprovedEventEmail({ event }),
+        react: ApprovedEventEmail({ event, url }),
       });
 
     if (userEmailError) {
@@ -36,7 +52,7 @@ export async function POST(request: Request) {
       { message: "Emails sent successfully" },
       { status: 200 },
     );
-  } catch (error) {
+  } catch (err) {
     return Response.json(
       { error: "An unexpected error occurred while processing the request." },
       { status: 500 },
