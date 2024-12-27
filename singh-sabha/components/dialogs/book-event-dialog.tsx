@@ -26,21 +26,23 @@ import { startOfDay, endOfDay } from "date-fns";
 import { Loader2 } from "lucide-react";
 
 import { ParametersForm } from "@/components/forms/parameters-form";
-import { userEventSchema } from "@/lib/event-schema";
 import { CreateEvent } from "@/lib/api/events/mutations";
 
+import { userEventSchema } from "@/lib/event-schema";
 import type { Event, EventType } from "@/db/schema";
 
 interface BookEventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   eventTypes: EventType[];
+  selectedEventType: EventType | null;
 }
 
 export default function BookEventDialog({
   isOpen,
   onClose,
   eventTypes,
+  selectedEventType,
 }: BookEventDialogProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -51,7 +53,7 @@ export default function BookEventDialog({
       email: "",
       phoneNumber: "",
       occassion: "",
-      type: "",
+      type: selectedEventType?.id ?? "",
       note: "",
       isPublic: true,
       startTime: null,
@@ -60,12 +62,20 @@ export default function BookEventDialog({
   });
 
   React.useEffect(() => {
-    if (eventTypes && eventTypes.length === 1) {
+    if (isOpen) {
       form.reset({
-        type: eventTypes[0].id,
+        name: "",
+        email: "",
+        phoneNumber: "",
+        occassion: "",
+        type: selectedEventType?.id ?? "",
+        note: "",
+        isPublic: true,
+        startTime: null,
+        endTime: null,
       });
     }
-  }, [eventTypes, form]);
+  }, [isOpen, selectedEventType, form]);
 
   const handleClose = () => {
     form.reset();
@@ -118,7 +128,7 @@ export default function BookEventDialog({
       end: endDateTime,
       allDay: true,
       occassion: data.occassion,
-      note: data.note,
+      note: data.note ?? null,
       isVerified: false,
       frequencyRule: null,
       isPublic: data.isPublic,
