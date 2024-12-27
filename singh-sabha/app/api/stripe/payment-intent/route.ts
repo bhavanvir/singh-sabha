@@ -3,27 +3,28 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: Request) {
-  const { eventType, eventId, email } = await request.json();
+  const { event } = await request.json();
+  const origin = process.env.NEXT_PUBLIC_BASE_URL;
 
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      customer_email: email,
+      customer_email: event.registrantEmail,
       line_items: [
         {
           price_data: {
             currency: "cad",
             product_data: {
-              name: `${eventType.displayName} Booking Deposit`,
+              name: `${event.eventType.displayName} Booking Deposit`,
             },
-            unit_amount: eventType.deposit * 100,
+            unit_amount: event.eventType.deposit * 100,
           },
           quantity: 1,
         },
       ],
-      success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}&event_id=${eventId}`,
-      cancel_url: `${request.headers.get("origin")}/cancel?event_id=${eventId}`,
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}&event_id=${event.id}`,
+      cancel_url: `${origin}/cancel?event_id=${event.id}`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), { status: 200 });
