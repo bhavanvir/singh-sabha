@@ -9,16 +9,21 @@ import {
   Link,
   Tailwind,
   Img,
+  Button,
 } from "@react-email/components";
 import { format } from "date-fns";
 
 import type { EventWithType } from "@/db/schema";
 
+interface ApprovedEventEmailProps {
+  event: EventWithType;
+  url: string;
+}
+
 export default function ApprovedEventEmail({
   event,
-}: {
-  event: EventWithType;
-}) {
+  url,
+}: ApprovedEventEmailProps) {
   return (
     <Html>
       <Head />
@@ -68,6 +73,16 @@ export default function ApprovedEventEmail({
               </Text>
             </div>
             <Text className="text-gray-700 text-base mb-6">
+              To complete your booking, please proceed with the payment by
+              clicking the button below:
+            </Text>
+            <Button
+              href={url}
+              className="bg-blue-600 text-white font-bold py-3 px-6 rounded text-center block max-w-xl"
+            >
+              Complete Payment
+            </Button>
+            <Text className="text-gray-700 text-base mt-6 mb-6">
               If you need to make any changes or have any questions, please
               don&apos;t hesitate to contact us.
             </Text>
@@ -83,7 +98,11 @@ export default function ApprovedEventEmail({
                 alt="Singh Sabha Logo"
                 className="h-16 w-16"
               />
-              <Link href="https://singhsabha.net/" target="_blank">
+              <Link
+                href="https://singhsabha.net/"
+                target="_blank"
+                className="text-blue-600 underline"
+              >
                 SinghSabha.net
               </Link>
               , serving the Sikh community with devotion and compassion.
