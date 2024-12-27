@@ -93,7 +93,7 @@ export default function CreateEventDialog({
       end: endDateTime,
       allDay: false,
       occassion: data.occassion,
-      note: data.note,
+      note: data.note ?? null,
       isVerified: true,
       frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,

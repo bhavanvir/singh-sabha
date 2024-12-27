@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import {
   motion,
@@ -8,8 +9,9 @@ import {
   useTransform,
 } from "framer-motion";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
-import { EventType } from "@/db/schema";
 import BookEventDialog from "../dialogs/book-event-dialog";
+
+import { EventType } from "@/db/schema";
 
 // Interaction hyperparameters
 const sheenSize = 500;
@@ -39,45 +41,50 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
   };
 
   return (
-    <section className="border-t py-16 bg-background" ref={ref} id="services">
-      <div className="container mx-auto px-4 md:px-6">
-        <motion.div
-          initial="hidden"
-          animate={controls}
-          variants={staggerContainer}
-          className="space-y-8"
-        >
-          <motion.div variants={fadeInWithDelay(0.1)} className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Our Services</h2>
-            <p className="mt-2 text-muted-foreground">
-              Explore the various services offered at Gurdwara Singh Sabha
-            </p>
-          </motion.div>
+    <>
+      <section className="border-t py-16 bg-background" ref={ref} id="services">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
+            initial="hidden"
+            animate={controls}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            className="space-y-8"
           >
-            {eventTypes.map((type, index) => (
-              <motion.div
-                key={type.id}
-                variants={fadeInWithDelay(0.3 + index * 0.1)}
-                className="flex"
-              >
-                <ServiceCard
-                  type={type}
-                  onBookService={() => handleBookService(type)}
-                />
-              </motion.div>
-            ))}
+            <motion.div variants={fadeInWithDelay(0.1)} className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight">
+                Our Services
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                Explore the various services offered at Gurdwara Singh Sabha
+              </p>
+            </motion.div>
+            <motion.div
+              variants={staggerContainer}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            >
+              {eventTypes.map((type, index) => (
+                <motion.div
+                  key={type.id}
+                  variants={fadeInWithDelay(0.3 + index * 0.1)}
+                  className="flex"
+                >
+                  <ServiceCard
+                    type={type}
+                    onBookService={() => handleBookService(type)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </div>
+        </div>
+      </section>
       <BookEventDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         eventTypes={selectedService}
+        selectedEventType={selectedService[0]}
       />
-    </section>
+    </>
   );
 }
 
@@ -88,14 +95,12 @@ function ServiceCard({
   type: EventType;
   onBookService: () => void;
 }) {
-  // Raw motion values
   const xPcnt = useSpring(0, { bounce: 0 });
   const yPcnt = useSpring(0, { bounce: 0 });
   const mouseX = useSpring(0, { bounce: 0 });
   const mouseY = useSpring(0, { bounce: 0 });
   const scale = useSpring(1, { bounce: 0 });
 
-  // Calculated rotation values for styling
   const rotateX = useTransform(
     yPcnt,
     [-0.5, 0.5],
@@ -107,11 +112,9 @@ function ServiceCard({
     [`${cardRotation}deg`, `-${cardRotation}deg`],
   );
 
-  // Calculated sheen values for styling
   const sheenX = useTransform(() => mouseX.get() - sheenSize / 2);
   const sheenY = useTransform(() => mouseY.get() - sheenSize / 2);
 
-  // Helper function for getting mouse position
   const getMousePosition = (e: React.MouseEvent<Element, MouseEvent>) => {
     const { width, height, left, top } =
       e.currentTarget.getBoundingClientRect();
@@ -127,7 +130,6 @@ function ServiceCard({
     };
   };
 
-  // Mouse event handlers
   const handleMouseMove: React.MouseEventHandler = (e) => {
     const { currentMouseX, currentMouseY, containerWidth, containerHeight } =
       getMousePosition(e);

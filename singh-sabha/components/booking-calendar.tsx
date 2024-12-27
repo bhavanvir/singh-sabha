@@ -330,6 +330,7 @@ export default function BookingCalendar({
         isOpen={isBookEventDialogOpen}
         onClose={() => setBookEventDialogOpen(false)}
         eventTypes={eventTypes}
+        selectedEventType={null}
       />
       <ViewEventDialog
         isOpen={isViewEventDialogOpen}
