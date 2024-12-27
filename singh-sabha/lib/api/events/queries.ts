@@ -73,6 +73,34 @@ export const GetAllEvents = async (): Promise<EventWithType[]> => {
   }
 };
 
+export const GetEvent = async ({
+  id,
+}: {
+  id: string;
+}): Promise<EventWithType> => {
+  try {
+    const events = await db
+      .select({
+        events: eventTable,
+        event_types: eventTypeTable,
+      })
+      .from(eventTable)
+      .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
+      .where(eq(eventTable.id, id));
+
+    if (!events[0]) {
+      throw new Error(`Event not found with id: ${id}`);
+    }
+
+    return {
+      ...events[0].events,
+      eventType: events[0].event_types ?? undefined,
+    };
+  } catch (err) {
+    throw new Error(`Could not fetch event: ${err}`);
+  }
+};
+
 export const GetEventsBetweenDates = async ({
   startDate,
   endDate,
