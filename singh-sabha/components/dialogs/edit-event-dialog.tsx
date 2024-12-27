@@ -139,7 +139,7 @@ export default function EditEventDialog({
       end: endDateTime,
       allDay: false,
       occassion: data.occassion,
-      note: data.note,
+      note: data.note ?? null,
       frequencyRule: rule ? rule.toString() : null,
       isPublic: data.isPublic,
     };
