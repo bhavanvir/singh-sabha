@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { format } from "date-fns";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,15 +9,14 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Badge } from "@/components/ui/badge";
 
-import { ChevronsUpDown, Calendar, Clock, CalendarX2 } from "lucide-react";
+import { ChevronsUpDown, CalendarX2 } from "lucide-react";
 
+import EventSummary from "../event-summary";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { cn } from "@/lib/utils";
 
 import { EventWithType } from "@/db/schema";
-import { EventColors } from "@/lib/types/event-colours";
 
 interface UpcomingEventsSectionProps {
   upcomingEvents: EventWithType[];
@@ -118,33 +116,5 @@ export default function UpcomingEventsSection({
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function EventSummary({ event }: { event: EventWithType }) {
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="font-semibold">{event.occassion}</span>
-        <Badge
-          style={{
-            backgroundColor: event.eventType?.isSpecial
-              ? EventColors.special
-              : EventColors.regular,
-          }}
-        >
-          {event.eventType?.isSpecial ? "Special" : "Regular"}
-        </Badge>
-      </div>
-      <div className="flex items-center text-sm text-muted-foreground">
-        <Calendar className="mr-1 h-4 w-4" />
-        <span>{format(event.start, "MMMM d, yyyy")}</span>
-      </div>
-      <div className="flex items-center text-sm text-muted-foreground">
-        <Clock className="mr-1 h-4 w-4" />
-        {format(new Date(event.start), "h:mm a")} -{" "}
-        {format(new Date(event.end), "h:mm a")}
-      </div>
-    </div>
   );
 }

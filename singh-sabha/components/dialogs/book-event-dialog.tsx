@@ -111,7 +111,7 @@ export default function BookEventDialog({
     toast.promise(
       async () => {
         const createdEvent = await CreateEvent({ newEvent });
-        await sendEventEmails(createdEvent, "/api/send/confirmation");
+        // await sendEventEmails(createdEvent, "/api/send/confirmation");
         return createdEvent;
       },
       {

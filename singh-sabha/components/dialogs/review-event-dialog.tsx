@@ -1,8 +1,5 @@
 import * as React from "react";
-import { format } from "date-fns";
-import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -22,21 +19,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Calendar } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
+import EventSummary from "../event-summary";
 import { findConflicts } from "@/lib/utils";
-import { timeRangeSchema } from "@/lib/event-schema";
+import { cn } from "@/lib/utils";
 
-import { EventColors } from "@/lib/types/event-colours";
+import { timeRangeSchema } from "@/lib/event-schema";
 import type { EventWithType } from "@/db/schema";
 
 interface ReviewEventDialogProps {
@@ -59,6 +56,7 @@ export default function ReviewEventDialog({
   const [updatedEvent, setUpdatedEvent] = React.useState<EventWithType | null>(
     null,
   );
+  const [isExpanded, setIsExpanded] = React.useState(false);
 
   const form = useForm<z.infer<typeof timeRangeSchema>>({
     resolver: zodResolver(timeRangeSchema),
@@ -170,62 +168,47 @@ export default function ReviewEventDialog({
               />
             </div>
 
-            <Accordion type="multiple" className="space-y-2">
-              {conflicts.map((conflict) => (
-                <AccordionItem
-                  key={conflict.id}
-                  value={conflict.id}
-                  className="border rounded-lg"
+            {conflicts.length > 0 && (
+              <Collapsible
+                open={isExpanded}
+                onOpenChange={setIsExpanded}
+                className="w-full space-y-4"
+              >
+                <div
+                  className={cn(
+                    "flex items-center space-x-4 px-4",
+                    { "justify-center": conflicts.length === 1 },
+                    { "justify-between": conflicts.length > 1 },
+                  )}
                 >
-                  <AccordionTrigger className="hover:no-underline p-4">
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center space-x-2">
-                        <div
-                          className="h-2 w-2 rounded-full"
-                          style={{
-                            backgroundColor: conflict.eventType?.isSpecial
-                              ? EventColors.special
-                              : EventColors.regular,
-                          }}
-                        />
-                        <span className="font-medium">
-                          {conflict.occassion}
-                        </span>
-                      </div>
+                  <h4 className="text-sm font-semibold">
+                    {conflicts.length} Conflicting Event
+                    {conflicts.length !== 1 ? "s" : ""}
+                  </h4>
+                  {conflicts.length > 1 && (
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="w-9 p-0">
+                        <ChevronsUpDown className="h-4 w-4" />
+                        <span className="sr-only">Toggle events list</span>
+                      </Button>
+                    </CollapsibleTrigger>
+                  )}
+                </div>
+                <div className="rounded-md border px-4 py-3 text-sm shadow-lg">
+                  <EventSummary event={conflicts[0]} />
+                </div>
+                <CollapsibleContent className="space-y-2">
+                  {conflicts.slice(1).map((event) => (
+                    <div
+                      key={event.id}
+                      className="rounded-md border px-4 py-3 text-sm shadow-lg"
+                    >
+                      <EventSummary event={event} />
                     </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="text-sm text-muted-foreground space-y-1 px-4">
-                      <div className="flex items-center">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        <span>
-                          {format(conflict.start, "MMM d, yyyy")}
-                          {format(conflict.start, "MMM d") !==
-                            format(conflict.end, "MMM d") &&
-                            ` - ${format(conflict.end, "MMM d, yyyy")}`}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4" />
-                        <span>
-                          {format(conflict.start, "h:mm a")} -{" "}
-                          {format(conflict.end, "h:mm a")}
-                        </span>
-                      </div>
-                      <Badge
-                        variant={
-                          conflict.eventType?.isSpecial
-                            ? "secondary"
-                            : "default"
-                        }
-                      >
-                        {conflict.eventType?.displayName}
-                      </Badge>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
 
             {conflicts.length > 0 && (
               <div className="flex items-center space-x-2 mt-4">
