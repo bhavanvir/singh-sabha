@@ -19,7 +19,7 @@ export const baseEventSchema = timeRangeSchema.extend({
     .min(6, "Occassion too short")
     .max(64, "Occassion too long"),
   type: z.string().min(1, "Type missing"),
-  note: z.string().max(128, "Note too long"),
+  note: z.string().max(128, "Note too long").optional(),
   dateRange: z.object(
     {
       from: z.date(),
