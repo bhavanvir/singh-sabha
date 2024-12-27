@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
-import { eventTable, eventTypeTable } from "@/db/schema";
+import { eventTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-import { sendEventEmails } from "@/lib/send-event-email";
+import { GetEvent } from "./queries";
 
-import type { Event } from "@/db/schema";
+import type { Event, EventWithType } from "@/db/schema";
 
 export const CreateEvent = async ({
   newEvent,
@@ -16,7 +16,7 @@ export const CreateEvent = async ({
     Event,
     "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
   >;
-}): Promise<string[]> => {
+}): Promise<EventWithType> => {
   try {
     const { ...eventData } = newEvent;
 
@@ -25,18 +25,20 @@ export const CreateEvent = async ({
       .values(eventData)
       .returning({
         id: eventTable.id,
-        email: eventTable.registrantEmail,
       });
 
     if (!insertedEvent) {
       throw new Error("Event insertion failed, no ID returned");
     }
 
+    const newInsertedEvent = GetEvent({ id: insertedEvent.id });
+    if (!newInsertedEvent) {
+      throw new Error("Retrieving event failed");
+    }
+
     revalidatePath("/calendar");
     revalidatePath("/admin");
-
-    // When creating the event in Admin-mode there is no email
-    return [insertedEvent.id, insertedEvent.email ?? ""];
+    return newInsertedEvent;
   } catch (err) {
     throw new Error(`Could not add an event: ${err}`);
   }
@@ -84,35 +86,19 @@ export const processDeposit = async (id: string): Promise<void> => {
   }
 
   try {
-    const event = await db
-      .select({
-        events: eventTable,
-        event_types: eventTypeTable,
-      })
-      .from(eventTable)
-      .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.id, id));
+    const event = await GetEvent({ id });
 
     if (!event) {
       throw new Error(`No event exists with ID ${id}`);
     }
 
-    const [eventWithType] = event.map(({ events, event_types }) => ({
-      ...events,
-      eventType: event_types ?? undefined,
-    }));
-
-    if (!eventWithType.isDepositPaid) {
+    if (!event.isDepositPaid) {
       await UpdateEvent({
         updatedEvent: {
-          ...eventWithType,
+          ...event,
           isDepositPaid: true,
         },
       });
-      sendEventEmails(
-        eventWithType,
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/confirmation`,
-      );
     }
   } catch (err) {
     throw new Error(`Could not process deposit: ${err}`);
