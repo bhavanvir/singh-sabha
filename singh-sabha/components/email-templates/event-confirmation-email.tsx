@@ -77,7 +77,11 @@ export default function EventConfirmationEmail({
                 alt="Singh Sabha Logo"
                 className="h-16 w-16"
               />
-              <Link href="https://singhsabha.net/" target="_blank">
+              <Link
+                href="https://singhsabha.net/"
+                target="_blank"
+                className="text-blue-600 underline"
+              >
                 SinghSabha.net
               </Link>
               , serving the Sikh community with devotion and compassion.
