@@ -77,6 +77,7 @@ export default function ReviewEventDialog({
     form.reset();
     setUnderstood(false);
     setConflicts([]);
+    setUpdatedEvent(null);
     onClose();
   };
 
@@ -169,63 +170,63 @@ export default function ReviewEventDialog({
             </div>
 
             {conflicts.length > 0 && (
-              <Collapsible
-                open={isExpanded}
-                onOpenChange={setIsExpanded}
-                className="w-full space-y-4"
-              >
-                <div
-                  className={cn(
-                    "flex items-center space-x-4 px-4",
-                    { "justify-center": conflicts.length === 1 },
-                    { "justify-between": conflicts.length > 1 },
-                  )}
+              <>
+                <Collapsible
+                  open={isExpanded}
+                  onOpenChange={setIsExpanded}
+                  className="w-full space-y-4"
                 >
-                  <h4 className="text-sm font-semibold">
-                    {conflicts.length} Conflicting Event
-                    {conflicts.length !== 1 ? "s" : ""}
-                  </h4>
-                  {conflicts.length > 1 && (
-                    <CollapsibleTrigger asChild>
-                      <Button variant="ghost" size="sm" className="w-9 p-0">
-                        <ChevronsUpDown className="h-4 w-4" />
-                        <span className="sr-only">Toggle events list</span>
-                      </Button>
-                    </CollapsibleTrigger>
-                  )}
-                </div>
-                <div className="rounded-md border px-4 py-3 text-sm shadow-lg">
-                  <EventSummary event={conflicts[0]} />
-                </div>
-                <CollapsibleContent className="space-y-2">
-                  {conflicts.slice(1).map((event) => (
-                    <div
-                      key={event.id}
-                      className="rounded-md border px-4 py-3 text-sm shadow-lg"
-                    >
-                      <EventSummary event={event} />
-                    </div>
-                  ))}
-                </CollapsibleContent>
-              </Collapsible>
-            )}
+                  <div
+                    className={cn(
+                      "flex items-center space-x-4 px-4",
+                      { "justify-center": conflicts.length === 1 },
+                      { "justify-between": conflicts.length > 1 },
+                    )}
+                  >
+                    <h4 className="text-sm font-semibold">
+                      {conflicts.length} Conflicting Event
+                      {conflicts.length !== 1 ? "s" : ""}
+                    </h4>
+                    {conflicts.length > 1 && (
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="w-9 p-0">
+                          <ChevronsUpDown className="h-4 w-4" />
+                          <span className="sr-only">Toggle events list</span>
+                        </Button>
+                      </CollapsibleTrigger>
+                    )}
+                  </div>
+                  <div className="rounded-md border px-4 py-3 text-sm shadow-lg">
+                    <EventSummary event={conflicts[0]} />
+                  </div>
+                  <CollapsibleContent className="space-y-2">
+                    {conflicts.slice(1).map((event) => (
+                      <div
+                        key={event.id}
+                        className="rounded-md border px-4 py-3 text-sm shadow-lg"
+                      >
+                        <EventSummary event={event} />
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
 
-            {conflicts.length > 0 && (
-              <div className="flex items-center space-x-2 mt-4">
-                <Checkbox
-                  id="understood"
-                  checked={understood}
-                  onCheckedChange={(checked) =>
-                    setUnderstood(checked as boolean)
-                  }
-                />
-                <label
-                  htmlFor="understood"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  I understand the conflicts and want to approve this event.
-                </label>
-              </div>
+                <div className="flex items-center space-x-2 mt-4">
+                  <Checkbox
+                    id="understood"
+                    checked={understood}
+                    onCheckedChange={(checked) =>
+                      setUnderstood(checked as boolean)
+                    }
+                  />
+                  <label
+                    htmlFor="understood"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I understand the conflicts and want to approve this event.
+                  </label>
+                </div>
+              </>
             )}
 
             <DialogFooter>
