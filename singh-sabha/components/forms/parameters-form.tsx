@@ -181,7 +181,7 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                   You will be charged a ${selectedEventType.deposit.toFixed(
                     2,
                   )}{" "}
-                  non-refundable deposit.
+                  non-refundable deposit upon confirmation.
                 </p>
               )}
           </FormItem>
