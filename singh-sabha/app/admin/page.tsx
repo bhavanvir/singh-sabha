@@ -1,10 +1,6 @@
 import { validateRequest } from "@/lib/auth";
 import { AdminDashboard } from "@/components/admin-dashboard/admin-dashboard";
-import {
-  GetAllEvents,
-  GetAllUnverifiedEvents,
-  GetEventsOverTime,
-} from "@/lib/api/events/queries";
+import { GetAllEvents, GetEventsOverTime } from "@/lib/api/events/queries";
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 import { GetAllEventTypes } from "@/lib/api/event-types/queries";
 import { GetAllUsers } from "@/lib/api/users/queries";
@@ -26,7 +22,6 @@ export default async function Admin() {
 
   const users = await GetAllUsers();
   const events = await GetAllEvents();
-  const notifications = await GetAllUnverifiedEvents();
   const mailingList = await GetMailingList();
   const eventTypes = await GetAllEventTypes();
   const announcements = await GetAllAnnouncements();
@@ -44,7 +39,6 @@ export default async function Admin() {
         user={user}
         users={users}
         events={allGeneratedEvents}
-        notifications={notifications}
         mailingList={mailingList}
         eventTypes={eventTypes}
         announcements={announcements}

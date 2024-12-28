@@ -46,7 +46,6 @@ interface DashboardProps {
   user: User;
   users: Omit<User, "passwordHash">[];
   events: Event[];
-  notifications: EventWithType[];
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
@@ -57,7 +56,6 @@ export function AdminDashboard({
   user,
   users,
   events,
-  notifications,
   mailingList,
   eventTypes,
   announcements,
@@ -70,13 +68,18 @@ export function AdminDashboard({
     (event: EventWithType) => event.isVerified && event.isDepositPaid,
   );
 
+  const unverifiedEvents = events.filter(
+    (event: EventWithType) =>
+      !verifiedEvents.some((verifiedEvent) => verifiedEvent.id === event.id),
+  );
+
   const pageComponents = {
     CALENDAR: (
       <BookingCalendar user={user} events={events} eventTypes={eventTypes} />
     ),
     NOTIFICATIONS: (
       <Notifications
-        notifications={notifications}
+        unverifiedEvents={unverifiedEvents}
         verifiedEvents={verifiedEvents}
       />
     ),
