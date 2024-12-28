@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -132,7 +133,7 @@ export default function Notifications({
                       format(notification.end, "MMMM d, yyyy") &&
                       ` - ${format(notification.end, "MMMM d, yyyy")}`}
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 text-muted-foreground mb-2">
                     {notification.registrantFullName && (
                       <div className="flex items-center">
                         <User className="h-4 w-4 mr-1 flex-shrink-0" />
@@ -142,20 +143,32 @@ export default function Notifications({
                       </div>
                     )}
                     {notification.registrantEmail && (
-                      <div className="flex items-center">
-                        <Mail className="h-4 w-4 mr-1 flex-shrink-0" />
-                        <span className="text-sm truncate">
-                          {notification.registrantEmail}
-                        </span>
-                      </div>
+                      <>
+                        <Separator
+                          orientation="vertical"
+                          className="hidden sm:block h-4"
+                        />
+                        <div className="flex items-center">
+                          <Mail className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="text-sm truncate">
+                            {notification.registrantEmail}
+                          </span>
+                        </div>
+                      </>
                     )}
                     {notification.registrantPhoneNumber && (
-                      <div className="flex items-center">
-                        <Phone className="h-4 w-4 mr-1 flex-shrink-0" />
-                        <span className="text-sm truncate">
-                          {notification.registrantPhoneNumber}
-                        </span>
-                      </div>
+                      <>
+                        <Separator
+                          orientation="vertical"
+                          className="hidden sm:block h-4"
+                        />
+                        <div className="flex items-center">
+                          <Phone className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="text-sm truncate">
+                            {notification.registrantPhoneNumber}
+                          </span>
+                        </div>
+                      </>
                     )}
                   </div>
                   <div className="flex items-center space-x-2 mb-4">
@@ -207,7 +220,6 @@ export default function Notifications({
                     <Button
                       variant="outline"
                       onClick={() => handleDismiss(notification)}
-                      disabled={notification.isVerified!}
                     >
                       <X className="w-4 h-4" />
                       Dismiss
