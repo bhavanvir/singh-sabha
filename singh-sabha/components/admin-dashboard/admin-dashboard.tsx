@@ -67,7 +67,7 @@ export function AdminDashboard({
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   const verifiedEvents = events.filter(
-    (event: EventWithType) => event.isVerified === true,
+    (event: EventWithType) => event.isVerified && event.isDepositPaid,
   );
 
   const pageComponents = {
