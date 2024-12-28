@@ -32,12 +32,12 @@ import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 
 interface NotificationsProps {
-  notifications: EventWithType[];
+  unverifiedEvents: EventWithType[];
   verifiedEvents: EventWithType[];
 }
 
 export default function Notifications({
-  notifications,
+  unverifiedEvents,
   verifiedEvents,
 }: NotificationsProps) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
@@ -54,12 +54,15 @@ export default function Notifications({
   const approveEvent = (event: EventWithType) => {
     toast.promise(
       async () => {
-        const updatedEvent = await UpdateEvent({
-          updatedEvent: { ...event, isVerified: true },
-        });
-        await sendEventEmails(event, "/api/send/approved");
-        setIsOpen(false);
-        setUnderstood(false);
+        let updatedEvent: EventWithType | void = event;
+        if (!event.isVerified) {
+          updatedEvent = await UpdateEvent({
+            updatedEvent: { ...event, isVerified: true },
+          });
+          await sendEventEmails(event, "/api/send/approved");
+          setIsOpen(false);
+          setUnderstood(false);
+        }
         return updatedEvent;
       },
       {
@@ -73,8 +76,10 @@ export default function Notifications({
   const handleDismiss = (event: EventWithType) => {
     toast.promise(
       async () => {
-        await DeleteEvent({ id: event.id });
-        await sendEventEmails(event, "/api/send/denied");
+        if (!event.isVerified) {
+          await DeleteEvent({ id: event.id });
+          await sendEventEmails(event, "/api/send/denied");
+        }
         return event;
       },
       {
@@ -88,9 +93,9 @@ export default function Notifications({
   return (
     <>
       <ScrollArea className="h-[calc(100vh-6rem)] mx-auto container px-4 md:px-6">
-        {notifications.length > 0 ? (
+        {unverifiedEvents.length > 0 ? (
           <div className="space-y-4">
-            {notifications.map((notification) => (
+            {unverifiedEvents.map((notification) => (
               <Card
                 key={notification.id}
                 className="overflow-hidden shadow-lg w-full max-w-xl mx-auto"
@@ -202,11 +207,15 @@ export default function Notifications({
                     <Button
                       variant="outline"
                       onClick={() => handleDismiss(notification)}
+                      disabled={notification.isVerified!}
                     >
                       <X className="w-4 h-4" />
                       Dismiss
                     </Button>
-                    <Button onClick={() => handleApprove(notification)}>
+                    <Button
+                      onClick={() => handleApprove(notification)}
+                      disabled={notification.isVerified!}
+                    >
                       <Search className="w-4 h-4" />
                       Review
                     </Button>
