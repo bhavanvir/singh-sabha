@@ -57,7 +57,7 @@ export default function Notifications({
         const updatedEvent = await UpdateEvent({
           updatedEvent: { ...event, isVerified: true },
         });
-        // await sendEventEmails(event, "/api/send/approved");
+        await sendEventEmails(event, "/api/send/approved");
         setIsOpen(false);
         setUnderstood(false);
         return updatedEvent;
