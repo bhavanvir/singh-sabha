@@ -86,7 +86,11 @@ export default function CreateEventDialog({
 
     const newEvent: Omit<
       Event,
-      "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
+      | "id"
+      | "registrantFullName"
+      | "registrantEmail"
+      | "registrantPhoneNumber"
+      | "createdAt"
     > = {
       type: data.type,
       start: startDateTime,
