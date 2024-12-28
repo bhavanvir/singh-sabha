@@ -92,7 +92,7 @@ export default function BookEventDialog({
     const startDateTime = startOfDay(data.dateRange.from);
     const endDateTime = endOfDay(data.dateRange.to || data.dateRange.from);
 
-    const newEvent: Omit<Event, "id"> = {
+    const newEvent: Omit<Event, "id" | "createdAt"> = {
       registrantFullName: data.name,
       registrantEmail: data.email,
       registrantPhoneNumber: data.phoneNumber ?? null,

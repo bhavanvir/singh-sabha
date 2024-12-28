@@ -14,7 +14,11 @@ export const CreateEvent = async ({
 }: {
   newEvent: Omit<
     Event,
-    "id" | "registrantFullName" | "registrantEmail" | "registrantPhoneNumber"
+    | "id"
+    | "registrantFullName"
+    | "registrantEmail"
+    | "registrantPhoneNumber"
+    | "createdAt"
   >;
 }): Promise<EventWithType> => {
   try {
@@ -22,7 +26,7 @@ export const CreateEvent = async ({
 
     const [insertedEvent] = await db
       .insert(eventTable)
-      .values(eventData)
+      .values({ ...eventData, createdAt: new Date() })
       .returning({
         id: eventTable.id,
       });
