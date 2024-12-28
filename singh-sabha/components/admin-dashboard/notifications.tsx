@@ -1,23 +1,22 @@
 import * as React from "react";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import {
   Mail,
   Phone,
   Bell,
   Calendar,
-  CalendarSearch,
   User,
   X,
   Search,
   HandCoins,
+  CircleCheck,
 } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components//ui/tooltip";
-import { Separator } from "@/components/ui/separator";
+} from "@/components/ui/tooltip";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -58,7 +57,7 @@ export default function Notifications({
         const updatedEvent = await UpdateEvent({
           updatedEvent: { ...event, isVerified: true },
         });
-        await sendEventEmails(event, "/api/send/approved");
+        // await sendEventEmails(event, "/api/send/approved");
         setIsOpen(false);
         setUnderstood(false);
         return updatedEvent;
@@ -94,134 +93,123 @@ export default function Notifications({
             {notifications.map((notification) => (
               <Card
                 key={notification.id}
-                className="overflow-hidden shadow-lg "
+                className="overflow-hidden shadow-lg w-full max-w-xl mx-auto"
               >
-                <CardContent className="p-0">
-                  <div className="flex items-stretch">
-                    <div className="flex-grow p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="space-x-2">
-                          <Badge
-                            style={{
-                              backgroundColor: notification.eventType?.isSpecial
-                                ? EventColors.special
-                                : EventColors.regular,
-                            }}
-                          >
-                            {notification.eventType?.isSpecial
-                              ? "Special"
-                              : "Regular"}
-                          </Badge>
-                          <Badge>{notification.eventType?.displayName}</Badge>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {!isReviewed && (
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger>
-                                  <CalendarSearch className="h-5 w-5 stroke-yellow-500" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Event requires review</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <HandCoins
-                                  className={cn(
-                                    "h-5 w-5",
-                                    {
-                                      "stroke-green-500":
-                                        notification.isDepositPaid,
-                                    },
-                                    {
-                                      "stroke-red-500":
-                                        !notification.isDepositPaid,
-                                    },
-                                  )}
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                {notification.isDepositPaid
-                                  ? "Deposit paid"
-                                  : "Deposit not paid"}
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-                      </div>
-                      <h3 className="text-lg font-semibold mb-1">
-                        {notification.occassion}
-                      </h3>
-                      <div>
-                        <p className="flex items-center text-sm text-muted-foreground mb-2">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {format(notification.start, "MMMM d, yyyy")}
-                          {format(notification.start, "MMMM d, yyyy") !==
-                            format(notification.end, "MMMM d, yyyy") &&
-                            ` - ${format(notification.end, "MMMM d, yyyy")}`}
-                        </p>
-                      </div>
-                      {(notification.registrantFullName ||
-                        notification.registrantEmail ||
-                        notification.registrantPhoneNumber) && (
-                        <div className="flex items-center text-sm text-muted-foreground mb-2 space-x-2">
-                          {notification.registrantFullName && (
-                            <div className="flex items-center">
-                              <User className="h-4 w-4 mr-1" />
-                              <span>{notification.registrantFullName}</span>
-                            </div>
-                          )}
-                          {notification.registrantEmail && (
-                            <>
-                              <Separator
-                                orientation="vertical"
-                                className="h-4"
-                              />
-                              <div className="flex items-center">
-                                <Mail className="h-4 w-4 mr-1" />
-                                <span>{notification.registrantEmail}</span>
-                              </div>
-                            </>
-                          )}
-                          {notification.registrantPhoneNumber && (
-                            <>
-                              <Separator
-                                orientation="vertical"
-                                className="h-4"
-                              />
-                              <div className="flex items-center">
-                                <Phone className="h-4 w-4 mr-1" />
-                                <span>
-                                  {notification.registrantPhoneNumber}
-                                </span>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      )}
-                      {notification.note && (
-                        <p className="text-sm mt-2 text-muted-foreground border-t pt-2">
-                          {notification.note}
-                        </p>
-                      )}
-                      <div className="flex justify-end space-x-2 mt-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => handleDismiss(notification)}
-                        >
-                          <X />
-                          Dismiss
-                        </Button>
-                        <Button onClick={() => handleApprove(notification)}>
-                          <Search />
-                          Review
-                        </Button>
-                      </div>
+                <CardContent className="p-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-2 sm:mb-0">
+                      <Badge
+                        style={{
+                          backgroundColor: notification.eventType?.isSpecial
+                            ? EventColors.special
+                            : EventColors.regular,
+                        }}
+                      >
+                        {notification.eventType?.isSpecial
+                          ? "Special"
+                          : "Regular"}
+                      </Badge>
+                      <Badge>{notification.eventType?.displayName}</Badge>
                     </div>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDistanceToNow(new Date(notification.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {notification.occassion}
+                  </h3>
+                  <div className="flex items-center text-sm text-muted-foreground mb-2">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    {format(notification.start, "MMMM d, yyyy")}
+                    {format(notification.start, "MMMM d, yyyy") !==
+                      format(notification.end, "MMMM d, yyyy") &&
+                      ` - ${format(notification.end, "MMMM d, yyyy")}`}
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+                    {notification.registrantFullName && (
+                      <div className="flex items-center">
+                        <User className="h-4 w-4 mr-1 flex-shrink-0" />
+                        <span className="text-sm truncate">
+                          {notification.registrantFullName}
+                        </span>
+                      </div>
+                    )}
+                    {notification.registrantEmail && (
+                      <div className="flex items-center">
+                        <Mail className="h-4 w-4 mr-1 flex-shrink-0" />
+                        <span className="text-sm truncate">
+                          {notification.registrantEmail}
+                        </span>
+                      </div>
+                    )}
+                    {notification.registrantPhoneNumber && (
+                      <div className="flex items-center">
+                        <Phone className="h-4 w-4 mr-1 flex-shrink-0" />
+                        <span className="text-sm truncate">
+                          {notification.registrantPhoneNumber}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center space-x-2 mb-4">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <CircleCheck
+                            className={cn(
+                              "h-5 w-5",
+                              notification.isVerified
+                                ? "text-green-500"
+                                : "text-red-500",
+                            )}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {notification.isVerified
+                            ? "Event verified"
+                            : "Event not verified"}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HandCoins
+                            className={cn(
+                              "h-5 w-5",
+                              notification.isDepositPaid
+                                ? "text-green-500"
+                                : "text-red-500",
+                            )}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {notification.isDepositPaid
+                            ? "Deposit paid"
+                            : "Deposit not paid"}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  {notification.note && (
+                    <p className="text-sm text-muted-foreground border-t pt-2 mb-4">
+                      {notification.note}
+                    </p>
+                  )}
+                  <div className="flex justify-end space-x-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => handleDismiss(notification)}
+                    >
+                      <X className="w-4 h-4" />
+                      Dismiss
+                    </Button>
+                    <Button onClick={() => handleApprove(notification)}>
+                      <Search className="w-4 h-4" />
+                      Review
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
