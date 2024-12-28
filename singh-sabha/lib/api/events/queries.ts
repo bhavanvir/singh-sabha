@@ -108,7 +108,8 @@ export const GetEventsBetweenDates = async ({
           eq(eventTable.isPublic, true),
           eq(eventTable.isVerified, true),
         ),
-      );
+      )
+      .orderBy(sql`DATE(${eventTable.start})`);
 
     revalidatePath("/");
 
