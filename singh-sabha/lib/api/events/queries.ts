@@ -38,7 +38,12 @@ export const GetAllUnverifiedEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.isVerified, false))
+      .where(
+        and(
+          eq(eventTable.isVerified, false),
+          eq(eventTable.isDepositPaid, false),
+        ),
+      )
       .orderBy(asc(eventTable.start));
 
     revalidatePath("/admin");
@@ -148,18 +153,18 @@ export const GetEventsOverTime = async (): Promise<
   try {
     const eventsOverTime = await db
       .select({
-        date: sql<string>`DATE(${eventTable.start})`.as("date"),
+        date: sql<string>`DATE(${eventTable.createdAt})`.as("date"),
         count: count(),
       })
       .from(eventTable)
       .where(
         and(
           eq(eventTable.isVerified, true),
-          sql`${eventTable.start} >= CURRENT_DATE - INTERVAL '30 days'`,
+          sql`${eventTable.createdAt} >= CURRENT_DATE - INTERVAL '30 days'`,
         ),
       )
-      .groupBy(sql`DATE(${eventTable.start})`)
-      .orderBy(sql`DATE(${eventTable.start})`);
+      .groupBy(sql`DATE(${eventTable.createdAt})`)
+      .orderBy(sql`DATE(${eventTable.createdAt})`);
 
     return eventsOverTime;
   } catch (err) {
