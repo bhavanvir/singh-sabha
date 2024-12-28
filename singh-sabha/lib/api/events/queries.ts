@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
-import { eq, and, gte, lte, sql, count, asc } from "drizzle-orm";
+import { eq, and, gte, lte, sql, count } from "drizzle-orm";
 
 import type { EventWithType } from "@/db/schema";
 
@@ -16,37 +16,14 @@ export const GetAllVerifiedEvents = async (): Promise<EventWithType[]> => {
       })
       .from(eventTable)
       .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
-      .where(eq(eventTable.isVerified, true));
-
-    revalidatePath("/calendar");
-
-    return events.map(({ events, event_types }) => ({
-      ...events,
-      eventType: event_types ?? undefined,
-    }));
-  } catch (err) {
-    throw new Error(`Could not fetch events: ${err}`);
-  }
-};
-
-export const GetAllUnverifiedEvents = async (): Promise<EventWithType[]> => {
-  try {
-    const events = await db
-      .select({
-        events: eventTable,
-        event_types: eventTypeTable,
-      })
-      .from(eventTable)
-      .leftJoin(eventTypeTable, eq(eventTable.type, eventTypeTable.id))
       .where(
         and(
-          eq(eventTable.isVerified, false),
-          eq(eventTable.isDepositPaid, false),
+          eq(eventTable.isVerified, true),
+          eq(eventTable.isDepositPaid, true),
         ),
-      )
-      .orderBy(asc(eventTable.start));
+      );
 
-    revalidatePath("/admin");
+    revalidatePath("/calendar");
 
     return events.map(({ events, event_types }) => ({
       ...events,
