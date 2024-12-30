@@ -237,7 +237,7 @@ export default function Notifications({
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-[calc(100vh-6rem)]">
             <Card className="max-w-md shadow-lg">
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center space-y-4">
