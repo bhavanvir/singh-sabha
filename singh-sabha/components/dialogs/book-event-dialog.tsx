@@ -24,7 +24,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { startOfDay, endOfDay } from "date-fns";
 
-import { Loader2 } from "lucide-react";
+import { Send } from "lucide-react";
 
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { CreateEvent } from "@/lib/api/events/mutations";
@@ -46,8 +46,6 @@ export default function BookEventDialog({
   eventTypes,
   selectedEventType,
 }: BookEventDialogProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
   const form = useForm<z.infer<typeof userEventSchema>>({
     resolver: zodResolver(userEventSchema),
     defaultValues: {
@@ -87,8 +85,6 @@ export default function BookEventDialog({
   const handleSubmit: SubmitHandler<z.infer<typeof userEventSchema>> = async (
     data,
   ) => {
-    setIsLoading(true);
-
     const startDateTime = startOfDay(data.dateRange.from);
     const endDateTime = endOfDay(data.dateRange.to || data.dateRange.from);
 
@@ -121,7 +117,6 @@ export default function BookEventDialog({
         error: "Failed to submit event booking or send confirmation email",
       },
     );
-    setIsLoading(false);
     handleClose();
   };
 
@@ -204,19 +199,9 @@ export default function BookEventDialog({
             </div>
 
             <DialogFooter>
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="flex items-center"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Please wait
-                  </>
-                ) : (
-                  <>Submit</>
-                )}
+              <Button type="submit">
+                <Send />
+                Submit
               </Button>
             </DialogFooter>
           </form>
