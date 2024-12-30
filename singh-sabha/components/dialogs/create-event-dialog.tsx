@@ -17,6 +17,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { set } from "date-fns";
 
+import { Plus } from "lucide-react";
+
 import { FrequencyForm } from "@/components/forms/frequency-form";
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { superUserEventSchema } from "@/lib/event-schema";
@@ -138,7 +140,10 @@ export default function CreateEventDialog({
               >
                 <ParametersForm eventTypes={eventTypes} role="admin" />
                 <DialogFooter>
-                  <Button type="submit">Create</Button>
+                  <Button type="submit">
+                    <Plus />
+                    Create
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>

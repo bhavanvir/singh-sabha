@@ -27,7 +27,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { ChevronsUpDown } from "lucide-react";
+import { X, Check, ChevronsUpDown } from "lucide-react";
 
 import EventSummary from "../event-summary";
 import { findConflicts } from "@/lib/utils";
@@ -231,12 +231,14 @@ export default function ReviewEventDialog({
 
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>
+                <X />
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={conflicts.length > 0 && !understood}
               >
+                <Check />
                 Approve
               </Button>
             </DialogFooter>

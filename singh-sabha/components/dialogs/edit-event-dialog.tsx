@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format, set } from "date-fns";
 
+import { Trash, Save } from "lucide-react";
+
 import { FrequencyForm } from "@/components/forms/frequency-form";
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { superUserEventSchema } from "@/lib/event-schema";
@@ -195,9 +197,11 @@ export default function EditEventDialog({
                     variant="destructive"
                     onClick={handleDeleteEventSubmit}
                   >
+                    <Trash />
                     Delete
                   </Button>
                   <Button type="submit" disabled={!form.formState.isDirty}>
+                    <Save />
                     Save changes
                   </Button>
                 </DialogFooter>
