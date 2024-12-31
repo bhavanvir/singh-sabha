@@ -8,6 +8,13 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import BookEventDialog from "../dialogs/book-event-dialog";
 
@@ -169,7 +176,7 @@ function ServiceCard({
         scale,
       }}
     >
-      <div className="relative bg-background rounded-xl border overflow-hidden min-h-[170px] cursor-pointer">
+      <Card className="relative bg-background rounded-xl border overflow-hidden min-h-[170px] cursor-pointer">
         <motion.div
           className="absolute z-10 opacity-0 group-hover:opacity-30 transition-opacity duration-200 rounded-full blur-md"
           style={{
@@ -180,13 +187,15 @@ function ServiceCard({
             top: sheenY,
           }}
         />
-        <div className="p-4">
-          <h3 className="text-2xl font-semibold tracking-tight mb-2">
+        <CardHeader className="p-4">
+          <CardTitle className="text-2xl font-semibold tracking-tight mb-2">
             {type.displayName}
-          </h3>
-          <p className="text-muted-foreground md:text-lg">{type.description}</p>
-        </div>
-      </div>
+          </CardTitle>
+          <CardDescription className="text-muted-foreground md:text-lg">
+            {type.description}
+          </CardDescription>
+        </CardHeader>
+      </Card>
     </motion.div>
   );
 }
