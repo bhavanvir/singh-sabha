@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
-import { eq, and, gte, lte, sql, count } from "drizzle-orm";
+import { eq, and, gte, lte, sql, count, or } from "drizzle-orm";
 
 import type { EventWithType } from "@/db/schema";
 
@@ -147,5 +147,32 @@ export const GetEventsOverTime = async (): Promise<
     return eventsOverTime;
   } catch (err) {
     throw new Error(`Could not fetch events over time: ${err}`);
+  }
+};
+
+export const GetBookingLeadTimes = async (): Promise<
+  { leadTimeDays: number; count: number }[]
+> => {
+  try {
+    const leadTimes = await db
+      .select({
+        leadTimeDays:
+          sql<number>`DATE_PART('day', ${eventTable.start} - ${eventTable.createdAt})`.as(
+            "lead_time_days", // Updated alias with underscores
+          ),
+        count: count(),
+      })
+      .from(eventTable)
+      .where(sql`${eventTable.isVerified} = true`)
+      .groupBy(sql`lead_time_days`)
+      .orderBy(sql`lead_time_days`);
+
+    console.log(leadTimes);
+    return leadTimes.map((row) => ({
+      leadTimeDays: row.leadTimeDays, // Ensure correct mapping
+      count: row.count,
+    }));
+  } catch (err) {
+    throw new Error(`Could not fetch booking lead times: ${err}`);
   }
 };

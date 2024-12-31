@@ -1,6 +1,10 @@
 import { validateRequest } from "@/lib/auth";
 import { AdminDashboard } from "@/components/admin-dashboard/admin-dashboard";
-import { GetAllEvents, GetEventsOverTime } from "@/lib/api/events/queries";
+import {
+  GetAllEvents,
+  GetBookingLeadTimes,
+  GetEventsOverTime,
+} from "@/lib/api/events/queries";
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 import { GetAllEventTypes } from "@/lib/api/event-types/queries";
 import { GetAllUsers } from "@/lib/api/users/queries";
@@ -28,7 +32,9 @@ export default async function Admin() {
 
   const analytics: Analytics = {};
   const eventsOverTime = await GetEventsOverTime();
+  const bookingLeadTimes = await GetBookingLeadTimes();
   analytics.EventsOverTime = eventsOverTime;
+  analytics.BookingLeadTimes = bookingLeadTimes;
 
   // Applies all reoccurence rules
   const allGeneratedEvents = generateRecurringEvents(events);
