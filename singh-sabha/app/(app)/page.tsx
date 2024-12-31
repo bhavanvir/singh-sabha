@@ -8,6 +8,8 @@ import UpcomingEventsSection from "@/components/sections/upcoming-events-section
 import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
 import ServicesSection from "@/components/sections/services-section";
 import { DonationsSection } from "@/components/sections/donations-section";
+import { ContactUsSection } from "@/components/sections/contact-us-section";
+import { YoutubeLiveSection } from "@/components/sections/youtube-live-section";
 
 export default async function Home() {
   moment.locale("en-CA");
@@ -30,7 +32,9 @@ export default async function Home() {
         <HeroSection />
         <UpcomingEventsSection upcomingEvents={upcomingEvents} />
         <ServicesSection eventTypes={eventTypes} />
+        <YoutubeLiveSection />
         <DonationsSection />
+        <ContactUsSection />
       </main>
     </>
   );
