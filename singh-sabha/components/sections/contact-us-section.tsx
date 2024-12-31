@@ -42,11 +42,8 @@ export function ContactUsSection() {
             </p>
           </motion.div>
 
-          <motion.div
-            variants={fadeInWithDelay(0.3)}
-            className="grid gap-6 md:grid-cols-2"
-          >
-            <Card className="w-full shadow-lg">
+          <motion.div variants={fadeInWithDelay(0.3)}>
+            <Card className="w-full shadow-lg max-w-md mx-auto">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold">
                   Get in Touch
@@ -89,52 +86,6 @@ export function ContactUsSection() {
                     </p>
                   </div>
                 </motion.div>
-              </CardContent>
-            </Card>
-
-            <Card className="w-full shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold">
-                  Hours of Operation
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="flex items-start space-x-4">
-                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div className="grid gap-4 w-full">
-                    <motion.div
-                      variants={fadeInWithDelay(0.5)}
-                      className="flex justify-between items-center"
-                    >
-                      <p className="text-sm font-medium">Monday - Friday</p>
-                      <p className="text-sm text-muted-foreground">
-                        6:00 AM - 8:00 PM
-                      </p>
-                    </motion.div>
-                    <Separator className="my-1" />
-                    <motion.div
-                      variants={fadeInWithDelay(0.7)}
-                      className="flex justify-between items-center"
-                    >
-                      <p className="text-sm font-medium">Saturday - Sunday</p>
-                      <p className="text-sm text-muted-foreground">
-                        6:00 AM - 8:00 PM
-                      </p>
-                    </motion.div>
-                    <Separator className="my-1" />
-                    <motion.div
-                      variants={fadeInWithDelay(0.9)}
-                      className="flex justify-between items-center"
-                    >
-                      <p className="text-sm font-medium">
-                        Daily Langar (Community Kitchen)
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        10:00 AM - 8:00 PM
-                      </p>
-                    </motion.div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </motion.div>
