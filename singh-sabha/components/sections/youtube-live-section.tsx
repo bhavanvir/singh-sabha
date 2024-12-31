@@ -38,7 +38,7 @@ export function YoutubeLiveSection() {
           </motion.div>
 
           <motion.div variants={fadeInWithDelay(0.3)}>
-            <Card className="mx-auto overflow-hidden">
+            <Card className="mx-auto overflow-hidden bg-accent">
               <CardHeader>
                 <CardTitle className="flex items-center justify-center">
                   <Link
