@@ -158,7 +158,7 @@ export const GetBookingLeadTimes = async (): Promise<
       .select({
         leadTimeDays:
           sql<number>`DATE_PART('day', ${eventTable.start} - ${eventTable.createdAt})`.as(
-            "lead_time_days", // Updated alias with underscores
+            "lead_time_days",
           ),
         count: count(),
       })
@@ -167,9 +167,8 @@ export const GetBookingLeadTimes = async (): Promise<
       .groupBy(sql`lead_time_days`)
       .orderBy(sql`lead_time_days`);
 
-    console.log(leadTimes);
     return leadTimes.map((row) => ({
-      leadTimeDays: row.leadTimeDays, // Ensure correct mapping
+      leadTimeDays: row.leadTimeDays,
       count: row.count,
     }));
   } catch (err) {
