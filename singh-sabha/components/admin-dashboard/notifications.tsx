@@ -99,7 +99,7 @@ export default function Notifications({
             {unverifiedEvents.map((notification) => (
               <Card
                 key={notification.id}
-                className="overflow-hidden shadow-lg w-full max-w-xl mx-auto"
+                className="overflow-hidden w-full max-w-xl mx-auto"
               >
                 <CardContent className="p-4">
                   <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
@@ -238,7 +238,7 @@ export default function Notifications({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-[calc(100vh-6rem)]">
-            <Card className="max-w-md shadow-lg">
+            <Card className="max-w-md">
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center space-y-4">
                   <Bell className="w-12 h-12 text-muted-foreground" />

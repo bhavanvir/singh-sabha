@@ -169,7 +169,7 @@ function ServiceCard({
         scale,
       }}
     >
-      <div className="relative bg-background rounded-xl border shadow-lg overflow-hidden min-h-[170px] cursor-pointer">
+      <div className="relative bg-background rounded-xl border overflow-hidden min-h-[170px] cursor-pointer">
         <motion.div
           className="absolute z-10 opacity-0 group-hover:opacity-30 transition-opacity duration-200 rounded-full blur-md"
           style={{

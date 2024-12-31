@@ -81,14 +81,14 @@ export default function UpcomingEventsSection({
                     </CollapsibleTrigger>
                   )}
                 </div>
-                <div className="rounded-md border px-4 py-3 text-sm shadow-lg">
+                <div className="rounded-md border px-4 py-3 text-sm">
                   <EventSummary event={upcomingEvents[0]} />
                 </div>
                 <CollapsibleContent className="space-y-2">
                   {upcomingEvents.slice(1).map((event) => (
                     <div
                       key={event.id}
-                      className="rounded-md border px-4 py-3 text-sm shadow-lg"
+                      className="rounded-md border px-4 py-3 text-sm"
                     >
                       <EventSummary event={event} />
                     </div>
@@ -96,7 +96,7 @@ export default function UpcomingEventsSection({
                 </CollapsibleContent>
               </Collapsible>
             ) : (
-              <Card className="max-w-md mx-auto bg-background rounded-xl border shadow-lg overflow-hidden">
+              <Card className="max-w-md mx-auto bg-background rounded-xl border overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex flex-col items-center text-center space-y-4">
                     <CalendarX2 className="w-12 h-12 text-muted-foreground" />

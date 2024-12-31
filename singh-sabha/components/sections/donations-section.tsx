@@ -57,7 +57,7 @@ export function DonationsSection() {
             variants={fadeInWithDelay(0.3)}
             className="max-w-md mx-auto"
           >
-            <Card className="shadow-lg">
+            <Card>
               <CardHeader>
                 <CardTitle className="text-center text-lg font-semibold">
                   Support Us with Your Donation

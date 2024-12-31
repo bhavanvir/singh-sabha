@@ -52,7 +52,7 @@ export const EventsOverTimeCard = ({
   } satisfies ChartConfig;
 
   return (
-    <Card className="shadow-lg">
+    <Card>
       <CardHeader>
         <CardTitle>Events Over Time</CardTitle>
         <CardDescription>Number of events in the last 30 days</CardDescription>

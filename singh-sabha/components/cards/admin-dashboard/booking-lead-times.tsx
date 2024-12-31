@@ -53,7 +53,7 @@ export const BookingLeadTimesCard = ({
   } satisfies ChartConfig;
 
   return (
-    <Card className="shadow-lg">
+    <Card>
       <CardHeader>
         <CardTitle>Booking Lead Times</CardTitle>
         <CardDescription>

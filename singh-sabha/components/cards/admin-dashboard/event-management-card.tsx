@@ -104,7 +104,7 @@ export default function EventManagementCard({
   };
 
   return (
-    <Card className="shadow-lg">
+    <Card>
       <CardHeader>
         <CardTitle>Event Management</CardTitle>
       </CardHeader>

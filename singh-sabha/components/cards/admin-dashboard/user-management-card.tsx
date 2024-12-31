@@ -81,7 +81,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
   };
 
   return (
-    <Card className="shadow-lg">
+    <Card>
       <CardHeader>
         <CardTitle>User Management</CardTitle>
       </CardHeader>

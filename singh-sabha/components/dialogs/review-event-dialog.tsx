@@ -196,14 +196,14 @@ export default function ReviewEventDialog({
                       </CollapsibleTrigger>
                     )}
                   </div>
-                  <div className="rounded-md border px-4 py-3 text-sm shadow-lg">
+                  <div className="rounded-md border px-4 py-3 text-sm">
                     <EventSummary event={conflicts[0]} />
                   </div>
                   <CollapsibleContent className="space-y-2">
                     {conflicts.slice(1).map((event) => (
                       <div
                         key={event.id}
-                        className="rounded-md border px-4 py-3 text-sm shadow-lg"
+                        className="rounded-md border px-4 py-3 text-sm"
                       >
                         <EventSummary event={event} />
                       </div>

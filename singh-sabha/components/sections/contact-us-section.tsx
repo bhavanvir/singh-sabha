@@ -41,7 +41,7 @@ export function ContactUsSection() {
           </motion.div>
 
           <motion.div variants={fadeInWithDelay(0.3)}>
-            <Card className="w-full shadow-lg max-w-md mx-auto">
+            <Card className="w-full max-w-md mx-auto">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold">
                   Get in Touch

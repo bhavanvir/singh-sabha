@@ -76,7 +76,7 @@ export default function AnnouncementManagementCard({
   };
 
   return (
-    <Card className="shadow-lg">
+    <Card>
       <CardHeader>
         <CardTitle>Announcement Management</CardTitle>
       </CardHeader>
