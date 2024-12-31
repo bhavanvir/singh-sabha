@@ -194,7 +194,10 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
           <FormItem>
             <FormLabel>Note</FormLabel>
             <FormControl>
-              <Textarea placeholder="Add a special note" {...field} />
+              <Textarea
+                placeholder="Add any notes or requests, for example, requesting an evening or afternoon Langar"
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
