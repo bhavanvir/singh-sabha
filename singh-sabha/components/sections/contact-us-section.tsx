@@ -38,7 +38,7 @@ export function ContactUsSection() {
             <p className="mt-2 text-muted-foreground">
               We welcome your visit to our Sikh Temple. If you have any
               questions or need assistance, please don&apos;t hesitate to reach
-              out.
+              out
             </p>
           </motion.div>
 
