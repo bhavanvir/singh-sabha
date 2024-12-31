@@ -60,7 +60,7 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
             </motion.div>
             <motion.div
               variants={staggerContainer}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
             >
               {eventTypes.map((type, index) => (
                 <motion.div
