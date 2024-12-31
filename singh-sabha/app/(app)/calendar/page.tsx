@@ -1,5 +1,4 @@
 import BookingCalendar from "@/components/booking-calendar";
-import NavBar from "@/components/navbar";
 import { GetAllVerifiedEvents } from "@/lib/api/events/queries";
 import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
 import { generateRecurringEvents } from "@/lib/utils";
@@ -17,7 +16,6 @@ export default async function Calendar() {
 
   return (
     <>
-      <NavBar currentLink="Calendar" />
       <div className="p-4">
         <BookingCalendar
           user={null}

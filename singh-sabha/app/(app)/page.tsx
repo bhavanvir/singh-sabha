@@ -2,7 +2,6 @@ import moment from "moment";
 
 import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
 import { GetEventsBetweenDates } from "@/lib/api/events/queries";
-import NavBar from "@/components/navbar";
 import { ActiveAnnouncement } from "@/components/announcement";
 import HeroSection from "@/components/sections/hero-section";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
@@ -26,7 +25,6 @@ export default async function Home() {
 
   return (
     <>
-      <NavBar currentLink="" />
       <ActiveAnnouncement announcement={announcement} />
       <main>
         <HeroSection />

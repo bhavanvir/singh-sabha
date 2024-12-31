@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { Footer } from "@/components/footer";
 
 import { inter } from "./fonts";
 
@@ -12,6 +11,16 @@ export const metadata: Metadata = {
     default: "Gurdwara Singh Sabha",
     template: "%s | Gurdwara Singh Sabha",
   },
+  keywords: [
+    "Gurdwara",
+    "Victoria",
+    "Singh Sabha",
+    "Sikhi",
+    "Canada",
+    "British Columbia",
+  ],
+  authors: [{ name: "Bhavanvir Rai", url: "https://bhavanvir.ca" }],
+  creator: "Bhavanvir Rai",
   description: "Serving the Sikh community with devotion and compassion.",
 };
 
@@ -41,7 +50,6 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">{children}</main>
-          <Footer />
         </div>
         <Toaster richColors={true} />
       </body>

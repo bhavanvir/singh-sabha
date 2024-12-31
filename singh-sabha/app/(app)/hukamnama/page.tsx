@@ -8,7 +8,6 @@ export const metadata = {
 export default function Hukamnama() {
   return (
     <>
-      <NavBar currentLink="Hukamnama" />
       <DailyHukamnama />
     </>
   );
