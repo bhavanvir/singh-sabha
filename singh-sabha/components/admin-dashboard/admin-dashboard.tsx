@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 import { Menu, LogOut, FlagTriangleLeft } from "lucide-react";
 
-import { logout } from "@/components/actions/logout-action";
+import { logout } from "@/actions/logout-action";
 import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/admin-dashboard/notifications";
 import Settings from "@/components/admin-dashboard/settings";

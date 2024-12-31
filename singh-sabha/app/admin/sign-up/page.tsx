@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,9 +29,9 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { CreateMod, ValidateOtp } from "@/lib/api/users/mutations";
 import { toast } from "sonner";
-import Link from "next/link";
+
+import { CreateMod, ValidateOtp } from "@/lib/api/users/mutations";
 
 const otpSchema = z.object({
   otp: z.string().length(6, "OTP must be 6 digits"),

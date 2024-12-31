@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,8 +23,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { login } from "@/components/actions/login-action";
 import { toast } from "sonner";
+
+import { login } from "@/actions/login-action";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
