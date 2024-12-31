@@ -3,8 +3,7 @@
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 
