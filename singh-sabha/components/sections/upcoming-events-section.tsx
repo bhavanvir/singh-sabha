@@ -2,21 +2,20 @@
 
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { Card, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { Calendar, Clock, CalendarX2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
-import { ChevronsUpDown, CalendarX2 } from "lucide-react";
-
-import EventSummary from "../event-summary";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
-import { cn } from "@/lib/utils";
-
 import { EventWithType } from "@/db/schema";
+import { EventColors } from "@/lib/types/event-colours";
 
 interface UpcomingEventsSectionProps {
   upcomingEvents: EventWithType[];
@@ -28,7 +27,8 @@ export default function UpcomingEventsSection({
   const ref = React.useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isOpen, setIsOpen] = React.useState(false);
+
+  const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
 
   React.useEffect(() => {
     if (isInView) {
@@ -56,61 +56,78 @@ export default function UpcomingEventsSection({
 
           <motion.div variants={fadeInWithDelay(0.3)}>
             {upcomingEvents.length > 0 ? (
-              <Collapsible
-                open={isOpen}
-                onOpenChange={setIsOpen}
-                className="max-w-2xl mx-auto space-y-4"
+              <Carousel
+                className="w-full justify-center"
+                plugins={[plugin.current]}
               >
-                <div
-                  className={cn(
-                    "flex items-center space-x-4 px-4",
-                    { "justify-center": upcomingEvents.length === 1 },
-                    { "justify-between": upcomingEvents.length > 1 },
-                  )}
-                >
-                  <h4 className="text-sm font-semibold">
-                    {upcomingEvents.length} Upcoming Event
-                    {upcomingEvents.length !== 1 ? "s" : ""}
-                  </h4>
-                  {upcomingEvents.length > 1 && (
-                    <CollapsibleTrigger asChild>
-                      <Button variant="ghost" size="sm" className="w-9 p-0">
-                        <ChevronsUpDown className="h-4 w-4" />
-                        <span className="sr-only">Toggle events list</span>
-                      </Button>
-                    </CollapsibleTrigger>
-                  )}
-                </div>
-                <div className="rounded-md border px-4 py-3 text-sm">
-                  <EventSummary event={upcomingEvents[0]} />
-                </div>
-                <CollapsibleContent className="space-y-2">
-                  {upcomingEvents.slice(1).map((event) => (
-                    <div
+                <CarouselContent>
+                  {upcomingEvents.map((event) => (
+                    <CarouselItem
                       key={event.id}
-                      className="rounded-md border px-4 py-3 text-sm"
+                      className="md:basis-1/2 lg:basis-1/3"
                     >
-                      <EventSummary event={event} />
-                    </div>
+                      <Card className="h-full">
+                        <CardHeader>
+                          <CardTitle className="mt-2">
+                            {event.occassion}
+                          </CardTitle>
+                          <div className="space-x-2 flex items-center">
+                            <Badge
+                              style={{
+                                backgroundColor: event.eventType?.isSpecial
+                                  ? EventColors.special
+                                  : EventColors.regular,
+                              }}
+                            >
+                              {event.eventType?.isSpecial
+                                ? "Special"
+                                : "Regular"}
+                            </Badge>
+                            <Badge>{event.eventType?.displayName}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <Calendar className="mr-1 h-4 w-4" />
+                            <span className="text-md">
+                              {format(event.start, "MMMM d, yyyy")}
+                              {format(event.start, "MMMM d, yyyy") !==
+                                format(event.end, "MMMM d, yyyy") &&
+                                ` - ${format(event.end, "MMMM d, yyyy")}`}
+                            </span>
+                          </div>
+                          <div className="flex items-center text-sm text-muted-foreground mb-2">
+                            <Clock className="mr-1 h-4 w-4" />
+                            {format(new Date(event.start), "h:mm a")} -{" "}
+                            {format(new Date(event.end), "h:mm a")}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
                   ))}
-                </CollapsibleContent>
-              </Collapsible>
+                </CarouselContent>
+              </Carousel>
             ) : (
-              <Card className="max-w-md mx-auto bg-background rounded-xl border overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex flex-col items-center text-center space-y-4">
-                    <CalendarX2 className="w-12 h-12 text-muted-foreground" />
-                    <CardTitle className="text-2xl font-semibold tracking-tight">
-                      No Upcoming Events
-                    </CardTitle>
-                    <p className="text-muted-foreground">
-                      There are no scheduled events at the moment. Check back
-                      soon for updates or follow us on social media for the
-                      latest announcements.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div
+                variants={fadeInWithDelay(0.3)}
+                className="flex justify-center"
+              >
+                <Card className="w-full max-w-md bg-background rounded-xl border overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <CalendarX2 className="w-12 h-12 text-muted-foreground" />
+                      <CardTitle className="text-2xl font-semibold tracking-tight">
+                        No Upcoming Events
+                      </CardTitle>
+                      <p className="text-muted-foreground">
+                        There are no scheduled events at the moment. Check back
+                        soon for updates or follow us on social media for the
+                        latest announcements.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             )}
           </motion.div>
         </motion.div>
