@@ -45,7 +45,7 @@ export const EventsOverTimeCard = ({
 
   const chartConfig = {
     count: {
-      label: "Event Count",
+      label: "Count",
       color: "hsl(var(--chart-1))",
       icon: Activity,
     },
