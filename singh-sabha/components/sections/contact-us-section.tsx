@@ -36,9 +36,8 @@ export function ContactUsSection() {
               Contact Us
             </h2>
             <p className="mt-2 text-muted-foreground">
-              We welcome your visit to our Sikh Temple. If you have any
-              questions or need assistance, please don&apos;t hesitate to reach
-              out
+              We welcome your visit to our Gurdwara. If you have any questions
+              or need assistance, please don&apos;t hesitate to reach out
             </p>
           </motion.div>
 
