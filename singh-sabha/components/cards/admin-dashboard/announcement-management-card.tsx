@@ -156,7 +156,7 @@ export default function AnnouncementManagementCard({
             </p>
           ) : (
             <ScrollArea>
-              <div className="max-h-[180px] space-y-4">
+              <div className="max-h-[160px] space-y-4">
                 {pastAnnouncements.map((announcement) => (
                   <div
                     key={announcement.id}

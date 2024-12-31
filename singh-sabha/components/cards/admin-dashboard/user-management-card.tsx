@@ -166,7 +166,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
             <p className="text-sm text-muted-foreground">No users added yet.</p>
           ) : (
             <ScrollArea>
-              <ul className="space-y-2 max-h-[180px]">
+              <ul className="space-y-2 max-h-[160px]">
                 {users.map((u) => (
                   <li
                     key={u.id}

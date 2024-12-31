@@ -101,7 +101,7 @@ export default function MailingListCard({ mailingList }: MailingListCardProps) {
             </p>
           ) : (
             <ScrollArea>
-              <ul className="space-y-2 max-h-[180px]">
+              <ul className="space-y-2 max-h-[160px]">
                 {mailingList.map((item) => (
                   <li
                     key={item.id}

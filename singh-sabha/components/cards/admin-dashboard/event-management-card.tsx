@@ -244,7 +244,7 @@ export default function EventManagementCard({
             </p>
           ) : (
             <ScrollArea>
-              <ul className="space-y-2 max-h-[180px]">
+              <ul className="space-y-2 max-h-[160px]">
                 {eventTypes.map((type) => (
                   <li
                     key={type.id}
