@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Clipboard } from "lucide-react";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { Input } from "../ui/input";
+import { Separator } from "../ui/separator";
 
 export function DonationsSection() {
   const ref = React.useRef(null);
@@ -100,9 +101,9 @@ export function DonationsSection() {
                   variants={fadeInWithDelay(0.7)}
                   className="relative flex items-center"
                 >
-                  <div className="border-t w-full border-gray-300"></div>
+                  <Separator className="flex-1" />
                   <span className="px-3 text-sm text-gray-500">Or</span>
-                  <div className="border-t w-full border-gray-300"></div>
+                  <Separator className="flex-1" />
                 </motion.div>
 
                 <motion.div
@@ -110,7 +111,7 @@ export function DonationsSection() {
                   className="text-center"
                 >
                   <h3 className="text-sm font-medium text-gray-700">
-                    Donate via Stripe
+                    Donate via credit card with Stripe
                   </h3>
                   <Button variant="outline" asChild className="mt-2">
                     <Link
