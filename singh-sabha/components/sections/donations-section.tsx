@@ -48,7 +48,7 @@ export function DonationsSection() {
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Support Our Mission
             </h2>
-            <p className="mt-2 text-muted-foreground">
+            <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
               Your generous donations help us maintain and improve our services.
               We appreciate any contribution you can make
             </p>

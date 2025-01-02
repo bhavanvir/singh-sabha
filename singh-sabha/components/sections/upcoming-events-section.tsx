@@ -49,8 +49,8 @@ export default function UpcomingEventsSection({
             <h2 className="text-3xl font-bold tracking-tight">
               Upcoming Events
             </h2>
-            <p className="mt-2 text-muted-foreground">
-              Join us for these upcoming events at Gurdwara Singh Sabha
+            <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
+              Join us for these upcoming events this week
             </p>
           </motion.div>
 

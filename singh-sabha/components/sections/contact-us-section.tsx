@@ -89,7 +89,7 @@ export function ContactUsSection() {
             className="text-center space-y-2"
           >
             <h2 className="text-3xl font-bold tracking-tight">Contact Us</h2>
-            <p className="text-muted-foreground mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               We welcome your visit to our Gurdwara. If you have any questions
               or need assistance, please don&apos;t hesitate to reach out.
             </p>
