@@ -42,6 +42,8 @@ export const generateRecurringEvents = (
           end: updatedEndDate.toDate(),
         });
       });
+    } else {
+      allGeneratedEvents.push(event);
     }
   });
 
