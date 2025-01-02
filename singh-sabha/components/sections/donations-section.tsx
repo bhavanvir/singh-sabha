@@ -78,7 +78,7 @@ export function DonationsSection() {
                     <motion.div variants={fadeInWithDelay(0.5)}>
                       <Button
                         onClick={handleCopy}
-                        className="h-10 w-10 relative"
+                        className="h-9 w-9 relative"
                         aria-label="Copy email to clipboard"
                       >
                         <Clipboard

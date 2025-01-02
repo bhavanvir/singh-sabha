@@ -189,7 +189,7 @@ export default function AccountSettingsForm({
               <Button
                 onClick={copyToClipboard}
                 disabled={!otp}
-                className="h-10 w-10"
+                className="h-9 w-9"
               >
                 <Clipboard
                   className={`h-4 w-4 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-100"}`}
