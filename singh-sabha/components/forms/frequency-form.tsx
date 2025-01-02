@@ -16,8 +16,11 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
+import { RRule, Frequency } from "rrule";
 
-import { Info } from "lucide-react";
+import { Info, Languages } from "lucide-react";
+
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
@@ -42,6 +45,29 @@ interface FrequencyFormProps {
 
 export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
   const { control } = useFormContext();
+  const [rrule, setRrule] = React.useState<RRule | null>(null);
+
+  const frequency = form.watch("frequency");
+  const selectedDays = form.watch("selectedDays");
+  const selectedMonths = form.watch("selectedMonths");
+  const interval = form.watch("interval");
+  const count = form.watch("count");
+
+  React.useEffect(() => {
+    if (frequency) {
+      const rule = new RRule({
+        freq: Frequency[frequency as keyof typeof Frequency],
+        interval: interval || 1,
+        count: count || undefined,
+        byweekday: selectedDays?.map((day: number) => Number(day)),
+        bymonth: selectedMonths?.map((month: number) => Number(month)),
+      });
+
+      setRrule(rule);
+    } else {
+      setRrule(null);
+    }
+  }, [frequency, selectedDays, selectedMonths, interval, count]);
   return (
     <>
       <FormField
@@ -185,6 +211,13 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
           )}
         />
       </div>
+
+      {rrule && (
+        <div className="mt-4 text-sm text-muted-foreground flex items-center">
+          <Languages className="h-4 w-4 mr-1" />
+          {capitalizeFirstLetter(rrule.toText())}
+        </div>
+      )}
     </>
   );
 }
