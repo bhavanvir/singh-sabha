@@ -28,7 +28,7 @@ import { Send } from "lucide-react";
 
 import { ParametersForm } from "@/components/forms/parameters-form";
 import { CreateEvent } from "@/lib/api/events/mutations";
-import { sendEventEmails } from "@/lib/send-event-email";
+import { sendEmail } from "@/lib/send-email";
 
 import { userEventSchema } from "@/lib/event-schema";
 import type { Event, EventType } from "@/db/schema";
@@ -107,7 +107,7 @@ export default function BookEventDialog({
     toast.promise(
       async () => {
         const createdEvent = await CreateEvent({ newEvent });
-        await sendEventEmails(createdEvent, "/api/send/confirmation");
+        await sendEmail(createdEvent, "/api/send/confirmation");
         return createdEvent;
       },
       {

@@ -1,7 +1,8 @@
 import type { EventWithType } from "@/db/schema";
+import type { ContactMessage } from "./types/contact-message";
 
-export async function sendEventEmails(
-  newEvent: EventWithType,
+export async function sendEmail(
+  data: EventWithType | ContactMessage,
   endpoint: string,
 ): Promise<void> {
   try {
@@ -10,7 +11,7 @@ export async function sendEventEmails(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newEvent),
+      body: JSON.stringify(data),
     });
 
     if (!resp.ok) {

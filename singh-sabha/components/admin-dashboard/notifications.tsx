@@ -24,7 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
-import { sendEventEmails } from "@/lib/send-event-email";
+import { sendEmail } from "@/lib/send-email";
 import ReviewEventDialog from "@/components/dialogs/review-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { cn } from "@/lib/utils";
@@ -60,7 +60,7 @@ export default function Notifications({
           updatedEvent = await UpdateEvent({
             updatedEvent: { ...event, isVerified: true },
           });
-          await sendEventEmails(event, "/api/send/approved");
+          await sendEmail(event, "/api/send/approved");
           setIsOpen(false);
           setUnderstood(false);
         }
@@ -79,7 +79,7 @@ export default function Notifications({
       async () => {
         if (!event.isVerified) {
           await DeleteEvent({ id: event.id });
-          await sendEventEmails(event, "/api/send/denied");
+          await sendEmail(event, "/api/send/denied");
         }
         return event;
       },
