@@ -12,6 +12,8 @@ import { Badge } from "@/components/ui/badge";
 
 import { EventColors } from "@/lib/types/event-colours";
 
+import { capitalizeFirstLetter } from "@/lib/utils";
+
 import type { EventWithType } from "@/db/schema";
 
 interface ViewEventDialogProps {
@@ -76,12 +78,9 @@ export default function ViewEventDialog({
             <div className="flex items-center space-x-2 text-muted-foreground">
               <RepeatIcon className="w-4 h-4" />
               <span className="text-md">
-                {RRule.fromString(event.frequencyRule)
-                  .toText()
-                  .replace(
-                    /^(\w)(.*)/,
-                    (_, firstChar, rest) => firstChar.toUpperCase() + rest,
-                  )}
+                {capitalizeFirstLetter(
+                  RRule.fromString(event.frequencyRule).toText(),
+                )}
               </span>
             </div>
           )}
