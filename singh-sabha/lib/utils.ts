@@ -19,20 +19,29 @@ export const generateRecurringEvents = (
 
     if (frequencyRule) {
       const rule = RRule.fromString(frequencyRule);
+      const occurrenceDates = rule.all();
 
-      const occurrenceDates = rule.all(); // Returns an array of Dates
+      const startTime = moment(start);
+      const endTime = moment(end);
 
-      const generatedEvents = occurrenceDates.map((occurrenceStart) => ({
-        ...event,
-        start: occurrenceStart,
-        end: new Date(
-          occurrenceStart.getTime() + (end.getTime() - start.getTime()),
-        ),
-      }));
+      const duration = moment.duration(endTime.diff(startTime));
 
-      allGeneratedEvents.push(...generatedEvents);
-    } else {
-      allGeneratedEvents.push(event);
+      const startHours = startTime.hours();
+      const startMinutes = startTime.minutes();
+
+      occurrenceDates.forEach((date) => {
+        const updatedStartDate = moment(date)
+          .hours(startHours)
+          .minutes(startMinutes);
+
+        const updatedEndDate = moment(updatedStartDate).add(duration);
+
+        allGeneratedEvents.push({
+          ...event,
+          start: updatedStartDate.toDate(),
+          end: updatedEndDate.toDate(),
+        });
+      });
     }
   });
 
