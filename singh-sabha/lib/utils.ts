@@ -15,6 +15,7 @@ export const generateRecurringEvents = (
   const allGeneratedEvents: EventWithType[] = [];
 
   events.forEach((event) => {
+    allGeneratedEvents.push(event);
     const { start, end, frequencyRule } = event;
 
     if (frequencyRule) {
@@ -36,14 +37,19 @@ export const generateRecurringEvents = (
 
         const updatedEndDate = moment(updatedStartDate).add(duration);
 
-        allGeneratedEvents.push({
-          ...event,
-          start: updatedStartDate.toDate(),
-          end: updatedEndDate.toDate(),
-        });
+        if (
+          !allGeneratedEvents.some((existingEvent) =>
+            moment(existingEvent.start).isSame(updatedStartDate),
+          ) &&
+          updatedStartDate.isAfter(startTime)
+        ) {
+          allGeneratedEvents.push({
+            ...event,
+            start: updatedStartDate.toDate(),
+            end: updatedEndDate.toDate(),
+          });
+        }
       });
-    } else {
-      allGeneratedEvents.push(event);
     }
   });
 
