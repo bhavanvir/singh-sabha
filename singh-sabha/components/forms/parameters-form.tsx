@@ -44,6 +44,9 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
   const selectedType = useWatch({ control, name: "type" });
   const selectedEventType = eventTypes.find((type) => type.id === selectedType);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   return (
     <div className="grid grid-cols-1 gap-6">
       <FormField
@@ -97,13 +100,22 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                     mode="range"
                     selected={field.value as DateRange}
                     onSelect={(range) => {
-                      if (range?.from && !range.to) {
-                        range.to = range.from;
+                      if (range?.from) {
+                        if (range.from < today) {
+                          return;
+                        }
+                        if (!range.to) {
+                          range.to = range.from;
+                        }
+                        if (range.to && range.to < range.from) {
+                          range.to = range.from;
+                        }
                       }
                       field.onChange(range);
                     }}
+                    disabled={(date) => date < today}
                     initialFocus
-                    showOutsideDays={false}
+                    fromDate={today}
                   />
                 </PopoverContent>
               </Popover>
