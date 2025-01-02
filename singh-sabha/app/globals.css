@@ -155,3 +155,7 @@ main {
 .rbc-off-range-bg {
   @apply bg-transparent !important;
 }
+
+.rbc-show-more {
+  @apply text-muted-foreground !important;
+}
