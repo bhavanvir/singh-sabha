@@ -72,7 +72,7 @@ export default function EventTypeManagementCard({
     toast.promise(CreateEventType({ eventType: eventTypeData }), {
       loading: "Creating event type...",
       success: `Created ${data.displayName}.`,
-      error: "Failed to create an event.",
+      error: "Failed to create an event type",
     });
   };
 
@@ -87,9 +87,9 @@ export default function EventTypeManagementCard({
       };
 
       toast.promise(UpdateEventType({ eventType: updatedEvent as EventType }), {
-        loading: "Updating event...",
+        loading: "Updating event type...",
         success: "Event type updated successfully!",
-        error: "Failed to update event.",
+        error: "Failed to update event type",
       });
     }
   };
@@ -98,7 +98,7 @@ export default function EventTypeManagementCard({
     toast.promise(DeleteEventType({ id }), {
       loading: "Deleting event type...",
       success: "Deleted event type successfully!",
-      error: "Failed to delete event.",
+      error: "Failed to delete event type",
     });
   };
 
