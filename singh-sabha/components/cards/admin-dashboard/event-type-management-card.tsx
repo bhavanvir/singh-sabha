@@ -41,16 +41,15 @@ const eventTypeSchema = z.object({
     .max(1000, "Deposit amount must be smaller than $1000"),
 });
 
-interface EventManagementCardProps {
+interface EventTypeManagementCardProps {
   eventTypes: EventType[];
 }
 
-export default function EventManagementCard({
+export default function EventTypeManagementCard({
   eventTypes,
-}: EventManagementCardProps) {
-  const [editingEvent, setEditingEvent] = React.useState<EventType | null>(
-    null,
-  );
+}: EventTypeManagementCardProps) {
+  const [editingEventType, setEditingEventType] =
+    React.useState<EventType | null>(null);
 
   const eventTypeForm = useForm<z.infer<typeof eventTypeSchema>>({
     resolver: zodResolver(eventTypeSchema),
@@ -77,25 +76,25 @@ export default function EventManagementCard({
     });
   };
 
-  const handleEditEvent: SubmitHandler<z.infer<typeof eventTypeSchema>> = (
+  const handleEditEventType: SubmitHandler<z.infer<typeof eventTypeSchema>> = (
     data,
   ) => {
-    if (editingEvent) {
+    if (editingEventType) {
       const updatedEvent: Partial<EventType> = {
         ...data,
         description: data.description || null,
-        id: editingEvent.id,
+        id: editingEventType.id,
       };
 
       toast.promise(UpdateEventType({ eventType: updatedEvent as EventType }), {
         loading: "Updating event...",
-        success: "Event updated successfully!",
+        success: "Event type updated successfully!",
         error: "Failed to update event.",
       });
     }
   };
 
-  const handleDeleteEvent = (id: string) => {
+  const handleDeleteEventType = (id: string) => {
     toast.promise(DeleteEventType({ id }), {
       loading: "Deleting event type...",
       success: "Deleted event type successfully!",
@@ -106,13 +105,13 @@ export default function EventManagementCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Event Management</CardTitle>
+        <CardTitle>Event Type Management</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Form {...eventTypeForm}>
           <form
             onSubmit={eventTypeForm.handleSubmit(
-              editingEvent ? handleEditEvent : handleCreateEventType,
+              editingEventType ? handleEditEventType : handleCreateEventType,
             )}
             className="space-y-4"
           >
@@ -222,7 +221,7 @@ export default function EventManagementCard({
             />
             <div className="flex justify-end">
               <Button type="submit">
-                {editingEvent ? (
+                {editingEventType ? (
                   <>
                     <Edit /> Update
                   </>
@@ -237,7 +236,7 @@ export default function EventManagementCard({
         </Form>
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Current Events</h3>
+          <h3 className="text-lg font-semibold">Current Event Types</h3>
           {eventTypes.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No events added yet.
@@ -269,7 +268,7 @@ export default function EventManagementCard({
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          setEditingEvent(type);
+                          setEditingEventType(type);
                           eventTypeForm.reset(type);
                         }}
                         aria-label={`Edit ${type.displayName}`}
@@ -279,7 +278,7 @@ export default function EventManagementCard({
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleDeleteEvent(type.id!)}
+                        onClick={() => handleDeleteEventType(type.id!)}
                         aria-label={`Delete ${type.displayName}`}
                       >
                         <Trash className="h-4 w-4" />

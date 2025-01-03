@@ -1,7 +1,7 @@
 import AccountSettingsCard from "@/components/cards/admin-dashboard/account-settings-card";
 import UserManagementCard from "@/components/cards/admin-dashboard/user-management-card";
 import MailingListCard from "@/components/cards/admin-dashboard/mailing-list-card";
-import EventManagementCard from "@/components/cards/admin-dashboard/event-management-card";
+import EventTypeManagementCard from "@/components/cards/admin-dashboard/event-type-management-card";
 import AnnouncementManagementCard from "@/components/cards/admin-dashboard/announcement-management-card";
 import { User, MailingList, EventType, Announcement } from "@/db/schema";
 
@@ -25,7 +25,7 @@ export default function Settings({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AccountSettingsCard user={user} />
         <MailingListCard mailingList={mailingList} />
-        <EventManagementCard eventTypes={eventTypes} />
+        <EventTypeManagementCard eventTypes={eventTypes} />
         <AnnouncementManagementCard announcements={announcements} />
         {user?.isAdmin && <UserManagementCard users={users} />}
       </div>
