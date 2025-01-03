@@ -239,7 +239,7 @@ export default function EventTypeManagementCard({
           <h3 className="text-lg font-semibold">Current Event Types</h3>
           {eventTypes.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No events added yet.
+              No event types added yet.
             </p>
           ) : (
             <ScrollArea>
