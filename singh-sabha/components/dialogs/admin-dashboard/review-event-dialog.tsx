@@ -29,7 +29,7 @@ import { z } from "zod";
 
 import { X, Check, ChevronsUpDown } from "lucide-react";
 
-import EventSummary from "../event-summary";
+import EventSummary from "@/components/event-summary";
 import { findConflicts } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
