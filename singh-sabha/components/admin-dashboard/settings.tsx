@@ -3,12 +3,20 @@ import UserManagementCard from "@/components/cards/admin-dashboard/user-manageme
 import MailingListCard from "@/components/cards/admin-dashboard/mailing-list-card";
 import EventTypeManagementCard from "@/components/cards/admin-dashboard/event-type-management-card";
 import AnnouncementManagementCard from "@/components/cards/admin-dashboard/announcement-management-card";
-import { User, MailingList, EventType, Announcement } from "@/db/schema";
+import EventManagementCard from "@/components/cards/admin-dashboard/event-management-card";
+import {
+  User,
+  MailingList,
+  EventType,
+  Announcement,
+  EventWithType,
+} from "@/db/schema";
 
 interface SettingsProps {
   user: User;
   users: Omit<User, "passwordHash">[];
   mailingList: MailingList[];
+  events: EventWithType[];
   eventTypes: EventType[];
   announcements: Announcement[];
 }
@@ -17,6 +25,7 @@ export default function Settings({
   user,
   users,
   mailingList,
+  events,
   eventTypes,
   announcements,
 }: SettingsProps) {
@@ -28,6 +37,7 @@ export default function Settings({
         <EventTypeManagementCard eventTypes={eventTypes} />
         <AnnouncementManagementCard announcements={announcements} />
         {user?.isAdmin && <UserManagementCard users={users} />}
+        <EventManagementCard events={events} />
       </div>
     </div>
   );
