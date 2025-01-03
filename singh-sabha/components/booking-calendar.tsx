@@ -25,10 +25,10 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-import CreateEventDialog from "@/components/dialogs/create-event-dialog";
-import EditEventDialog from "@/components/dialogs/edit-event-dialog";
-import BookEventDialog from "@/components/dialogs/book-event-dialog";
-import ViewEventDialog from "@/components/dialogs/view-event-dialog";
+import CreateEventDialog from "@/components/dialogs/booking-calendar/create-event-dialog";
+import EditEventDialog from "@/components/dialogs/booking-calendar/edit-event-dialog";
+import BookEventDialog from "@/components/dialogs/booking-calendar/book-event-dialog";
+import ViewEventDialog from "@/components/dialogs/booking-calendar/view-event-dialog";
 import { EventColors } from "@/lib/types/event-colours";
 
 import type { ToolbarProps } from "react-big-calendar";

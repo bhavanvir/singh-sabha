@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
-import BookEventDialog from "../dialogs/book-event-dialog";
+import BookEventDialog from "@/components/dialogs/booking-calendar/book-event-dialog";
 
 import { EventType } from "@/db/schema";
 

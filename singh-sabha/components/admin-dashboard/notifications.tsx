@@ -25,7 +25,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
 import { sendEmail } from "@/lib/send-email";
-import ReviewEventDialog from "@/components/dialogs/review-event-dialog";
+import ReviewEventDialog from "@/components/dialogs/admin-dashboard/review-event-dialog";
 import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { cn } from "@/lib/utils";
 
