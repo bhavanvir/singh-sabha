@@ -29,7 +29,7 @@ type PageKey = keyof typeof PAGES;
 interface DashboardProps {
   user: User;
   users: Omit<User, "passwordHash">[];
-  events: Event[];
+  events: EventWithType[];
   mailingList: MailingList[];
   eventTypes: EventType[];
   announcements: Announcement[];
@@ -48,11 +48,11 @@ export function AdminDashboard({
   const [activePage, setActivePage] = React.useState<PageKey>("CALENDAR");
 
   const verifiedEvents = events.filter(
-    (event: EventWithType) => event.isVerified && event.isDepositPaid,
+    (event) => event.isVerified && event.isDepositPaid,
   );
 
   const unverifiedEvents = events.filter(
-    (event: EventWithType) =>
+    (event) =>
       !verifiedEvents.some((verifiedEvent) => verifiedEvent.id === event.id),
   );
 
@@ -71,6 +71,7 @@ export function AdminDashboard({
         user={user}
         users={users}
         mailingList={mailingList}
+        events={events}
         eventTypes={eventTypes}
         announcements={announcements}
       />
