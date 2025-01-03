@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 import { GetEvent } from "./queries";
 
@@ -81,6 +81,25 @@ export const DeleteEvent = async ({ id }: { id: string }): Promise<void> => {
     revalidatePath("/admin");
   } catch (err) {
     throw new Error(`Could not delete event: ${err}`);
+  }
+};
+
+export const DeleteMultipleEvents = async ({
+  ids,
+}: {
+  ids: string[];
+}): Promise<void> => {
+  if (!ids) {
+    throw new Error("Event ID is required to delete event");
+  }
+
+  try {
+    await db.delete(eventTable).where(inArray(eventTable.id, ids));
+
+    revalidatePath("/calendar");
+    revalidatePath("/admin");
+  } catch (err) {
+    throw new Error(`Could not delete events: ${err}`);
   }
 };
 
