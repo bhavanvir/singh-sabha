@@ -53,7 +53,7 @@ export default function ViewEventDialog({
             <Badge>{event.eventType?.displayName}</Badge>
             {isRecurring && (
               <Badge variant="secondary">
-                <RepeatIcon className="w-3 h-3 mr-1" />
+                <RepeatIcon className="h-3 w-3 mr-1" />
                 Recurring
               </Badge>
             )}
@@ -62,7 +62,7 @@ export default function ViewEventDialog({
 
         <div className="grid grid-cols-1 gap-2">
           <div className="flex items-center space-x-1 text-muted-foreground">
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="h-4 w-4 " />
             <span className="text-md">
               {format(event.start, "MMMM d, yyyy")}
               {format(event.start, "MMMM d, yyyy") !==
@@ -71,12 +71,12 @@ export default function ViewEventDialog({
             </span>
           </div>
           <div className="flex items-center space-x-1 text-muted-foreground">
-            <ClockIcon className="w-4 h-4" />
+            <ClockIcon className="h-4 w-4" />
             <span className="text-md">{`${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}</span>
           </div>
           {isRecurring && event.frequencyRule && (
             <div className="flex items-center space-x-2 text-muted-foreground">
-              <RepeatIcon className="w-4 h-4" />
+              <RepeatIcon className="h-4 w-4 " />
               <span className="text-md">
                 {capitalizeFirstLetter(
                   RRule.fromString(event.frequencyRule).toText(),
