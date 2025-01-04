@@ -10,7 +10,7 @@ import { GetAllEventTypes } from "@/lib/api/event-types/queries";
 import { GetAllUsers } from "@/lib/api/users/queries";
 import { GetAllAnnouncements } from "@/lib/api/announcements/queries";
 import { generateRecurringEvents } from "@/lib/utils";
-import { redirect } from "next/navigation";
+import { validateProtected } from "@/actions/validate-request";
 
 import type { Analytics } from "@/lib/types/analytics";
 
@@ -19,10 +19,7 @@ export const metadata = {
 };
 
 export default async function Admin() {
-  const { user } = await validateRequest();
-  if (!user) {
-    redirect("/admin/sign-in");
-  }
+  const { user } = await validateProtected();
 
   const users = await GetAllUsers();
   const events = await GetAllEvents();
