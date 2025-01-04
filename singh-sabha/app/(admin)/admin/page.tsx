@@ -1,4 +1,3 @@
-import { validateRequest } from "@/lib/auth";
 import { AdminDashboard } from "@/components/admin-dashboard/admin-dashboard";
 import {
   GetAllEvents,
