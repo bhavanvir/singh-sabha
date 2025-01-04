@@ -76,7 +76,7 @@ export function ContactUsSection() {
   }, [isInView, controls]);
 
   return (
-    <section className="py-16 bg-background" ref={ref} id="contact">
+    <section className="border-t py-16 bg-background" ref={ref} id="contact">
       <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
