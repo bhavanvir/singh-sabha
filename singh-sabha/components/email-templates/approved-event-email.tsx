@@ -82,7 +82,13 @@ export default function ApprovedEventEmail({
             >
               Complete Payment
             </Button>
-            <Text className="text-gray-700 text-base mt-6 mb-6">
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6 mb-6">
+              <Text className="text-yellow-700 text-sm font-medium">
+                Important: The remaining balance must be paid in full on the day
+                of the event.
+              </Text>
+            </div>
+            <Text className="text-gray-700 text-base mb-6">
               If you need to make any changes or have any questions, please
               don&apos;t hesitate to contact us.
             </Text>
