@@ -113,7 +113,9 @@ export function ParametersForm({ eventTypes, role }: ParametersFormProps) {
                       }
                       field.onChange(range);
                     }}
-                    disabled={(date) => date < today}
+                    disabled={(date) => {
+                      return date < today || (!isAdmin && date.getDay() === 0); // Disables Sundays (getDay() returns 0 for Sunday)
+                    }}
                     initialFocus
                     fromDate={today}
                   />
