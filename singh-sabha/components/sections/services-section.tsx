@@ -168,7 +168,7 @@ function ServiceCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={onBookService}
-      className="w-full group"
+      className="grid grid-flow-row"
       style={{
         transformStyle: "preserve-3d",
         rotateX,
@@ -176,7 +176,7 @@ function ServiceCard({
         scale,
       }}
     >
-      <Card className="relative bg-background rounded-xl border overflow-hidden min-h-[170px] cursor-pointer">
+      <Card className="relative bg-background rounded-xl border overflow-hidden cursor-pointer">
         <motion.div
           className="absolute z-10 opacity-0 group-hover:opacity-30 transition-opacity duration-200 rounded-full blur-md"
           style={{
