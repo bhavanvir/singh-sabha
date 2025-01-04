@@ -9,7 +9,6 @@ import AnalyticsDashboard from "@/components/admin-dashboard/analytics-dashboard
 
 import type {
   User,
-  Event,
   MailingList,
   EventType,
   Announcement,
