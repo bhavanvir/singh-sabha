@@ -36,8 +36,8 @@ export default function Settings({
         <MailingListCard mailingList={mailingList} />
         <EventTypeManagementCard eventTypes={eventTypes} />
         <AnnouncementManagementCard announcements={announcements} />
-        {user?.isAdmin && <UserManagementCard users={users} />}
         <EventManagementCard events={events} />
+        {user?.isAdmin && <UserManagementCard users={users} />}
       </div>
     </div>
   );
