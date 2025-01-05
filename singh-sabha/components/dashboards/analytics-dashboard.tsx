@@ -1,7 +1,8 @@
+import { BarChart2 } from "lucide-react";
+
 import { BookingLeadTimesCard } from "@/components/cards/admin-dashboard/booking-lead-times";
 import { EventsOverTimeCard } from "@/components/cards/admin-dashboard/events-overtime-card";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { BarChart2 } from "lucide-react";
+import EmptyDataCard from "@/components/cards/empty-data-card";
 
 import type { Analytics } from "@/lib/types/analytics";
 
@@ -21,22 +22,12 @@ export default function AnalyticsDashboard({
 
   if (!hasEventsOverTimeData && !hasBookingLeadTimesData) {
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-6rem)]">
-        <Card className="max-w-md">
-          <CardContent className="p-6">
-            <div className="flex flex-col items-center text-center space-y-4">
-              <BarChart2 className="w-12 h-12 text-muted-foreground" />
-              <CardTitle className="text-2xl font-semibold tracking-tight">
-                No Analytics Data
-              </CardTitle>
-              <p className="text-muted-foreground">
-                There&apos;s no analytics data available at the moment. Check
-                back later for insights.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <EmptyDataCard
+        icon={BarChart2}
+        title="No Analytics Data"
+        description="There's no analytics data available at the moment. Check back later for insights."
+        className="h-[calc(100vh-6rem)]"
+      />
     );
   }
 

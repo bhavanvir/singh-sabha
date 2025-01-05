@@ -1,6 +1,19 @@
 import * as React from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
+
+import {
   Mail,
   Phone,
   Bell,
@@ -11,23 +24,12 @@ import {
   HandCoins,
   CircleCheck,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "sonner";
 
 import { sendEmail } from "@/lib/send-email";
-import ReviewEventDialog from "@/components/dialogs/admin-dashboard/review-event-dialog";
-import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import { cn } from "@/lib/utils";
+import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
+import EmptyDataCard from "@/components/cards/empty-data-card";
+import ReviewEventDialog from "@/components/dialogs/admin-dashboard/review-event-dialog";
 
 import type { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
@@ -237,22 +239,12 @@ export default function Notifications({
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-[calc(100vh-6rem)]">
-            <Card className="max-w-md">
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <Bell className="w-12 h-12 text-muted-foreground" />
-                  <CardTitle className="text-2xl font-semibold tracking-tight">
-                    No Notifications
-                  </CardTitle>
-                  <p className="text-muted-foreground">
-                    You&apos;re all caught up! Check back later for new
-                    notifications.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <EmptyDataCard
+            icon={Bell}
+            title="No Notifications"
+            description="You're all caught up! Check back later for new notifications."
+            className="h-[calc(100vh-6rem)]"
+          />
         )}
       </ScrollArea>
       {selectedEvent && (

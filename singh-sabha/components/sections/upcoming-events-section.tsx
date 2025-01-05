@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
+import EmptyDataCard from "@/components/cards/empty-data-card";
+
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
@@ -131,21 +133,11 @@ export default function UpcomingEventsSection({
                 variants={fadeInWithDelay(0.3)}
                 className="flex justify-center px-4"
               >
-                <Card className="w-full max-w-md bg-background rounded-xl border overflow-hidden">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
-                      <CalendarX2 className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground" />
-                      <CardTitle className="text-xl sm:text-2xl font-semibold tracking-tight">
-                        No Upcoming Events
-                      </CardTitle>
-                      <p className="text-sm sm:text-base text-muted-foreground">
-                        There are no scheduled events at the moment. Check back
-                        soon for updates or follow us on social media for the
-                        latest announcements.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <EmptyDataCard
+                  icon={CalendarX2}
+                  title="No Upcoming Events"
+                  description="There are no scheduled events at the moment. Check back soon for updates or follow us on social media for the latest announcements."
+                />
               </motion.div>
             )}
           </motion.div>
