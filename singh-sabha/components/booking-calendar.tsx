@@ -57,10 +57,11 @@ export default function BookingCalendar({
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [currentView, setCurrentView] = React.useState<View>("month");
 
+  // Weird UI flicker when calendar loads in, so set an artificial load time
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 250);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, []);

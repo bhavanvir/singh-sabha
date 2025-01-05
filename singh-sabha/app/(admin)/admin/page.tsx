@@ -1,4 +1,4 @@
-import { AdminDashboard } from "@/components/admin-dashboard/admin-dashboard";
+import { AdminDashboard } from "@/components/dashboards/admin-dashboard";
 import {
   GetAllEvents,
   GetBookingLeadTimes,

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Menu, FlagTriangleLeft } from "lucide-react";
 
-export default function NavBar() {
+export default function AppNavBar() {
   const pathname = usePathname();
 
   const links = [

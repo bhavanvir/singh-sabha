@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { AdminNavBar } from "./admin-navbar";
+
+import { AdminNavBar } from "@/components/navbars/admin-navbar";
 import BookingCalendar from "@/components/booking-calendar";
-import Notifications from "@/components/admin-dashboard/notifications";
-import Settings from "@/components/admin-dashboard/settings";
-import AnalyticsDashboard from "@/components/admin-dashboard/analytics-dashboard";
+import Notifications from "@/components/notifications";
+import Settings from "@/components/settings";
+import AnalyticsDashboard from "@/components/dashboards/analytics-dashboard";
 
 import type {
   User,
