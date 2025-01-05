@@ -5,7 +5,7 @@ import * as React from "react";
 import { AdminNavBar } from "@/components/navbars/admin-navbar";
 import BookingCalendar from "@/components/booking-calendar";
 import Notifications from "@/components/notifications";
-import Settings from "@/components/settings";
+import SettingsDashboard from "@/components/dashboards/settings-dashboard";
 import AnalyticsDashboard from "@/components/dashboards/analytics-dashboard";
 
 import type {
@@ -16,6 +16,7 @@ import type {
   EventWithType,
 } from "@/db/schema";
 import { Analytics } from "@/lib/types/analytics";
+import { cn } from "@/lib/utils";
 
 const PAGES = {
   CALENDAR: "Calendar",
@@ -67,7 +68,7 @@ export function AdminDashboard({
       />
     ),
     SETTINGS: (
-      <Settings
+      <SettingsDashboard
         user={user}
         users={users}
         mailingList={mailingList}
@@ -86,7 +87,11 @@ export function AdminDashboard({
         activePage={activePage}
         setActivePage={setActivePage}
       />
-      <main className="flex-1 p-4">{pageComponents[activePage]}</main>
+      <main
+        className={cn("flex-1 h-full", activePage === "SETTINGS" ? "" : "p-4")}
+      >
+        {pageComponents[activePage]}
+      </main>
     </div>
   );
 }
