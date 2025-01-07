@@ -83,15 +83,13 @@ export const GetEvent = async ({
   }
 };
 
-export const GetEventsBetweenDates = async ({
+export const GetAllEventsAfterDate = async ({
   startDate,
-  endDate,
 }: {
   startDate: string;
-  endDate: string;
 }): Promise<EventWithType[]> => {
   try {
-    if (!startDate || !endDate) {
+    if (!startDate) {
       throw new Error("Missing start date or end date or both");
     }
     const events = await db
@@ -104,7 +102,6 @@ export const GetEventsBetweenDates = async ({
       .where(
         and(
           gte(eventTable.start, new Date(startDate)),
-          lte(eventTable.end, new Date(endDate)),
           eq(eventTable.isPublic, true),
           eq(eventTable.isVerified, true),
         ),

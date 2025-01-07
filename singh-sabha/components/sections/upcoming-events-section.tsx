@@ -3,9 +3,16 @@
 import * as React from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { format } from "date-fns";
-import { Calendar, Clock, CalendarX2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Clock, CalendarX2, Info } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -16,6 +23,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 import EmptyDataCard from "@/components/cards/empty-data-card";
+import EventDescriptionPopup from "@/components/event-description-popup";
 
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
@@ -32,6 +40,9 @@ export default function UpcomingEventsSection({
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
+
+  const [selectedEvent, setSelectedEvent] =
+    React.useState<EventWithType | null>(null);
 
   React.useEffect(() => {
     if (isInView) {
@@ -77,30 +88,28 @@ export default function UpcomingEventsSection({
                         key={event.id}
                         className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 min-w-64"
                       >
-                        <Card className="h-full">
+                        <Card className="h-full flex flex-col">
                           <CardHeader className="space-y-2 p-4 sm:p-6">
                             <CardTitle className="text-lg sm:text-xl line-clamp-2">
                               {event.occassion}
                             </CardTitle>
                             <div className="flex flex-wrap gap-2">
-                              <Badge
-                                className="text-xs sm:text-sm"
-                                style={{
-                                  backgroundColor: event.eventType?.isSpecial
-                                    ? EventColors.special
-                                    : EventColors.regular,
-                                }}
-                              >
-                                {event.eventType?.isSpecial
-                                  ? "Special"
-                                  : "Regular"}
-                              </Badge>
+                              {event.eventType?.isSpecial && (
+                                <Badge
+                                  className="text-xs sm:text-sm"
+                                  style={{
+                                    backgroundColor: EventColors.special,
+                                  }}
+                                >
+                                  Special
+                                </Badge>
+                              )}
                               <Badge className="text-xs sm:text-sm">
                                 {event.eventType?.displayName}
                               </Badge>
                             </div>
                           </CardHeader>
-                          <CardContent className="p-4 sm:p-6 space-y-2">
+                          <CardContent className="space-y-2 flex-grow">
                             <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
                               <Calendar className="mr-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                               <span className="truncate">
@@ -118,6 +127,19 @@ export default function UpcomingEventsSection({
                               </span>
                             </div>
                           </CardContent>
+                          {!event.registrantEmail && event.note && (
+                            <CardFooter>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                                onClick={() => setSelectedEvent(event)}
+                              >
+                                <Info className="mr-2 h-4 w-4" />
+                                Learn More
+                              </Button>
+                            </CardFooter>
+                          )}
                         </Card>
                       </CarouselItem>
                     ))}
@@ -143,6 +165,12 @@ export default function UpcomingEventsSection({
           </motion.div>
         </motion.div>
       </div>
+      <EventDescriptionPopup
+        isOpen={!!selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+        title={selectedEvent?.occassion || ""}
+        description={selectedEvent?.note || ""}
+      />
     </section>
   );
 }

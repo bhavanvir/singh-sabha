@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
-import { GetEventsBetweenDates } from "@/lib/api/events/queries";
+import { GetAllEventsAfterDate } from "@/lib/api/events/queries";
 import { ActiveAnnouncement } from "@/components/announcement";
 import HeroSection from "@/components/sections/hero-section";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
@@ -16,12 +16,10 @@ export default async function Home() {
 
   const currentDate = moment();
   const weekStart = currentDate.startOf("week").toISOString();
-  const weekEnd = currentDate.endOf("week").toISOString();
 
   const [announcement] = await GetActiveAnnouncement();
-  const upcomingEvents = await GetEventsBetweenDates({
+  const upcomingEvents = await GetAllEventsAfterDate({
     startDate: weekStart,
-    endDate: weekEnd,
   });
   const eventTypes = await GetAllRequestableEventTypes();
 
