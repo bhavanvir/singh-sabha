@@ -9,6 +9,7 @@ import { ClockAlert, Trash } from "lucide-react";
 
 import { DeleteEvent } from "@/lib/api/events/mutations";
 import DeleteExpiredEventsDialog from "@/components/dialogs/admin-dashboard/delete-expired-events-dialog";
+import { isGurdwaraEvent } from "@/lib/utils";
 
 import { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
@@ -62,6 +63,16 @@ export default function EventManagementCard({
             className="flex items-center justify-between bg-secondary p-2 rounded-md"
           >
             <div className="inline-flex items-center space-x-2">
+              {isGurdwaraEvent(event) && !event.eventType?.isSpecial && (
+                <Badge
+                  className="text-xs sm:text-sm"
+                  style={{
+                    backgroundColor: EventColors.gurdwara,
+                  }}
+                >
+                  Gurdwara
+                </Badge>
+              )}
               {event.eventType?.isSpecial && (
                 <Badge
                   className="text-xs sm:text-sm"
