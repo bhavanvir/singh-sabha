@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,7 +27,6 @@ import {
   DeleteEventType,
 } from "@/lib/api/event-types/mutations";
 import { EventType } from "@/db/schema";
-import { EventColors } from "@/lib/types/event-colours";
 
 const eventTypeSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
@@ -48,6 +46,9 @@ interface EventTypeManagementCardProps {
 export default function EventTypeManagementCard({
   eventTypes,
 }: EventTypeManagementCardProps) {
+  const regularEventTypes = eventTypes.filter((type) => !type.isSpecial);
+  const specialEventTypes = eventTypes.filter((type) => type.isSpecial);
+
   const [editingEventType, setEditingEventType] =
     React.useState<EventType | null>(null);
 
@@ -101,6 +102,45 @@ export default function EventTypeManagementCard({
       error: "Failed to delete event type",
     });
   };
+
+  const renderEventTypeList = (eventTypeList: EventType[]) => (
+    <ScrollArea>
+      <ul className="space-y-2 max-h-[160px]">
+        {eventTypeList.map((type) => (
+          <li
+            key={type.id}
+            className="flex items-center justify-between bg-secondary p-2 rounded-md"
+          >
+            <div className="inline-flex items-center space-x-2">
+              <span>{type.displayName}</span>
+            </div>
+
+            <div className="space-x-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setEditingEventType(type);
+                  eventTypeForm.reset(type);
+                }}
+                aria-label={`Edit ${type.displayName}`}
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleDeleteEventType(type.id!)}
+                aria-label={`Delete ${type.displayName}`}
+              >
+                <Trash className="h-4 w-4" />
+              </Button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </ScrollArea>
+  );
 
   return (
     <Card>
@@ -235,61 +275,28 @@ export default function EventTypeManagementCard({
           </form>
         </Form>
 
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">All Event Types</h3>
-          {eventTypes.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No event types added yet.
-            </p>
-          ) : (
-            <ScrollArea>
-              <ul className="space-y-2 max-h-[160px]">
-                {eventTypes.map((type) => (
-                  <li
-                    key={type.id}
-                    className="flex items-center justify-between bg-secondary p-2 rounded-md"
-                  >
-                    <div className="inline-flex items-center space-x-2">
-                      {type.isSpecial && (
-                        <Badge
-                          className="text-xs sm:text-sm"
-                          style={{
-                            backgroundColor: EventColors.special,
-                          }}
-                        >
-                          Special
-                        </Badge>
-                      )}
-                      {type.isRequestable && <Badge>Requestable</Badge>}
-                      <span>{type.displayName}</span>
-                    </div>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">Regular Event Types</h3>
+            {regularEventTypes.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No regular event types added yet.
+              </p>
+            ) : (
+              renderEventTypeList(regularEventTypes)
+            )}
+          </div>
 
-                    <div className="space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setEditingEventType(type);
-                          eventTypeForm.reset(type);
-                        }}
-                        aria-label={`Edit ${type.displayName}`}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteEventType(type.id!)}
-                        aria-label={`Delete ${type.displayName}`}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </ScrollArea>
-          )}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">Special Event Types</h3>
+            {specialEventTypes.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No special event types added yet.
+              </p>
+            ) : (
+              renderEventTypeList(specialEventTypes)
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
