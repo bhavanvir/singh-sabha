@@ -28,6 +28,7 @@ import EventDescriptionPopup from "@/components/event-description-popup";
 import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
+import { isGurdwaraEvent } from "@/lib/utils";
 
 interface UpcomingEventsSectionProps {
   upcomingEvents: EventWithType[];
@@ -94,6 +95,27 @@ export default function UpcomingEventsSection({
                               {event.occassion}
                             </CardTitle>
                             <div className="flex flex-wrap gap-2">
+                              {event.eventType?.isSpecial && (
+                                <Badge
+                                  className="text-xs sm:text-sm"
+                                  style={{
+                                    backgroundColor: EventColors.special,
+                                  }}
+                                >
+                                  Special
+                                </Badge>
+                              )}
+                              {isGurdwaraEvent(event) &&
+                                !event.eventType?.isSpecial && (
+                                  <Badge
+                                    className="text-xs sm:text-sm"
+                                    style={{
+                                      backgroundColor: EventColors.gurdwara,
+                                    }}
+                                  >
+                                    Gurdwara
+                                  </Badge>
+                                )}
                               {event.eventType?.isSpecial && (
                                 <Badge
                                   className="text-xs sm:text-sm"
