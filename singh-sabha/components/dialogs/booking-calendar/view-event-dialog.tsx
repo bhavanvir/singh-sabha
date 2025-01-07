@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { EventColors } from "@/lib/types/event-colours";
 
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { capitalizeFirstLetter, isGurdwaraEvent } from "@/lib/utils";
 
 import type { EventWithType } from "@/db/schema";
 
@@ -85,7 +85,7 @@ export default function ViewEventDialog({
               </span>
             </div>
           )}
-          {!event.registrantEmail && event.note && (
+          {isGurdwaraEvent(event) && event.note && (
             <p className="whitespace-pre-wrap">{event.note}</p>
           )}
         </div>
