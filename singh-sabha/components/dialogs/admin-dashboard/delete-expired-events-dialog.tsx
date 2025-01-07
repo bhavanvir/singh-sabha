@@ -37,6 +37,11 @@ export default function DeleteExpiredEventsDialog({
   const [understood, setUnderstood] = React.useState<boolean>(false);
   const [isExpanded, setIsExpanded] = React.useState(false);
 
+  const handleClose = () => {
+    setUnderstood(false);
+    onClose();
+  };
+
   const handleDeleteExpiredEvents = async () => {
     const ids = expiredEvents.map((event) => event.id);
 
@@ -45,13 +50,9 @@ export default function DeleteExpiredEventsDialog({
       success: `Successfully deleted ${expiredEvents.length} expird events!`,
       error: "Failed to deleted expired events",
     });
-  };
 
-  const handleClose = () => {
-    setUnderstood(false);
-    onClose();
+    handleClose();
   };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
