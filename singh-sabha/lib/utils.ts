@@ -3,7 +3,7 @@ import { RRule } from "rrule";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import type { EventWithType } from "@/db/schema";
+import type { Event, EventWithType } from "@/db/schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -80,4 +80,12 @@ export function findConflicts(
 
 export function capitalizeFirstLetter(val: string) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
+export function isGurdwaraEvent(event: Event | EventWithType) {
+  return (
+    !event.registrantFullName &&
+    !event.registrantEmail &&
+    !event.registrantPhoneNumber
+  );
 }
