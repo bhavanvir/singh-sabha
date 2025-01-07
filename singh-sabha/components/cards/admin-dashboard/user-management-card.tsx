@@ -161,7 +161,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
         )}
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Current Users</h3>
+          <h3 className="text-lg font-semibold">All Users</h3>
           {users.length === 0 ? (
             <p className="text-sm text-muted-foreground">No users added yet.</p>
           ) : (

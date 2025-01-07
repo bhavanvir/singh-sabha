@@ -44,7 +44,7 @@ export default function EventManagementCard({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Current Events</h3>
+            <h3 className="text-lg font-semibold">All Events</h3>
             {events.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 No events added yet.

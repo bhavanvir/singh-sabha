@@ -236,7 +236,7 @@ export default function EventTypeManagementCard({
         </Form>
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Current Event Types</h3>
+          <h3 className="text-lg font-semibold">All Event Types</h3>
           {eventTypes.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No event types added yet.
