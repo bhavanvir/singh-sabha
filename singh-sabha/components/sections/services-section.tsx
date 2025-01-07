@@ -62,7 +62,7 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
                 Our Services
               </h2>
               <p className="mt-2 text-muted-foreground mx-auto max-w-2xl">
-                Explore or book any of the various services we offer
+                Explore or book any of the various services we offer.
               </p>
             </motion.div>
             <motion.div

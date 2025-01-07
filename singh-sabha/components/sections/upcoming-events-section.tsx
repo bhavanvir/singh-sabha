@@ -68,7 +68,7 @@ export default function UpcomingEventsSection({
               Upcoming Events
             </h2>
             <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
-              Join us for these upcoming events
+              Join us for these upcoming events.
             </p>
           </motion.div>
 
