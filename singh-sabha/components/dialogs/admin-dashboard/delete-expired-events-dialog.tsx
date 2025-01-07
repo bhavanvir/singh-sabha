@@ -126,7 +126,7 @@ export default function DeleteExpiredEventsDialog({
             onClick={handleDeleteExpiredEvents}
           >
             <Check />
-            Delete Expired Events
+            Delete Expired Event{expiredEvents.length > 1 ? "s" : ""}
           </Button>
         </DialogFooter>
       </DialogContent>

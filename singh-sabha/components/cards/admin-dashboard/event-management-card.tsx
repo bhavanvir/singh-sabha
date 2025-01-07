@@ -33,8 +33,70 @@ export default function EventManagementCard({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const expiredEvents = events.filter((event) => event.start < today);
+  const activeEvents = events.filter((event) => new Date(event.start) >= today);
+  const expiredEvents = events.filter((event) => new Date(event.start) < today);
   const expiredEventsLength = expiredEvents.length;
+
+  const getExpiredDuration = (startDate: Date) => {
+    const diffTime = Math.abs(today.getTime() - startDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays === 1) return "1 day";
+    if (diffDays < 7) return `${diffDays} days`;
+    const diffWeeks = Math.floor(diffDays / 7);
+    if (diffWeeks === 1) return "1 week";
+    if (diffWeeks < 4) return `${diffWeeks} weeks`;
+    const diffMonths = Math.floor(diffDays / 30);
+    if (diffMonths === 1) return "1 month";
+    return `${diffMonths} months`;
+  };
+
+  const renderEventList = (
+    eventList: EventWithType[],
+    isExpired: boolean = false,
+  ) => (
+    <ScrollArea>
+      <ul className="space-y-2 max-h-[160px]">
+        {eventList.map((event) => (
+          <li
+            key={event.id}
+            className="flex items-center justify-between bg-secondary p-2 rounded-md"
+          >
+            <div className="inline-flex items-center space-x-2">
+              <Badge
+                style={{
+                  backgroundColor: event.eventType?.isSpecial
+                    ? EventColors.special
+                    : EventColors.regular,
+                }}
+              >
+                {event.eventType?.isSpecial ? "Special" : "Regular"}
+              </Badge>
+              <Badge>{event.eventType?.displayName}</Badge>
+              {isExpired && (
+                <Badge variant="destructive">
+                  <ClockAlert className="h-3 w-3 mr-1" />
+                  Expired {getExpiredDuration(new Date(event.start))} ago
+                </Badge>
+              )}
+              <span>{event.occassion}</span>
+              <span className="text-sm text-muted-foreground ml-2">
+                {event.registrantFullName}
+              </span>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDeleteEvent(event.id)}
+              aria-label={`Delete ${event.eventType?.displayName}`}
+            >
+              <Trash className="h-4 w-4" />
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </ScrollArea>
+  );
 
   return (
     <>
@@ -44,56 +106,21 @@ export default function EventManagementCard({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">All Events</h3>
-            {events.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No events added yet.
-              </p>
+            <h3 className="text-lg font-semibold">Active Events</h3>
+            {activeEvents.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No active events.</p>
             ) : (
-              <ScrollArea>
-                <ul className="space-y-2 max-h-[160px]">
-                  {events.map((event) => (
-                    <li
-                      key={event.id}
-                      className="flex items-center justify-between bg-secondary p-2 rounded-md"
-                    >
-                      <div className="inline-flex items-center space-x-2">
-                        <Badge
-                          style={{
-                            backgroundColor: event.eventType?.isSpecial
-                              ? EventColors.special
-                              : EventColors.regular,
-                          }}
-                        >
-                          {event.eventType?.isSpecial ? "Special" : "Regular"}
-                        </Badge>
-                        <Badge>{event.eventType?.displayName}</Badge>
-                        {event.start < today && (
-                          <Badge variant="destructive">
-                            <ClockAlert className="h-3 w-3 mr-1" />
-                            Expired
-                          </Badge>
-                        )}
-                        <span>{event.occassion}</span>
-                        <span className="text-sm text-muted-foreground ml-2">
-                          {event.registrantFullName}
-                        </span>
-                      </div>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteEvent(event.id)}
-                        aria-label={`Delete ${event.eventType?.displayName}`}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              </ScrollArea>
+              renderEventList(activeEvents)
             )}
           </div>
+
+          {expiredEvents.length > 0 && (
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">Expired Events</h3>
+              {renderEventList(expiredEvents, true)}
+            </div>
+          )}
+
           {expiredEventsLength > 0 && (
             <div className="flex justify-end">
               <Button onClick={() => setIsOpen(true)}>
