@@ -52,6 +52,7 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
   const selectedMonths = form.watch("selectedMonths");
   const interval = form.watch("interval");
   const count = form.watch("count");
+  const repeatUntil = form.watch("repeatUntil");
 
   React.useEffect(() => {
     if (frequency) {
@@ -68,6 +69,45 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
       setRrule(null);
     }
   }, [frequency, selectedDays, selectedMonths, interval, count]);
+
+  React.useEffect(() => {
+    if (repeatUntil && frequency) {
+      const startDate = new Date();
+      let endDate = new Date();
+
+      switch (repeatUntil) {
+        case "end-of-year":
+          endDate = new Date(startDate.getFullYear(), 11, 31);
+          break;
+        case "end-of-month":
+          endDate = new Date(
+            startDate.getFullYear(),
+            startDate.getMonth() + 1,
+            0,
+          );
+          break;
+        case "end-of-week":
+          const daysUntilEndOfWeek = 7 - startDate.getDay();
+          endDate = new Date(
+            startDate.getTime() + daysUntilEndOfWeek * 24 * 60 * 60 * 1000,
+          );
+          break;
+      }
+
+      const rule = new RRule({
+        freq: Frequency[frequency as keyof typeof Frequency],
+        interval: interval || 1,
+        dtstart: startDate,
+        until: endDate,
+        byweekday: selectedDays?.map((day: number) => Number(day)),
+        bymonth: selectedMonths?.map((month: number) => Number(month)),
+      });
+
+      const occurrences = rule.all();
+      form.setValue("count", occurrences.length);
+    }
+  }, [repeatUntil, frequency, interval, selectedDays, selectedMonths, form]);
+
   return (
     <>
       <FormField
@@ -86,6 +126,7 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
                   form.setValue("selectedDays", []);
                   form.setValue("selectedMonths", []);
                   form.setValue("count", 1);
+                  form.setValue("repeatUntil", "");
                 }}
                 value={field.value}
               >
@@ -163,54 +204,74 @@ export function FrequencyForm({ watchFrequency, form }: FrequencyFormProps) {
 
       <FormField
         control={form.control}
-        name="count"
+        name="repeatUntil"
         render={({ field }) => (
           <FormItem>
-            <FormLabel required>Number of Repeats</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                min={1}
-                {...field}
-                className="w-full"
-                onChange={(e) => field.onChange(Number(e.target.value))}
-              />
-            </FormControl>
-            <p className="pt-1 text-muted-foreground text-sm flex items-center">
-              <Info className="mr-1 h-4 w-4" />
-              Total number of times this event will occur.
-            </p>
-            <FormMessage />
+            <FormLabel required>Repeat Until</FormLabel>
+            <Select
+              onValueChange={(value) => {
+                field.onChange(value);
+                form.setValue("repeatUntil", value);
+              }}
+              value={field.value}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select end date" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="end-of-week">End of Week</SelectItem>
+                <SelectItem value="end-of-month">End of Month</SelectItem>
+                <SelectItem value="end-of-year">End of Year</SelectItem>
+                <SelectItem value="custom">Custom</SelectItem>
+              </SelectContent>
+            </Select>
           </FormItem>
         )}
       />
 
-      <div>
-        <FormField
-          control={form.control}
-          name="interval"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>Repeat Interval</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min={1}
-                  {...field}
-                  className="w-full"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
+      {form.watch("repeatUntil") === "custom" && (
+        <>
+          <FormField
+            control={form.control}
+            name="count"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel required>Total Number of Repeats</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={1}
+                    {...field}
+                    className="w-full"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <p className="pt-1 text-muted-foreground text-sm flex items-center">
-                <Info className="mr-1 h-4 w-4" />
-                Specifies how often the event repeats.
-              </p>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+          <FormField
+            control={form.control}
+            name="interval"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Interval Between Repeats</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={1}
+                    {...field}
+                    className="w-full"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
 
       {rrule && (
         <div className="mt-4 text-sm text-muted-foreground flex items-center">
