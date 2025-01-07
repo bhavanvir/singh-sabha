@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { RRule, Frequency } from "rrule";
 
-import { Info, Languages } from "lucide-react";
+import { Languages } from "lucide-react";
 
 import { capitalizeFirstLetter } from "@/lib/utils";
 
