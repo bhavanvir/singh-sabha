@@ -18,7 +18,6 @@ import {
   ChevronRight,
   Loader2,
   HelpCircle,
-  EyeOff,
   CalendarPlus,
   Calendar as CalendarIcon,
   CalendarRange,
@@ -29,10 +28,11 @@ import CreateEventDialog from "@/components/dialogs/booking-calendar/create-even
 import EditEventDialog from "@/components/dialogs/booking-calendar/edit-event-dialog";
 import BookEventDialog from "@/components/dialogs/booking-calendar/book-event-dialog";
 import ViewEventDialog from "@/components/dialogs/booking-calendar/view-event-dialog";
-import { EventColors } from "@/lib/types/event-colours";
+import { isGurdwaraEvent } from "@/lib/utils";
 
 import type { ToolbarProps } from "react-big-calendar";
 import type { Event, EventType, User } from "@/db/schema";
+import { EventColors } from "@/lib/types/event-colours";
 
 interface BookingCalendarProps {
   user: User | null;
@@ -251,10 +251,7 @@ export default function BookingCalendar({
             )}
           </>
         ) : (
-          <>
-            <span className="truncate">Private event</span>
-            <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />
-          </>
+          <span className="truncate">Private event</span>
         )}
       </div>
     );
@@ -284,6 +281,9 @@ export default function BookingCalendar({
 
       if (!event.isPublic && !user)
         newStyle.backgroundColor = EventColors.private;
+
+      if (isGurdwaraEvent(event))
+        newStyle.backgroundColor = EventColors.gurdwara;
 
       return {
         className: "",
