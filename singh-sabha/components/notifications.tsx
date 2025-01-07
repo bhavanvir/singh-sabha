@@ -32,7 +32,6 @@ import EmptyDataCard from "@/components/cards/empty-data-card";
 import ReviewEventDialog from "@/components/dialogs/admin-dashboard/review-event-dialog";
 
 import type { EventWithType } from "@/db/schema";
-import { EventColors } from "@/lib/types/event-colours";
 
 interface NotificationsProps {
   unverifiedEvents: EventWithType[];
@@ -106,17 +105,6 @@ export default function Notifications({
                 <CardContent className="p-4">
                   <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
                     <div className="flex flex-wrap items-center gap-2 mb-2 sm:mb-0">
-                      <Badge
-                        style={{
-                          backgroundColor: notification.eventType?.isSpecial
-                            ? EventColors.special
-                            : EventColors.regular,
-                        }}
-                      >
-                        {notification.eventType?.isSpecial
-                          ? "Special"
-                          : "Regular"}
-                      </Badge>
                       <Badge>{notification.eventType?.displayName}</Badge>
                     </div>
                     <span className="text-sm text-muted-foreground">

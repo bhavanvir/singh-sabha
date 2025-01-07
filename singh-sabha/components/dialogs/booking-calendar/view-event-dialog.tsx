@@ -41,15 +41,16 @@ export default function ViewEventDialog({
             {event.occassion}
           </DialogTitle>
           <DialogDescription className="space-x-2">
-            <Badge
-              style={{
-                backgroundColor: event.eventType?.isSpecial
-                  ? EventColors.special
-                  : EventColors.regular,
-              }}
-            >
-              {event.eventType?.isSpecial ? "Special" : "Regular"}
-            </Badge>
+            {event.eventType?.isSpecial && (
+              <Badge
+                className="text-xs sm:text-sm"
+                style={{
+                  backgroundColor: EventColors.special,
+                }}
+              >
+                Special
+              </Badge>
+            )}
             <Badge>{event.eventType?.displayName}</Badge>
             {isRecurring && (
               <Badge variant="secondary">
@@ -83,6 +84,9 @@ export default function ViewEventDialog({
                 )}
               </span>
             </div>
+          )}
+          {!event.registrantEmail && event.note && (
+            <p className="whitespace-pre-wrap">{event.note}</p>
           )}
         </div>
       </DialogContent>

@@ -62,15 +62,16 @@ export default function EventManagementCard({
             className="flex items-center justify-between bg-secondary p-2 rounded-md"
           >
             <div className="inline-flex items-center space-x-2">
-              <Badge
-                style={{
-                  backgroundColor: event.eventType?.isSpecial
-                    ? EventColors.special
-                    : EventColors.regular,
-                }}
-              >
-                {event.eventType?.isSpecial ? "Special" : "Regular"}
-              </Badge>
+              {event.eventType?.isSpecial && (
+                <Badge
+                  className="text-xs sm:text-sm"
+                  style={{
+                    backgroundColor: EventColors.special,
+                  }}
+                >
+                  Special
+                </Badge>
+              )}
               <Badge>{event.eventType?.displayName}</Badge>
               {isExpired && (
                 <Badge variant="destructive">

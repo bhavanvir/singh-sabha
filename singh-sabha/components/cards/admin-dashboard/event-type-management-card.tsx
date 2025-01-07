@@ -250,15 +250,16 @@ export default function EventTypeManagementCard({
                     className="flex items-center justify-between bg-secondary p-2 rounded-md"
                   >
                     <div className="inline-flex items-center space-x-2">
-                      <Badge
-                        style={{
-                          backgroundColor: type.isSpecial
-                            ? EventColors.special
-                            : EventColors.regular,
-                        }}
-                      >
-                        {type.isSpecial ? "Special" : "Regular"}
-                      </Badge>
+                      {type.isSpecial && (
+                        <Badge
+                          className="text-xs sm:text-sm"
+                          style={{
+                            backgroundColor: EventColors.special,
+                          }}
+                        >
+                          Special
+                        </Badge>
+                      )}
                       {type.isRequestable && <Badge>Requestable</Badge>}
                       <span>{type.displayName}</span>
                     </div>

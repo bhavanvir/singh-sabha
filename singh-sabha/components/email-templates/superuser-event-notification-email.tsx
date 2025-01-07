@@ -41,10 +41,6 @@ export default function SuperuserEventNotificationEmail({
                 <span className="font-medium">Event ID:</span> {event.id}
               </Text>
               <Text className="text-gray-700 text-sm mb-2">
-                <span className="font-medium">Type:</span>{" "}
-                {event.eventType?.displayName}
-              </Text>
-              <Text className="text-gray-700 text-sm mb-2">
                 <span className="font-medium">Date:</span>{" "}
                 {format(event.start, "MMMM d, yyyy")}
                 {format(event.start, "MMMM d, yyyy") !==

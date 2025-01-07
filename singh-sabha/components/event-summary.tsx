@@ -1,4 +1,4 @@
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
 import { Calendar, Clock } from "lucide-react";
@@ -12,15 +12,16 @@ export default function EventSummary({ event }: { event: EventWithType }) {
       <div className="flex items-center justify-between">
         <span className="font-semibold">{event.occassion}</span>
         <div className="flex items-center space-x-2">
-          <Badge
-            style={{
-              backgroundColor: event.eventType?.isSpecial
-                ? EventColors.special
-                : EventColors.regular,
-            }}
-          >
-            {event.eventType?.isSpecial ? "Special" : "Regular"}
-          </Badge>
+          {event.eventType?.isSpecial && (
+            <Badge
+              className="text-xs sm:text-sm"
+              style={{
+                backgroundColor: EventColors.special,
+              }}
+            >
+              Special
+            </Badge>
+          )}
           <Badge>{event.eventType?.displayName}</Badge>
         </div>
       </div>
