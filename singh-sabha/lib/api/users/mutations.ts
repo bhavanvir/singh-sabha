@@ -21,7 +21,6 @@ export const UpdateUserPrivilege = async ({
     await db
       .update(userTable)
       .set({
-        isMod: user.isMod,
         isAdmin: user.isAdmin,
       })
       .where(eq(userTable.id, user.id));
@@ -71,7 +70,6 @@ export const CreateMod = async ({
       fullName: name,
       email: email,
       passwordHash: passwordHash,
-      isMod: true,
     });
 
     revalidatePath("/admin");

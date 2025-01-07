@@ -29,7 +29,6 @@ const userSchema = z.object({
   email: z.string().email(),
   fullName: z.string(),
   isAdmin: z.boolean(),
-  isMod: z.boolean(),
 });
 
 interface UserManagementCardProps {
@@ -49,18 +48,12 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
       email: "",
       fullName: "",
       isAdmin: false,
-      isMod: false,
     },
   });
 
   const handleUpdateUser: SubmitHandler<z.infer<typeof userSchema>> = (
     data,
   ) => {
-    if (data.isAdmin && data.isMod) {
-      toast.warning("A user cannot be both an admin and a mod.");
-      return;
-    }
-
     toast.promise(UpdateUserPrivilege({ user: data }), {
       loading: `Updating ${data.fullName}'s privileges...`,
       success: (_) => {
@@ -130,27 +123,6 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={userForm.control}
-                name="isMod"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Moderator</FormLabel>
-                      <FormDescription className="flex items-center">
-                        <Info className="h-4 w-4 mr-1" />
-                        Grant moderator privileges
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
               <div className="flex justify-end">
                 <Button type="submit">
                   <Edit className="h-4 w-4" /> Change
@@ -173,9 +145,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
                     className="flex items-center justify-between bg-secondary p-2 rounded-md"
                   >
                     <div className="inline-flex items-center space-x-2">
-                      <Badge>
-                        {u.isAdmin ? "Admin" : u.isMod ? "Mod" : "User"}
-                      </Badge>
+                      <Badge>{u.isAdmin ? "Admin" : "Mod"}</Badge>
                       <span className="font-medium">{u.fullName}</span>
                       <span className="text-sm text-muted-foreground ml-2">
                         {u.email}

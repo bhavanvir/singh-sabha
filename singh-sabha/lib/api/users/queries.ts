@@ -14,7 +14,6 @@ export const GetAllUsers = async (): Promise<Omit<User, "passwordHash">[]> => {
         fullName: userTable.fullName,
         email: userTable.email,
         isAdmin: userTable.isAdmin,
-        isMod: userTable.isMod,
       })
       .from(userTable);
 

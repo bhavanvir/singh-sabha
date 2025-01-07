@@ -9,7 +9,6 @@ export const userTable = pgTable("users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   isAdmin: boolean("is_administrator").notNull().default(false),
-  isMod: boolean("is_moderator").notNull().default(false),
 });
 
 export const otpTable = pgTable("one_time_passwords", {
