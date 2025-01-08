@@ -245,8 +245,8 @@ export default function BookingCalendar({
             <span className="truncate">{event.occassion}</span>
             {eventDuration > 24 && (
               <span className="hidden sm:inline-block text-xs">
-                {moment(event.start).format("HH:mm")} -{" "}
-                {moment(event.end).format("HH:mm")}
+                {moment(event.start).format("hh:mm a")} -{" "}
+                {moment(event.end).format("hh:mm a")}
               </span>
             )}
           </>
@@ -268,30 +268,26 @@ export default function BookingCalendar({
     [user],
   );
 
-  const eventPropGetter = React.useCallback(
-    (event: Event | any) => {
-      const newStyle: React.CSSProperties = {
-        backgroundColor: event.eventType.isSpecial
-          ? EventColors.special
-          : EventColors.regular,
-        borderRadius: "0.375rem", // Tailwind rounded-md
-        border: "none",
-        opacity: event.isVerified ? "1" : ".5",
-      };
+  const eventPropGetter = React.useCallback((event: Event | any) => {
+    const newStyle: React.CSSProperties = {
+      backgroundColor: event.eventType.isSpecial
+        ? EventColors.special
+        : EventColors.regular,
+      borderRadius: "0.375rem", // Tailwind rounded-md
+      border: "none",
+      opacity: event.isVerified ? "1" : ".5",
+    };
 
-      if (!event.isPublic && !user)
-        newStyle.backgroundColor = EventColors.private;
+    if (!event.isPublic) newStyle.backgroundColor = EventColors.private;
 
-      if (isGurdwaraEvent(event))
-        newStyle.backgroundColor = EventColors.gurdwara;
+    if (event.isPublic && isGurdwaraEvent(event))
+      newStyle.backgroundColor = EventColors.gurdwara;
 
-      return {
-        className: "",
-        style: newStyle,
-      };
-    },
-    [user],
-  );
+    return {
+      className: "",
+      style: newStyle,
+    };
+  }, []);
 
   return isLoading ? (
     <div className="h-[calc(100vh-6rem)] p-2">
