@@ -5,8 +5,9 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { Book, Pen, Loader2, Music2, Languages } from "lucide-react";
+import { Book, Pen, Music2, Languages } from "lucide-react";
 
 import { notoSansGurmukhi } from "@/app/fonts";
 import { cn } from "@/lib/utils";
@@ -44,12 +45,22 @@ export default function DailyHukamnama() {
 
   return (
     <div className="mx-auto container py-4 px-4 md:px-6">
-      {isLoading && (
-        <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      )}
-      {hukamnama ? (
+      {isLoading ? (
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-8 w-24" />
+          </div>
+
+          <div className="flex gap-4 mb-4">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+
+          <Skeleton className="h-[calc(100vh-11rem)] w-full" />
+        </>
+      ) : hukamnama ? (
         <>
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-2">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">

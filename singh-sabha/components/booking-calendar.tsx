@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Calendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
@@ -16,7 +17,6 @@ import moment from "moment";
 import {
   ChevronLeft,
   ChevronRight,
-  Loader2,
   HelpCircle,
   CalendarPlus,
   Calendar as CalendarIcon,
@@ -294,8 +294,19 @@ export default function BookingCalendar({
   );
 
   return isLoading ? (
-    <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
-      <Loader2 className="h-8 w-8 animate-spin" />
+    <div className="h-[calc(100vh-6rem)] p-2">
+      <div className="flex flex-col space-y-3 pb-3 w-full sm:space-y-4 sm:pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-7 w-full sm:h-8 sm:w-[300px]" />
+        </div>
+        <div className="flex items-center justify-between sm:justify-end space-x-2 sm:space-x-4">
+          <Skeleton className="h-8 w-[150px] sm:h-9 sm:w-[200px]" />
+          <Skeleton className="h-8 w-[100px] sm:h-9 sm:w-[120px]" />
+          <Skeleton className="h-8 w-8 sm:h-9 sm:w-9 hidden lg:block" />
+        </div>
+      </div>
+
+      <Skeleton className="w-full h-[calc(100vh-12rem)]" />
     </div>
   ) : (
     <div className="h-[calc(100vh-6rem)] overflow-y-auto p-2">
