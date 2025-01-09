@@ -8,9 +8,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { Menu, LogOut, FlagTriangleLeft } from "lucide-react";
 import { logout } from "@/actions/logout-action";
@@ -46,6 +53,33 @@ export function AdminNavBar({
     });
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "q" && e.metaKey && e.shiftKey) {
+        e.preventDefault();
+        handleLogOut();
+      } else if (e.key === "1" && e.metaKey) {
+        e.preventDefault();
+        setActivePage("CALENDAR");
+      } else if (e.key === "2" && e.metaKey) {
+        e.preventDefault();
+        setActivePage("NOTIFICATIONS");
+      } else if (e.key === "3" && e.metaKey) {
+        e.preventDefault();
+        setActivePage("ANALYTICS");
+      } else if (e.key === "4" && e.metaKey) {
+        e.preventDefault();
+        setActivePage("SETTINGS");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setActivePage]);
+
   const NavLink = ({
     page,
     onClick,
@@ -53,19 +87,28 @@ export function AdminNavBar({
     page: PageKey;
     onClick?: () => void;
   }) => (
-    <Link
-      href="#"
-      className={`transition-colors hover:text-foreground ${
-        activePage === page ? "text-foreground" : "text-muted-foreground"
-      }`}
-      scroll={false}
-      onClick={() => {
-        setActivePage(page);
-        onClick?.();
-      }}
-    >
-      {PAGES[page]}
-    </Link>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link
+            href="#"
+            className={`transition-colors hover:text-foreground ${
+              activePage === page ? "text-foreground" : "text-muted-foreground"
+            }`}
+            scroll={false}
+            onClick={() => {
+              setActivePage(page);
+              onClick?.();
+            }}
+          >
+            {PAGES[page]}
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>⌘{Object.keys(PAGES).indexOf(page) + 1}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 
   return (
@@ -134,11 +177,21 @@ export function AdminNavBar({
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
+              <DropdownMenuLabel className="font-normal flex">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {user.fullName}
+                  </p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogOut}>
-                <LogOut className="mr-2 h-4 w-4" />
+                <LogOut className="h-4 w-4" />
                 Logout
+                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
