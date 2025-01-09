@@ -2,8 +2,11 @@
 
 import * as React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 import { User, Mail, Calendar, Bell, FileText, Users } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 import AccountSettingsCard from "@/components/cards/admin-dashboard/account-settings-card";
 import UserManagementCard from "@/components/cards/admin-dashboard/user-management-card";
@@ -87,17 +90,20 @@ export default function SettingsDashboard({
         <ul className="space-y-2">
           {sections.map((section) => (
             <li key={section.title}>
-              <button
-                className={`w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md text-sm font-medium transition-colors ${
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full text-left justify-start",
                   activeSection === section.title
-                    ? "bg-blue-100 text-blue-700"
-                    : "hover:bg-gray-200"
-                }`}
+                    ? "bg-foreground text-background"
+                    : "hover:bg-foreground hover:text-background",
+                  { "pointer-events-none": activeSection === section.title },
+                )}
                 onClick={() => setActiveSection(section.title)}
               >
                 {section.icon}
                 <span className="hidden sm:block">{section.title}</span>
-              </button>
+              </Button>
             </li>
           ))}
         </ul>
