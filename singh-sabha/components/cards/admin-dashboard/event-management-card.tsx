@@ -1,14 +1,14 @@
-import * as React from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
+import * as React from "react";
 import { toast } from "sonner";
 
 import { ClockAlert, Trash } from "lucide-react";
 
-import { DeleteEvent } from "@/lib/api/events/mutations";
 import DeleteExpiredEventsDialog from "@/components/dialogs/admin-dashboard/delete-expired-events-dialog";
+import { DeleteEvent } from "@/lib/api/events/mutations";
 import { isGurdwaraEvent } from "@/lib/utils";
 
 import { EventWithType } from "@/db/schema";
@@ -34,8 +34,10 @@ export default function EventManagementCard({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const activeEvents = events.filter((event) => new Date(event.start) >= today);
-  const expiredEvents = events.filter((event) => new Date(event.start) < today);
+  const activeEvents = events.filter((event) => new Date(event.end) >= today);
+  const expiredEvents = events.filter(
+    (event) => !activeEvents.some((activeEvent) => activeEvent === event),
+  );
   const expiredEventsLength = expiredEvents.length;
 
   const getExpiredDuration = (startDate: Date) => {
