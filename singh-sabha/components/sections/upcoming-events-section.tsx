@@ -1,34 +1,34 @@
 "use client";
 
-import * as React from "react";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { format } from "date-fns";
-import { Calendar, Clock, CalendarX2, Info } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
+import { format } from "date-fns";
 import Autoplay from "embla-carousel-autoplay";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { Calendar, CalendarX2, Clock, Info } from "lucide-react";
+import * as React from "react";
 
 import EmptyDataCard from "@/components/cards/empty-data-card";
-import EventDescriptionPopup from "@/components/event-description-popup";
+import EventDescriptionDialog from "@/components/dialogs/event-description-dialog";
 
-import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { EventWithType } from "@/db/schema";
 import { EventColors } from "@/lib/types/event-colours";
 import { isGurdwaraEvent } from "@/lib/utils";
+import { fadeInWithDelay, staggerContainer } from "./hero-section";
 
 interface UpcomingEventsSectionProps {
   upcomingEvents: EventWithType[];
@@ -41,6 +41,7 @@ export default function UpcomingEventsSection({
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
+  const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
 
   const [selectedEvent, setSelectedEvent] =
     React.useState<EventWithType | null>(null);
@@ -155,10 +156,13 @@ export default function UpcomingEventsSection({
                                 variant="outline"
                                 size="sm"
                                 className="w-full"
-                                onClick={() => setSelectedEvent(event)}
+                                onClick={() => {
+                                  setIsDialogOpen(true);
+                                  setSelectedEvent(event);
+                                }}
                               >
-                                <Info className="mr-2 h-4 w-4" />
-                                Learn More
+                                <Info className="h-4 w-4" />
+                                More Information
                               </Button>
                             </CardFooter>
                           )}
@@ -187,11 +191,12 @@ export default function UpcomingEventsSection({
           </motion.div>
         </motion.div>
       </div>
-      <EventDescriptionPopup
-        isOpen={!!selectedEvent}
-        onClose={() => setSelectedEvent(null)}
-        title={selectedEvent?.occassion || ""}
-        description={selectedEvent?.note || ""}
+      <EventDescriptionDialog
+        isOpen={isDialogOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+        }}
+        event={selectedEvent}
       />
     </section>
   );

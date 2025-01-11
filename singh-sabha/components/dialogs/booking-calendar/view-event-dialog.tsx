@@ -1,14 +1,15 @@
-import { format } from "date-fns";
-import { CalendarIcon, ClockIcon, RepeatIcon } from "lucide-react";
-import { RRule } from "rrule";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { RRule } from "rrule";
+
+import { CalendarIcon, ClockIcon, RepeatIcon, StickyNote } from "lucide-react";
 
 import { EventColors } from "@/lib/types/event-colours";
 
@@ -41,6 +42,16 @@ export default function ViewEventDialog({
             {event.occassion}
           </DialogTitle>
           <DialogDescription className="space-x-2">
+            {isGurdwaraEvent(event) && !event.eventType?.isSpecial && (
+              <Badge
+                className="text-xs sm:text-sm"
+                style={{
+                  backgroundColor: EventColors.gurdwara,
+                }}
+              >
+                Gurdwara
+              </Badge>
+            )}
             {event.eventType?.isSpecial && (
               <Badge
                 className="text-xs sm:text-sm"
@@ -85,9 +96,10 @@ export default function ViewEventDialog({
               </span>
             </div>
           )}
-          {isGurdwaraEvent(event) && event.note && (
+          <div className="flex flex-row items-start">
+            <StickyNote className="h-4 w-4 mr-1 mt-1" />
             <p className="whitespace-pre-wrap">{event.note}</p>
-          )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
