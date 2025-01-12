@@ -4,13 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, useAnimation, useInView } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import * as React from "react";
+
+import { MegaphoneOff } from "lucide-react";
 
 import {
   fadeInWithDelay,
   staggerContainer,
 } from "@/components/sections/hero-section";
-import Link from "next/link";
+import EmptyDataCard from "@/components/cards/empty-data-card";
 
 import type { YoutubeLiveStream } from "@/lib/types/youtube-live";
 
@@ -71,67 +74,45 @@ export function YoutubeLive() {
             </p>
           </motion.div>
           <motion.div variants={fadeInWithDelay(0.3)}>
-            <Card className="mx-auto overflow-hidden">
-              {isLoading ? (
-                <>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-center">
-                      <div className="flex items-center space-x-2">
-                        <Skeleton className="h-6 w-6" />
-                        <Skeleton className="h-6 w-64" />
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <Skeleton className="aspect-video w-full rounded-none" />
-                  </CardContent>
-                </>
-              ) : liveStream ? (
-                <>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-center">
-                      <Link
-                        href={`https://www.youtube.com/watch?v=${liveStream.videoId}`}
-                        className="flex items-center space-x-2 hover:text-muted-foreground hover:fill-muted-foreground transition-colors"
-                      >
-                        <Image
-                          src={liveStream.thumbnails.default.url}
-                          alt={liveStream.title}
-                          height={liveStream.thumbnails.default.height}
-                          width={liveStream.thumbnails.default.width}
-                          className="h-6 w-6 rounded"
-                        />
-                        <span>{liveStream.title}</span>
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0 aspect-video">
-                    <iframe
-                      className="w-full h-full"
-                      src={`https://www.youtube.com/embed/${liveStream.videoId}`}
-                      title={liveStream.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    />
-                  </CardContent>
-                </>
-              ) : (
-                <>
-                  <CardHeader>
-                    <CardTitle className="text-center">
-                      No Live Stream Available
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center p-8">
-                    <p className="text-muted-foreground">
-                      There is currently no live stream. Please check back later
-                      or visit our YouTube channel for past recordings.
-                    </p>
-                  </CardContent>
-                </>
-              )}
-            </Card>
+            {isLoading ? (
+              <Skeleton className="w-full aspect-video rounded-lg" />
+            ) : liveStream ? (
+              <Card className="mx-auto overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-center">
+                    <Link
+                      href={`https://www.youtube.com/watch?v=${liveStream.videoId}`}
+                      className="flex items-center space-x-2 hover:text-muted-foreground hover:fill-muted-foreground transition-colors"
+                    >
+                      <Image
+                        src={liveStream.thumbnails.default.url}
+                        alt={liveStream.title}
+                        height={liveStream.thumbnails.default.height}
+                        width={liveStream.thumbnails.default.width}
+                        className="h-6 w-6 rounded"
+                      />
+                      <span>{liveStream.title}</span>
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 aspect-video">
+                  <iframe
+                    className="w-full h-full"
+                    src={`https://www.youtube.com/embed/${liveStream.videoId}`}
+                    title={liveStream.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </CardContent>
+              </Card>
+            ) : (
+              <EmptyDataCard
+                icon={MegaphoneOff}
+                title="No Live Stream Available"
+                description="There is currently no live stream. Please check back later or visit our YouTube channel for past recordings."
+              />
+            )}
           </motion.div>
         </motion.div>
       </div>
