@@ -4,6 +4,9 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
+  images: {
+    domains: ["i.ytimg.com"],
+  },
 };
 
 export default nextConfig;
