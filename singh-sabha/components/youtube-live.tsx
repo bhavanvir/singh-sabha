@@ -45,7 +45,7 @@ export function YoutubeLive() {
       }
     };
 
-    // fetchYoutubeLiveStream();
+    fetchYoutubeLiveStream();
 
     if (isInView) {
       controls.start("show");
@@ -71,7 +71,7 @@ export function YoutubeLive() {
             </p>
           </motion.div>
           <motion.div variants={fadeInWithDelay(0.3)}>
-            <Card className="mx-auto overflow-hidden bg-accent">
+            <Card className="mx-auto overflow-hidden">
               {isLoading ? (
                 <>
                   <CardHeader>
