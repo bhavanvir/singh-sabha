@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 import { inter } from "./fonts";
+import "./globals.css";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +52,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">{children}</main>
         </div>
+        <Analytics />
         <Toaster richColors={true} />
       </body>
     </html>
