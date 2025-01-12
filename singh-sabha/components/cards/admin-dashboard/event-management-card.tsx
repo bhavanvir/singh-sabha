@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import * as React from "react";
 import { toast } from "sonner";
 
-import { ClockAlert, Trash } from "lucide-react";
+import { ClockAlert, Trash, Clock } from "lucide-react";
 
 import DeleteExpiredEventsDialog from "@/components/dialogs/admin-dashboard/delete-expired-events-dialog";
 import { DeleteEvent } from "@/lib/api/events/mutations";
@@ -34,13 +34,11 @@ export default function EventManagementCard({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const activeEvents = events.filter((event) => new Date(event.end) >= today);
-  const expiredEvents = events.filter(
-    (event) => !activeEvents.some((activeEvent) => activeEvent === event),
-  );
+  const activeEvents = events.filter((event) => event.end >= today);
+  const expiredEvents = events.filter((event) => event.end < today);
   const expiredEventsLength = expiredEvents.length;
 
-  const getExpiredDuration = (startDate: Date) => {
+  const getDuration = (startDate: Date) => {
     const diffTime = Math.abs(today.getTime() - startDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays === 1) return "1 day";
@@ -86,10 +84,19 @@ export default function EventManagementCard({
                 </Badge>
               )}
               <Badge>{event.eventType?.displayName}</Badge>
-              {isExpired && (
+              {isExpired ? (
                 <Badge variant="destructive">
                   <ClockAlert className="h-3 w-3 mr-1" />
-                  Expired {getExpiredDuration(new Date(event.start))} ago
+                  Expired {getDuration(event.start)} ago
+                </Badge>
+              ) : (
+                <Badge
+                  style={{
+                    backgroundColor: "#22c55e",
+                  }}
+                >
+                  <Clock className="h-3 w-3 mr-1" />
+                  In {getDuration(event.start)}
                 </Badge>
               )}
               <span>{event.occassion}</span>
