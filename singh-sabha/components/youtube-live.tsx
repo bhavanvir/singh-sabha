@@ -45,7 +45,7 @@ export function YoutubeLive() {
       }
     };
 
-    fetchYoutubeLiveStream();
+    // fetchYoutubeLiveStream();
 
     if (isInView) {
       controls.start("show");
