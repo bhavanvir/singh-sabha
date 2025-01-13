@@ -89,3 +89,13 @@ export function isGurdwaraEvent(event: Event | EventWithType) {
     !event.registrantPhoneNumber
   );
 }
+
+export function getDurationFromNow(startDate: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const diffTime = Math.abs(today.getTime() - startDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays;
+}

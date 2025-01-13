@@ -1,7 +1,4 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -11,22 +8,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import { format } from "date-fns";
 
 import { Plus, Rss } from "lucide-react";
 
+import { announcementColumns } from "@/components/columns";
+import { DataTable } from "@/components/data-table";
+import { Announcement } from "@/db/schema";
 import {
   CreateAnnouncement,
   DisableAnnouncement,
 } from "@/lib/api/announcements/mutations";
-import { Announcement } from "@/db/schema";
 
 const announcementSchema = z.object({
   title: z.string().min(6, "Title is required").max(64, "Title too long"),
@@ -117,7 +116,7 @@ export default function AnnouncementManagementCard({
             />
             <div className="flex justify-end">
               <Button type="submit">
-                <Plus />
+                <Plus className="mr-2 h-4 w-4" />
                 Add
               </Button>
             </div>
@@ -142,7 +141,14 @@ export default function AnnouncementManagementCard({
                 checked={enabled}
                 onCheckedChange={() => {
                   setEnabled(false);
-                  DisableAnnouncement({ id: activeAnnouncement.id! });
+                  toast.promise(
+                    DisableAnnouncement({ id: activeAnnouncement.id! }),
+                    {
+                      loading: "Disabling announcement...",
+                      success: "Announcement disabled successfully!",
+                      error: "Failed to disable announcement.",
+                    },
+                  );
                 }}
               />
             </div>
@@ -150,31 +156,12 @@ export default function AnnouncementManagementCard({
         </div>
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Past Announcements</h3>
-          {pastAnnouncements.length == 0 ? (
+          {pastAnnouncements.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No past announcements.
             </p>
           ) : (
-            <ScrollArea>
-              <div className="max-h-[160px] space-y-4">
-                {pastAnnouncements.map((announcement) => (
-                  <div
-                    key={announcement.id}
-                    className="rounded-lg bg-secondary p-4"
-                  >
-                    <div className="inline-flex items-center space-x-2">
-                      <Badge>{format(announcement.createdAt, "MMM d")}</Badge>
-                      <span>
-                        <h4 className="font-medium">{announcement.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {announcement.message}
-                        </p>
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+            <DataTable columns={announcementColumns} data={pastAnnouncements} />
           )}
         </div>
       </CardContent>

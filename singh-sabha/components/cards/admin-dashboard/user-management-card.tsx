@@ -1,28 +1,28 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
-import { Edit, Trash, Info } from "lucide-react";
+import { Edit, Info } from "lucide-react";
 
+import { userColumns } from "@/components/columns";
+import { DataTable } from "@/components/data-table";
 import { User } from "@/db/schema";
-import { UpdateUserPrivilege, DeleteUser } from "@/lib/api/users/mutations";
+import { DeleteUser, UpdateUserPrivilege } from "@/lib/api/users/mutations";
 
 const userSchema = z.object({
   id: z.string(),
@@ -72,6 +72,11 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
       error: "Failed to delete user.",
     });
   };
+
+  const columns = userColumns((user) => {
+    setEditingUser(user);
+    userForm.reset(user);
+  }, handleDeleteUser);
 
   return (
     <Card>
@@ -125,7 +130,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
               />
               <div className="flex justify-end">
                 <Button type="submit">
-                  <Edit className="h-4 w-4" /> Change
+                  <Edit className="mr-2 h-4 w-4" /> Change
                 </Button>
               </div>
             </form>
@@ -137,46 +142,7 @@ export default function UserManagementCard({ users }: UserManagementCardProps) {
           {users.length === 0 ? (
             <p className="text-sm text-muted-foreground">No users added yet.</p>
           ) : (
-            <ScrollArea>
-              <ul className="space-y-2 max-h-[160px]">
-                {users.map((u) => (
-                  <li
-                    key={u.id}
-                    className="flex items-center justify-between bg-secondary p-2 rounded-md"
-                  >
-                    <div className="inline-flex items-center space-x-2">
-                      <Badge>{u.isAdmin ? "Admin" : "Mod"}</Badge>
-                      <span className="font-medium">{u.fullName}</span>
-                      <span className="text-sm text-muted-foreground ml-2">
-                        {u.email}
-                      </span>
-                    </div>
-
-                    <div className="space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setEditingUser(u);
-                          userForm.reset(u);
-                        }}
-                        aria-label={`Edit ${u.fullName}`}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteUser(u.id)}
-                        aria-label={`Delete ${u.fullName}`}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </ScrollArea>
+            <DataTable columns={columns} data={users} />
           )}
         </div>
       </CardContent>
