@@ -132,12 +132,7 @@ export const GetEventsOverTime = async (): Promise<
         count: count(),
       })
       .from(eventTable)
-      .where(
-        and(
-          eq(eventTable.isVerified, true),
-          sql`${eventTable.createdAt} >= CURRENT_DATE - INTERVAL '30 days'`,
-        ),
-      )
+      .where(and(eq(eventTable.isVerified, true)))
       .groupBy(sql`DATE(${eventTable.createdAt})`)
       .orderBy(sql`DATE(${eventTable.createdAt})`);
 
@@ -160,7 +155,7 @@ export const GetBookingLeadTimes = async (): Promise<
         count: count(),
       })
       .from(eventTable)
-      .where(sql`${eventTable.isVerified} = true`)
+      .where(eq(eventTable.isVerified, true))
       .groupBy(sql`lead_time_days`)
       .orderBy(sql`lead_time_days`);
 
