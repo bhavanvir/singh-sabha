@@ -6,19 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { Activity } from "lucide-react";
 
@@ -34,7 +27,7 @@ export const EventsOverTimeCard = ({
       <Card>
         <CardHeader>
           <CardTitle>Events Over Time</CardTitle>
-          <CardDescription>No data available</CardDescription>
+          <CardDescription>No data available.</CardDescription>
         </CardHeader>
         <CardContent className="min-h-[200px] flex items-center justify-center">
           No events found
@@ -55,47 +48,48 @@ export const EventsOverTimeCard = ({
     <Card>
       <CardHeader>
         <CardTitle>Events Over Time</CardTitle>
-        <CardDescription>Number of events in the last 30 days</CardDescription>
+        <CardDescription>Number of events booked or created.</CardDescription>
       </CardHeader>
-      <CardContent className="min-h-[200px]">
-        <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={data}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="date"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) =>
-                  new Date(value).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })
-                }
-              />
-              <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Area
-                dataKey="count"
-                type="step"
-                fill="var(--color-count)"
-                fillOpacity={0.4}
-                stroke="var(--color-count)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+      <CardContent>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <AreaChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })
+              }
+            />
+            <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Area
+              dataKey="count"
+              type="step"
+              fill="var(--color-count)"
+              fillOpacity={0.4}
+              stroke="var(--color-count)"
+            />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

@@ -33,7 +33,7 @@ export default function AnalyticsDashboard({
 
   return (
     <div className="mx-auto container px-4 md:px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {hasEventsOverTimeData && (
           <EventsOverTimeCard data={analytics.EventsOverTime} />
         )}

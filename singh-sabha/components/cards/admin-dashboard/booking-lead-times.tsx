@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -7,19 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { BarChart2 } from "lucide-react";
 
@@ -35,7 +27,7 @@ export const BookingLeadTimesCard = ({
       <Card>
         <CardHeader>
           <CardTitle>Booking Lead Times</CardTitle>
-          <CardDescription>No data available</CardDescription>
+          <CardDescription>No data available.</CardDescription>
         </CardHeader>
         <CardContent className="min-h-[200px] flex items-center justify-center">
           No bookings found
@@ -56,48 +48,45 @@ export const BookingLeadTimesCard = ({
     <Card>
       <CardHeader>
         <CardTitle>Booking Lead Times</CardTitle>
-        <CardDescription>
-          Number of bookings by lead time in the last 30 days
-        </CardDescription>
+        <CardDescription>Lead times for all bookings.</CardDescription>
       </CardHeader>
-      <CardContent className="min-h-[200px]">
-        <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="leadTimeDays"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => `${value} days`}
-              />
-              <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Bar
-                dataKey="count"
-                type="step"
-                fill="var(--color-count)"
-                fillOpacity={0.4}
-                stroke="var(--color-count)"
-              />
-            </BarChart>
-          </ResponsiveContainer>
+      <CardContent>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <BarChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="leadTimeDays"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => `${value} days`}
+            />
+            <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar
+              dataKey="count"
+              type="step"
+              fill="var(--color-count)"
+              fillOpacity={0.4}
+              stroke="var(--color-count)"
+            />
+          </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
   );
 };
-
-export default BookingLeadTimesCard;
