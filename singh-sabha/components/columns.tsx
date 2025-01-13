@@ -60,7 +60,20 @@ export const eventTypeColumns = (
 ): ColumnDef<EventType>[] => [
   {
     accessorKey: "displayName",
-    header: "Display Name",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Display Name
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    sortingFn: (rowA, rowB) => {
+      const a = rowA.original.displayName || "";
+      const b = rowB.original.displayName || "";
+      return a.localeCompare(b);
+    },
   },
   {
     accessorKey: "description",
@@ -68,18 +81,57 @@ export const eventTypeColumns = (
   },
   {
     accessorKey: "isRequestable",
-    header: "Requestable",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Requestable
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => (row.original.isRequestable ? "Yes" : "No"),
+    sortingFn: (rowA, rowB) => {
+      const a = rowA.original.isRequestable ? 1 : 0;
+      const b = rowB.original.isRequestable ? 1 : 0;
+      return a - b;
+    },
   },
   {
     accessorKey: "isSpecial",
-    header: "Special Event",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Special Event
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => (row.original.isSpecial ? "Yes" : "No"),
+    sortingFn: (rowA, rowB) => {
+      const a = rowA.original.isSpecial ? 1 : 0;
+      const b = rowB.original.isSpecial ? 1 : 0;
+      return a - b;
+    },
   },
   {
     accessorKey: "deposit",
-    header: "Deposit",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Deposit
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => <span>${row.original.deposit.toFixed(2)}</span>,
+    sortingFn: (rowA, rowB) => {
+      const a = rowA.original.deposit || 0;
+      const b = rowB.original.deposit || 0;
+      return a - b;
+    },
   },
   {
     id: "actions",
