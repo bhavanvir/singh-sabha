@@ -26,7 +26,7 @@ export default function ContactEmail({ data }: { data: ContactMessage }) {
             <Text className="text-gray-700 text-base mb-6">
               A new message has been received through the contact form:
             </Text>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Contact Details
               </Text>
@@ -40,7 +40,7 @@ export default function ContactEmail({ data }: { data: ContactMessage }) {
                 <span className="font-medium">Subject:</span> {data.subject}
               </Text>
             </div>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Message
               </Text>

@@ -33,7 +33,7 @@ export default function SuperuserEventNotificationEmail({
               A new event booking request has been submitted and requires your
               review.
             </Text>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 {event.occassion}
               </Text>
@@ -52,7 +52,7 @@ export default function SuperuserEventNotificationEmail({
                 {event.isPublic ? "Yes" : "No"}
               </Text>
             </div>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Registrant Details
               </Text>
@@ -70,7 +70,7 @@ export default function SuperuserEventNotificationEmail({
               </Text>
             </div>
             {event.note && (
-              <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+              <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
                 <Text className="text-lg font-semibold text-gray-800 mb-2">
                   Additional Notes
                 </Text>

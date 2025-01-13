@@ -14,7 +14,15 @@ import { format } from "date-fns";
 
 import type { EventWithType } from "@/db/schema";
 
-export default function DeniedEventEmail({ event }: { event: EventWithType }) {
+interface DeniedEventEmailProps {
+  event: EventWithType;
+  denialReason?: string;
+}
+
+export default function DeniedEventEmail({
+  event,
+  denialReason,
+}: DeniedEventEmailProps) {
   return (
     <Html>
       <Head />
@@ -29,7 +37,7 @@ export default function DeniedEventEmail({ event }: { event: EventWithType }) {
               Dear {event.registrantFullName}, we regret to inform you that we
               are unable to approve your event request at this time.
             </Text>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 {event.occassion}
               </Text>
@@ -51,18 +59,13 @@ export default function DeniedEventEmail({ event }: { event: EventWithType }) {
                   : `${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}
               </Text>
             </div>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
-              <Text className="text-lg font-semibold text-gray-800 mb-4">
-                Reference Number
-              </Text>
-              <Text className="text-gray-700 text-sm">
-                <span className="font-medium">Event ID:</span> {event.id}
-              </Text>
-              <Text className="text-gray-500 text-xs mt-2">
-                Please include this reference number in any communications about
-                your event.
-              </Text>
-            </div>
+            {denialReason && (
+              <div className="bg-red-50 rounded-md border-l-4 border-red-400 p-4 mb-6">
+                <Text className="text-red-700 text-sm font-medium">
+                  Reason for denial: {denialReason}
+                </Text>
+              </div>
+            )}
             <Text className="text-gray-700 text-base mb-6">
               If you would like to discuss this further or have any questions,
               please don&apos;t hesitate to reach out to us.

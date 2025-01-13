@@ -33,7 +33,7 @@ export default function EventConfirmationEmail({
               Hi {event.registrantFullName}, we&apos;ve received your event
               request.
             </Text>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 {event.occassion}
               </Text>
@@ -49,7 +49,7 @@ export default function EventConfirmationEmail({
                   ` - ${format(event.end, "MMMM d, yyyy")}`}
               </Text>
             </div>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Reference Number
               </Text>

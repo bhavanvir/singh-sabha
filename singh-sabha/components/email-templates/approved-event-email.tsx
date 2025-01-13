@@ -38,7 +38,7 @@ export default function ApprovedEventEmail({
               Hi {event.registrantFullName}, we&apos;re pleased to inform you
               that your event booking request has been approved.
             </Text>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 {event.occassion}
               </Text>
@@ -60,7 +60,7 @@ export default function ApprovedEventEmail({
                   : `${format(event.start, "h:mm a")} - ${format(event.end, "h:mm a")}`}
               </Text>
             </div>
-            <div className="bg-gray-100 rounded-lg p-6 mb-6 border border-gray-200">
+            <div className="bg-gray-100 rounded-md p-6 mb-6 border border-gray-200">
               <Text className="text-lg font-semibold text-gray-800 mb-4">
                 Reference Number
               </Text>
@@ -82,7 +82,7 @@ export default function ApprovedEventEmail({
             >
               Complete Payment
             </Button>
-            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6 mb-6">
+            <div className="bg-yellow-50 rounded-md border-l-4 border-yellow-400 p-4 mt-6 mb-6">
               <Text className="text-yellow-700 text-sm font-medium">
                 Important: The remaining balance must be paid in full on the day
                 of the event.
