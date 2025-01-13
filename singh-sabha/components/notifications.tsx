@@ -1,37 +1,38 @@
-import * as React from "react";
-import { format, formatDistanceToNow } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { format, formatDistanceToNow } from "date-fns";
+import * as React from "react";
 import { toast } from "sonner";
 
 import {
-  Mail,
-  Phone,
   Bell,
   Calendar,
+  CircleCheck,
+  HandCoins,
+  Mail,
+  Phone,
+  Search,
   User,
   X,
-  Search,
-  HandCoins,
-  CircleCheck,
 } from "lucide-react";
 
-import { sendEmail } from "@/lib/send-email";
-import { cn } from "@/lib/utils";
-import { DeleteEvent, UpdateEvent } from "@/lib/api/events/mutations";
 import EmptyDataCard from "@/components/cards/empty-data-card";
 import ReviewEventDialog from "@/components/dialogs/admin-dashboard/review-event-dialog";
+import { UpdateEvent } from "@/lib/api/events/mutations";
+import { sendEmail } from "@/lib/send-email";
+import { cn } from "@/lib/utils";
 
 import type { EventWithType } from "@/db/schema";
+import DismissEventDialog from "./dialogs/admin-dashboard/dimiss-event-dialog";
 
 interface NotificationsProps {
   unverifiedEvents: EventWithType[];
@@ -42,16 +43,13 @@ export default function Notifications({
   unverifiedEvents,
   verifiedEvents,
 }: NotificationsProps) {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isReviewDialogOpen, setIsReviewDialogOpen] =
+    React.useState<boolean>(false);
+  const [isDismissEventCommenctDialogOpen, setIsDismissEventDialogOpen] =
+    React.useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] =
     React.useState<EventWithType | null>(null);
   const [understood, setUnderstood] = React.useState<boolean>(false);
-  const [isReviewed, setIsReviewed] = React.useState<boolean>(false);
-
-  const handleApprove = (event: EventWithType) => {
-    setSelectedEvent(event);
-    setIsOpen(true);
-  };
 
   const approveEvent = (event: EventWithType) => {
     toast.promise(
@@ -62,7 +60,7 @@ export default function Notifications({
             updatedEvent: { ...event, isVerified: true },
           });
           await sendEmail(event, "/api/send/approved");
-          setIsOpen(false);
+          setIsReviewDialogOpen(false);
           setUnderstood(false);
         }
         return updatedEvent;
@@ -71,23 +69,6 @@ export default function Notifications({
         loading: "Approving event and sending notification...",
         success: "Event approved and notification sent successfully!",
         error: "Failed to approve event or send notification.",
-      },
-    );
-  };
-
-  const handleDismiss = (event: EventWithType) => {
-    toast.promise(
-      async () => {
-        if (!event.isVerified) {
-          await DeleteEvent({ id: event.id });
-          await sendEmail(event, "/api/send/denied");
-        }
-        return event;
-      },
-      {
-        loading: "Dismissing event and sending notification...",
-        success: "Event dismissed and notification sent successfully!",
-        error: "Failed to dismiss event or send notification.",
       },
     );
   };
@@ -209,13 +190,19 @@ export default function Notifications({
                   <div className="flex justify-end space-x-2">
                     <Button
                       variant="outline"
-                      onClick={() => handleDismiss(notification)}
+                      onClick={() => {
+                        setSelectedEvent(notification);
+                        setIsDismissEventDialogOpen(true);
+                      }}
                     >
                       <X className="w-4 h-4" />
                       Dismiss
                     </Button>
                     <Button
-                      onClick={() => handleApprove(notification)}
+                      onClick={() => {
+                        setSelectedEvent(notification);
+                        setIsReviewDialogOpen(true);
+                      }}
                       disabled={notification.isVerified!}
                     >
                       <Search className="w-4 h-4" />
@@ -236,13 +223,20 @@ export default function Notifications({
         )}
       </ScrollArea>
       {selectedEvent && (
-        <ReviewEventDialog
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          selectedEvent={selectedEvent}
-          approveEvent={approveEvent}
-          verifiedEvents={verifiedEvents}
-        />
+        <>
+          <ReviewEventDialog
+            isOpen={isReviewDialogOpen}
+            onClose={() => setIsReviewDialogOpen(false)}
+            selectedEvent={selectedEvent}
+            approveEvent={approveEvent}
+            verifiedEvents={verifiedEvents}
+          />
+          <DismissEventDialog
+            isOpen={isDismissEventCommenctDialogOpen}
+            onClose={() => setIsDismissEventDialogOpen(false)}
+            selectedEvent={selectedEvent}
+          />
+        </>
       )}
     </>
   );
