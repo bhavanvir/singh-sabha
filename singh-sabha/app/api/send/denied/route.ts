@@ -2,15 +2,12 @@ import { Resend } from "resend";
 
 import DeniedEventEmail from "@/components/email-templates/denied-event-email";
 
-import type { EventWithType } from "@/db/schema";
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const event: EventWithType = await request.json();
-
-    if (!event) {
+    const { data: event, additionalInfo: denialReason } = await request.json();
+    if (!event || !denialReason) {
       return Response.json(
         { error: "Missing required data for sending emails." },
         { status: 400 },
@@ -22,7 +19,7 @@ export async function POST(request: Request) {
         from: "Gurdwara Singh Sabha <no-reply@singhsabha.net>",
         to: event.registrantEmail!,
         subject: "Your event request has been denied",
-        react: DeniedEventEmail({ event }),
+        react: DeniedEventEmail({ event, denialReason }),
       });
 
     if (userEmailError) {

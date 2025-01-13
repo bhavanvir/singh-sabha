@@ -2,14 +2,13 @@ import { Resend } from "resend";
 
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 
-import type { ContactMessage } from "@/lib/types/contact-message";
 import ContactEmail from "@/components/email-templates/contact-email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const data: ContactMessage = await request.json();
+    const { data } = await request.json();
 
     const rawMailList = await GetMailingList();
     const mailingList = rawMailList.flatMap((item) => item.email);

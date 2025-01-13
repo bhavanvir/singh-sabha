@@ -4,14 +4,20 @@ import type { ContactMessage } from "./types/contact-message";
 export async function sendEmail(
   data: EventWithType | ContactMessage,
   endpoint: string,
+  additionalInfo?: string,
 ): Promise<void> {
   try {
+    const payload = {
+      data: data,
+      additionalInfo: additionalInfo ?? undefined,
+    };
+
     const resp = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
 
     if (!resp.ok) {

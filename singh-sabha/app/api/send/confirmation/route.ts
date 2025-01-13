@@ -4,13 +4,11 @@ import EventConfirmationEmail from "@/components/email-templates/event-confirmat
 import SuperuserEventNotificationEmail from "@/components/email-templates/superuser-event-notification-email";
 import { GetMailingList } from "@/lib/api/mailing-list/queries";
 
-import type { EventWithType } from "@/db/schema";
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const event: EventWithType = await request.json();
+    const { data: event } = await request.json();
     if (!event) {
       return Response.json(
         { error: "Missing required data for sending emails." },

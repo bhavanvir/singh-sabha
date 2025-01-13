@@ -2,13 +2,11 @@ import { Resend } from "resend";
 
 import ApprovedEventEmail from "@/components/email-templates/approved-event-email";
 
-import type { EventWithType } from "@/db/schema";
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const event: EventWithType = await request.json();
+    const { data: event } = await request.json();
     if (!event) {
       return Response.json(
         { error: "Missing required data for sending emails." },
