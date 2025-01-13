@@ -227,14 +227,16 @@ export const eventColumns = (
       );
     },
     cell: ({ row }) => {
-      const durationFromNow = getDurationFromNow(row.original.start);
+      const endDurationFromNow = getDurationFromNow(row.original.end);
+      const startDurationFromNow = getDurationFromNow(row.original.start);
       return isExpired ? (
         <div>
-          Expired {durationFromNow} day{durationFromNow > 1 ? "s" : ""} ago
+          Expired {endDurationFromNow} day{endDurationFromNow > 1 ? "s" : ""}{" "}
+          ago
         </div>
       ) : (
         <div>
-          In {durationFromNow} day{durationFromNow > 1 ? "s" : ""}
+          In {startDurationFromNow} day{startDurationFromNow > 1 ? "s" : ""}
         </div>
       );
     },
