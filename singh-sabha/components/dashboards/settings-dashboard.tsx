@@ -109,18 +109,18 @@ export default function SettingsDashboard({
         </ul>
       </nav>
 
-      <div className="flex-grow p-4 sm:p-6 overflow-hidden">
+      <ScrollArea className="flex-grow p-4 sm:p-6">
         {currentSection ? (
-          <div className="h-full overflow-hidden">
+          <div className="h-full">
             <h1 className="text-xl sm:text-2xl font-bold mb-4">
               {currentSection.title}
             </h1>
-            <ScrollArea className="h-full">{currentSection.content}</ScrollArea>
+            {currentSection.content}
           </div>
         ) : (
           <p className="text-gray-500">Select a section to view details.</p>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
