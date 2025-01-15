@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${YOUTUBE_API_KEY}`,
-      { next: { revalidate: 1 * 60 * 60 } },
+      { next: { revalidate: 0.5 * 60 * 60 } }, // Every 30 minutes
     );
 
     if (!response.ok) {
