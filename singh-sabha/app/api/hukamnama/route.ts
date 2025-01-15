@@ -4,7 +4,7 @@ export async function GET() {
   try {
     const response = await fetch(
       "https://api.gurbaninow.com/v2/hukamnama/today",
-      { next: { revalidate: 6 * 60 * 60 } },
+      { next: { revalidate: 6 * 60 * 60 } }, // Every 6 hours
     );
 
     if (!response.ok) {
