@@ -1,25 +1,21 @@
-import moment from "moment";
-
-import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
-import { GetAllEventsAfterDate } from "@/lib/api/events/queries";
 import { ActiveAnnouncement } from "@/components/announcement";
-import HeroSection from "@/components/sections/hero-section";
-import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
-import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
-import ServicesSection from "@/components/sections/services-section";
-import { DonationsSection } from "@/components/sections/donations-section";
 import { ContactUsSection } from "@/components/sections/contact-us-section";
+import { DonationsSection } from "@/components/sections/donations-section";
+import HeroSection from "@/components/sections/hero-section";
+import ServicesSection from "@/components/sections/services-section";
+import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import { YoutubeLiveSection } from "@/components/sections/youtube-live-section";
+import { GetActiveAnnouncement } from "@/lib/api/announcements/queries";
+import { GetAllRequestableEventTypes } from "@/lib/api/event-types/queries";
+import { GetAllEventsAfterDate } from "@/lib/api/events/queries";
 
 export default async function Home() {
-  moment.locale("en-CA");
-
-  const currentDate = moment();
-  const weekStart = currentDate.startOf("week").toISOString();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const [announcement] = await GetActiveAnnouncement();
   const upcomingEvents = await GetAllEventsAfterDate({
-    startDate: weekStart,
+    startDate: today.toISOString(),
   });
   const eventTypes = await GetAllRequestableEventTypes();
 
