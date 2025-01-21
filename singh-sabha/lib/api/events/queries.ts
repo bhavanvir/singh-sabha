@@ -1,9 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { db } from "@/db/db";
 import { eventTable, eventTypeTable } from "@/db/schema";
-import { eq, and, gte, lte, sql, count, or } from "drizzle-orm";
+import { and, count, eq, gte, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 import type { EventWithType } from "@/db/schema";
 
