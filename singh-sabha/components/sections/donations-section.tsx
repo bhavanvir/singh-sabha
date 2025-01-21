@@ -115,7 +115,7 @@ export function DonationsSection() {
                   </h3>
                   <Button variant="outline" asChild className="mt-2">
                     <Link
-                      href="https://donate.stripe.com/test_fZe4hh5DMgGhaAg3cc"
+                      href="https://donate.stripe.com/eVa5m4deM9G99QkbIJ"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2"
