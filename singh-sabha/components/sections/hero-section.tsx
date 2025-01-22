@@ -78,7 +78,7 @@ export default function HeroSection() {
 
           <motion.div
             variants={fadeInWithDelay(0.3)}
-            className="leading-[4.92rem]"
+            className="leading-[2.51rem] md:leading-[4.92rem]"
           >
             <FadeText
               text="ਆਵਹੁ ਸਿਖ ਸਤਿਗੁਰੂ ਕੇ ਪਿਆਰਿਹੋ ਗਾਵਹੁ ਸਚੀ ਬਾਣੀ"
