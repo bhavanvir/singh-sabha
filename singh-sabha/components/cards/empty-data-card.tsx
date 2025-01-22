@@ -1,11 +1,12 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface EmptyDataCardProps {
   icon: LucideIcon;
   title: string;
-  description: string;
+  description: string | ReactNode;
   className?: string;
 }
 
