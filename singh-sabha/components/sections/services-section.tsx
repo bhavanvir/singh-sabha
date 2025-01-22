@@ -1,6 +1,17 @@
 "use client";
 
-import * as React from "react";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   motion,
   useAnimation,
@@ -8,17 +19,12 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import * as React from "react";
 
-import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import BookEventDialog from "@/components/dialogs/booking-calendar/book-event-dialog";
+import { fadeInWithDelay, staggerContainer } from "./hero-section";
 
-import { EventType } from "@/db/schema";
+import type { EventType } from "@/db/schema";
 
 // Interaction hyperparameters
 const sheenSize = 500;
@@ -65,23 +71,25 @@ export default function ServicesSection({ eventTypes }: ServicesSectionProps) {
                 Explore or book any of the various services we offer.
               </p>
             </motion.div>
-            <motion.div
-              variants={staggerContainer}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-            >
-              {eventTypes.map((type, index) => (
-                <motion.div
-                  key={type.id}
-                  variants={fadeInWithDelay(0.3 + index * 0.1)}
-                  className="flex"
-                >
-                  <ServiceCard
-                    type={type}
-                    onBookService={() => handleBookService(type)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
+            <TooltipProvider>
+              <motion.div
+                variants={staggerContainer}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+              >
+                {eventTypes.map((type, index) => (
+                  <motion.div
+                    key={type.id}
+                    variants={fadeInWithDelay(0.3 + index * 0.1)}
+                    className="flex"
+                  >
+                    <ServiceCard
+                      type={type}
+                      onBookService={() => handleBookService(type)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </TooltipProvider>
           </motion.div>
         </div>
       </section>
@@ -163,39 +171,46 @@ function ServiceCard({
   };
 
   return (
-    <motion.div
-      onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onBookService}
-      className="grid grid-flow-row"
-      style={{
-        transformStyle: "preserve-3d",
-        rotateX,
-        rotateY,
-        scale,
-      }}
-    >
-      <Card className="relative bg-background rounded-xl border overflow-hidden cursor-pointer">
+    <Tooltip>
+      <TooltipTrigger asChild>
         <motion.div
-          className="absolute z-10 opacity-0 group-hover:opacity-30 transition-opacity duration-200 rounded-full blur-md"
+          onMouseEnter={handleMouseEnter}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onClick={onBookService}
+          className="grid grid-flow-row"
           style={{
-            height: sheenSize,
-            width: sheenSize,
-            background: "radial-gradient(white, #3984ff00 80%)",
-            left: sheenX,
-            top: sheenY,
+            transformStyle: "preserve-3d",
+            rotateX,
+            rotateY,
+            scale,
           }}
-        />
-        <CardHeader className="p-4">
-          <CardTitle className="text-2xl font-semibold tracking-tight mb-2">
-            {type.displayName}
-          </CardTitle>
-          <CardDescription className="text-muted-foreground md:text-lg">
-            {type.description}
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    </motion.div>
+        >
+          <Card className="relative bg-background rounded-xl border overflow-hidden cursor-pointer">
+            <motion.div
+              className="absolute z-10 opacity-0 group-hover:opacity-30 transition-opacity duration-200 rounded-full blur-md"
+              style={{
+                height: sheenSize,
+                width: sheenSize,
+                background: "radial-gradient(white, #3984ff00 80%)",
+                left: sheenX,
+                top: sheenY,
+              }}
+            />
+            <CardHeader className="p-4">
+              <CardTitle className="text-2xl font-semibold tracking-tight mb-2">
+                {type.displayName}
+              </CardTitle>
+              <CardDescription className="text-muted-foreground md:text-lg">
+                {type.description}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </motion.div>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Book a {type.displayName}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
