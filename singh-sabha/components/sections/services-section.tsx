@@ -209,7 +209,10 @@ function ServiceCard({
         </motion.div>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Book a {type.displayName}</p>
+        <p>
+          {/^[aeiou]/i.test(type.displayName[0]) ? "Book an" : "Book a"}{" "}
+          {type.displayName}
+        </p>
       </TooltipContent>
     </Tooltip>
   );
