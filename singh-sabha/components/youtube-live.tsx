@@ -7,13 +7,13 @@ import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
 
-import { MegaphoneOff } from "lucide-react";
+import { MegaphoneOff, SquareArrowOutUpRight } from "lucide-react";
 
+import EmptyDataCard from "@/components/cards/empty-data-card";
 import {
   fadeInWithDelay,
   staggerContainer,
 } from "@/components/sections/hero-section";
-import EmptyDataCard from "@/components/cards/empty-data-card";
 
 import type { YoutubeLiveStream } from "@/lib/types/youtube-live";
 
@@ -110,7 +110,21 @@ export function YoutubeLive() {
               <EmptyDataCard
                 icon={MegaphoneOff}
                 title="No Live Stream Available"
-                description="There is currently no live stream. Please check back later or visit our YouTube channel for past recordings."
+                description={
+                  <>
+                    There is currently no live stream. Please check back later
+                    or visit our{" "}
+                    <Link
+                      href="https://www.youtube.com/@GurdwaraSinghSabhaVictoria"
+                      className="text-primary hover:underline inline-flex items-center"
+                      target="_blank"
+                    >
+                      YouTube channel
+                      <SquareArrowOutUpRight className="ml-1 h-4 w-4" />
+                    </Link>{" "}
+                    for past recordings.
+                  </>
+                }
               />
             )}
           </motion.div>
