@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Menu, FlagTriangleLeft } from "lucide-react";
 
 export default function AppNavBar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const links = [
     { href: "/calendar", label: "Calendar" },
@@ -18,6 +20,10 @@ export default function AppNavBar() {
     const path = pathname.split("/")[1];
     const linkPath = linkHref.split("/")[1];
     return path === linkPath;
+  };
+
+  const closeDrawer = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -46,7 +52,7 @@ export default function AppNavBar() {
           </Link>
         ))}
       </nav>
-      <Drawer>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerTrigger asChild>
           <Button variant="ghost" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
@@ -55,7 +61,11 @@ export default function AppNavBar() {
         </DrawerTrigger>
         <DrawerContent>
           <nav className="grid gap-6 text-lg font-medium p-6">
-            <Link href="/" className="flex items-center text-lg font-semibold">
+            <Link
+              href="/"
+              className="flex items-center text-lg font-semibold"
+              onClick={closeDrawer}
+            >
               <FlagTriangleLeft className="h-5 w-5 mr-1 fill-black" />
               <span>Gurdwara Singh Sabha</span>
             </Link>
@@ -69,6 +79,7 @@ export default function AppNavBar() {
                     : "text-muted-foreground"
                 }`}
                 scroll={false}
+                onClick={closeDrawer}
               >
                 {link.label}
               </Link>
