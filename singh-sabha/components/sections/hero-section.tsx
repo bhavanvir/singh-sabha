@@ -53,7 +53,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative bg-[url('/gurdwara-hero.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="relative bg-[url('/assets/gurdwara-hero.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-md filter" />
       <motion.div
         className="relative mx-auto min-h-[calc(100vh-4rem)] p-4 flex flex-col justify-center items-center"

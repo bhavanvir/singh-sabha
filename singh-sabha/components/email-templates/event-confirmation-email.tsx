@@ -71,7 +71,7 @@ export default function EventConfirmationEmail({
             </Text>
             <Text className="text-gray-500 text-xs leading-relaxed">
               <Img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}/singhsabha-logo.png`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}/assets/singhsabha-logo.png`}
                 height="24"
                 width="24"
                 alt="Singh Sabha Logo"
