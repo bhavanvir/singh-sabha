@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import { Menu, FlagTriangleLeft } from "lucide-react";
+import { FlagTriangleLeft, Menu } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+export const links = [
+  { href: "/calendar", label: "Calendar" },
+  { href: "/hukamnama", label: "Hukamnama" },
+  { href: "/about-us", label: "About Us" },
+];
 
 export default function AppNavBar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  const links = [
-    { href: "/calendar", label: "Calendar" },
-    { href: "/hukamnama", label: "Hukamnama" },
-  ];
 
   const isCurrentPath = (linkHref: string) => {
     const path = pathname.split("/")[1];
