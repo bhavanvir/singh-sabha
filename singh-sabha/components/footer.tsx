@@ -1,7 +1,11 @@
-import Link from "next/link";
-import { Separator } from "./ui/separator";
+"use client";
 
-import { Copyright, FlagTriangleLeft, Phone, Mail, MapPin } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+
+import { links } from "@/components/navbars/app-navbar";
+
+import { Copyright, FlagTriangleLeft, Mail, MapPin, Phone } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -25,18 +29,15 @@ export function Footer() {
           <div className="flex flex-col">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <nav className="flex flex-col space-y-2">
-              <Link
-                href="/calendar"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Calendar
-              </Link>
-              <Link
-                href="/hukamnama"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Hukamnama
-              </Link>
+              {links.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
           <div className="flex flex-col">
