@@ -1,13 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import * as React from "react";
 
-import { Book, Pen, Music2, Languages } from "lucide-react";
+import { Book, Languages, Music2, Pen } from "lucide-react";
 
 import { notoSansGurmukhi } from "@/app/fonts";
 import { cn } from "@/lib/utils";
@@ -64,7 +64,7 @@ export default function DailyHukamnama() {
         <>
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-2">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-              <h1 className="text-xl sm:text-2xl font-bold">
+              <h1 className="text-xl sm:text-3xl font-bold">
                 Today&apos;s Hukamnama
               </h1>
               <div className="flex space-x-2">
@@ -84,7 +84,7 @@ export default function DailyHukamnama() {
             </div>
             <Button onClick={toggleLanguage} variant="outline" size="sm">
               <Languages className="h-4 w-4" />
-              {transLang === "eng" ? "Español" : "English"}
+              {transLang === "eng" ? "Spanish" : "English"}
             </Button>
           </div>
 
