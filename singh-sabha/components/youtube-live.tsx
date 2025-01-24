@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
 
-import { MegaphoneOff, SquareArrowOutUpRight } from "lucide-react";
+import { MegaphoneOff, ExternalLink } from "lucide-react";
 
 import EmptyDataCard from "@/components/cards/empty-data-card";
 import {
@@ -120,7 +120,7 @@ export function YoutubeLive() {
                       target="_blank"
                     >
                       YouTube channel
-                      <SquareArrowOutUpRight className="ml-1 h-4 w-4" />
+                      <ExternalLink className="ml-1 h-4 w-4" />
                     </Link>{" "}
                     for past recordings.
                   </>
