@@ -1,10 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { motion, useAnimation, useInView } from "framer-motion";
+import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,10 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Form,
   FormControl,
@@ -24,15 +23,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion, useAnimation, useInView } from "framer-motion";
+import * as React from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
-import { Phone, Mail, MapPin, Send, ExternalLink } from "lucide-react";
+import { Clock, ExternalLink, Mail, MapPin, Phone, Send } from "lucide-react";
 
-import { staggerContainer, fadeInWithDelay } from "./hero-section";
 import { sendEmail } from "@/lib/send-email";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { Separator } from "../ui/separator";
+import { fadeInWithDelay, staggerContainer } from "./hero-section";
 
 const formSchema = z.object({
   name: z.string().min(1, "Full name missing").max(128, "Full name too long"),
@@ -63,8 +68,8 @@ export function ContactUsSection() {
       },
       {
         loading: "Sending message...",
-        success: "Message sent succesfully!",
-        error: "Failed send message",
+        success: "Message sent successfully!",
+        error: "Failed to send message",
       },
     );
   };
@@ -111,56 +116,78 @@ export function ContactUsSection() {
                     <TabsTrigger value="message">Send a Message</TabsTrigger>
                   </TabsList>
                   <TabsContent value="contact">
-                    <div className="grid gap-6 py-4">
-                      <div className="flex items-center space-x-4 justify-between">
-                        <div className="flex items-center space-x-4">
-                          <MapPin className="h-5 w-5 text-primary" />
-                          <div>
-                            <p className="text-sm font-medium">Address</p>
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="address">
+                        <AccordionTrigger>
+                          <div className="flex items-center">
+                            <MapPin className="h-5 w-5 text-primary mr-2" />
+                            Address
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="flex items-center justify-between">
                             <p className="text-sm text-muted-foreground">
                               470 Cecelia Rd Victoria, BC V8T 4T5
                             </p>
+                            <Button
+                              variant="outline"
+                              asChild
+                              className="hidden md:inline-flex"
+                            >
+                              <Link
+                                href="https://www.google.com/maps/search/?api=1&query=470+Cecelia+Rd,+Victoria,+BC+V8T+4T5"
+                                target="_blank"
+                              >
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                Directions
+                              </Link>
+                            </Button>
                           </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          asChild
-                          className="hidden md:inline-flex"
-                        >
-                          <Link
-                            href="https://www.google.com/maps/search/?api=1&query=470+Cecelia+Rd,+Victoria,+BC+V8T+4T5"
-                            target="_blank"
-                          >
-                            <ExternalLink />
-                            Directions
-                          </Link>
-                        </Button>
-                      </div>
-
-                      <Separator />
-
-                      <div className="flex items-center space-x-4">
-                        <Phone className="h-5 w-5 text-primary" />
-                        <div>
-                          <p className="text-sm font-medium">Phone</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="phone">
+                        <AccordionTrigger>
+                          <div className="flex items-center">
+                            <Phone className="h-5 w-5 text-primary mr-2" />
+                            Phone
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
                           <p className="text-sm text-muted-foreground">
                             +1 250 475-2280
                           </p>
-                        </div>
-                      </div>
-
-                      <Separator />
-
-                      <div className="flex items-center space-x-4">
-                        <Mail className="h-5 w-5 text-primary" />
-                        <div>
-                          <p className="text-sm font-medium">Email</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="email">
+                        <AccordionTrigger>
+                          <div className="flex items-center">
+                            <Mail className="h-5 w-5 text-primary mr-2" />
+                            Email
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
                           <p className="text-sm text-muted-foreground">
                             singhsabhayyj@gmail.com
                           </p>
-                        </div>
-                      </div>
-                    </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="hours">
+                        <AccordionTrigger>
+                          <div className="flex items-center">
+                            <Clock className="h-5 w-5 text-primary mr-2" />
+                            Hours of Operation
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="text-sm text-muted-foreground">
+                            <span className="font-semibold">
+                              Monday - Sunday:
+                            </span>{" "}
+                            4:30 AM - 8:00 PM
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   </TabsContent>
                   <TabsContent value="message">
                     <Form {...form}>
@@ -255,7 +282,7 @@ export function ContactUsSection() {
                         />
                         <div className="flex justify-end">
                           <Button type="submit">
-                            <Send />
+                            <Send className="mr-2 h-4 w-4" />
                             Send Message
                           </Button>
                         </div>
