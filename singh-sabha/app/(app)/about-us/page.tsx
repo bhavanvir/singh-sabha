@@ -9,10 +9,11 @@ import {
 
 import {
   ExternalLink,
-  BookOpen,
   Users,
-  Scroll,
+  ScrollText,
   BookMarked,
+  ClipboardList,
+  HandHelping,
 } from "lucide-react";
 
 export const metadata = {
@@ -98,11 +99,11 @@ export default function History() {
               <AccordionItem value="item-1">
                 <AccordionTrigger>
                   <div className="flex items-center">
-                    <BookOpen className="mr-2" />
+                    <HandHelping className="mr-2" />
                     Langar Tradition
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="text-muted-foreground">
                   Communal meals are served and eaten while seated on a matted
                   floor. All participants must have their heads covered and
                   shoes removed as a mark of respect.
@@ -111,11 +112,11 @@ export default function History() {
               <AccordionItem value="item-2">
                 <AccordionTrigger>
                   <div className="flex items-center">
-                    <Scroll className="mr-2" />
+                    <ScrollText className="mr-2" />
                     Authority and Code of Conduct
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="text-muted-foreground">
                   We recognize the supreme authority of Akal Takht Sahib and
                   adhere to the Panth-approved Sikh Rehat Maryada (Code of
                   Conduct).
@@ -128,7 +129,7 @@ export default function History() {
                     Promotion of Sikhism
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="text-muted-foreground">
                   We actively promote Sikhism through Amrit Sanchar (Sikh
                   baptism ceremony), youth programs, and other Gurmat (spiritual
                   and religious) activities.
@@ -141,7 +142,7 @@ export default function History() {
                     Guidelines for Preaching
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="text-muted-foreground">
                   All Katha (spiritual discourse), Kirtan (hymn singing), or
                   other teachings must be conducted by individuals who maintain
                   Sikhi Saroop, with exceptions for educational purposes during
@@ -151,11 +152,11 @@ export default function History() {
               <AccordionItem value="item-5">
                 <AccordionTrigger>
                   <div className="flex items-center">
-                    <BookOpen className="mr-2" />
+                    <ClipboardList className="mr-2" />
                     Duties in Attendance of Guru Granth Sahib Ji
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="text-muted-foreground">
                   Responsibilities such as performing Akhand Path or Sehaj Path
                   must be carried out exclusively by Amritdhari Sikhs (baptized
                   Sikhs).

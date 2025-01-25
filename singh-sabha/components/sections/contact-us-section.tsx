@@ -126,7 +126,7 @@ export function ContactUsSection() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="flex items-center justify-between">
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground">
                               470 Cecelia Rd Victoria, BC V8T 4T5
                             </p>
                             <Button
@@ -153,7 +153,7 @@ export function ContactUsSection() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground">
                             +1 250 475-2280
                           </p>
                         </AccordionContent>
@@ -166,7 +166,7 @@ export function ContactUsSection() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground">
                             singhsabhayyj@gmail.com
                           </p>
                         </AccordionContent>
@@ -179,7 +179,7 @@ export function ContactUsSection() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-muted-foreground">
                             4:30 AM - 8:00 PM
                           </div>
                         </AccordionContent>
