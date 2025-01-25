@@ -180,9 +180,6 @@ export function ContactUsSection() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="text-sm text-muted-foreground">
-                            <span className="font-semibold">
-                              Monday - Sunday:
-                            </span>{" "}
                             4:30 AM - 8:00 PM
                           </div>
                         </AccordionContent>
