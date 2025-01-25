@@ -21,12 +21,12 @@ export const metadata = {
 
 export default function History() {
   return (
-    <div className="container h-screen mx-auto py-4 px-4 md:px-6">
-      <h1 className="text-xl sm:text-3xl font-bold">Our History</h1>
+    <div className="container mx-auto py-4 px-4 md:px-6">
+      <h1 className="text-2xl md:text-3xl font-bold">Our History</h1>
       <div className="mt-4 space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">
+            <CardTitle className="text-xl md:text-2xl">
               The Akal Takht Sahib Directive
             </CardTitle>
           </CardHeader>
@@ -67,7 +67,7 @@ export default function History() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">
+            <CardTitle className="text-xl md:text-2xl">
               Gurdwara Singh Sabha Victoria
             </CardTitle>
           </CardHeader>
@@ -89,7 +89,9 @@ export default function History() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Our Guiding Principles</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">
+              Our Guiding Principles
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <Accordion type="single" collapsible className="w-full">
