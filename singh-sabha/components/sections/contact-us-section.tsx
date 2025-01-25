@@ -199,7 +199,7 @@ export function ContactUsSection() {
                             name="name"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel required>Name</FormLabel>
                                 <FormControl>
                                   <Input
                                     placeholder="Your Name"
@@ -219,7 +219,7 @@ export function ContactUsSection() {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel required>Email</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="email"
@@ -241,7 +241,7 @@ export function ContactUsSection() {
                           name="subject"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Subject</FormLabel>
+                              <FormLabel required>Subject</FormLabel>
                               <FormControl>
                                 <Input
                                   placeholder="What is this regarding?"
@@ -261,7 +261,7 @@ export function ContactUsSection() {
                           name="message"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Message</FormLabel>
+                              <FormLabel required>Message</FormLabel>
                               <FormControl>
                                 <Textarea
                                   placeholder="Your Message"
@@ -279,7 +279,7 @@ export function ContactUsSection() {
                         />
                         <div className="flex justify-end">
                           <Button type="submit">
-                            <Send className="mr-2 h-4 w-4" />
+                            <Send />
                             Send Message
                           </Button>
                         </div>
