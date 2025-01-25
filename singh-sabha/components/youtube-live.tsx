@@ -3,11 +3,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, useAnimation, useInView } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
 
-import { MegaphoneOff, ExternalLink } from "lucide-react";
+import { ExternalLink, MegaphoneOff } from "lucide-react";
 
 import EmptyDataCard from "@/components/cards/empty-data-card";
 import {
@@ -68,7 +67,16 @@ export function YoutubeLive() {
             variants={fadeInWithDelay(0.1)}
             className="text-center space-y-2"
           >
-            <h2 className="text-3xl font-bold tracking-tighter">Live Stream</h2>
+            {liveStream ? (
+              <h2 className="text-3xl font-bold tracking-tighter flex justify-center items-center ">
+                <div className="h-4 w-4 mr-1 bg-red-500 rounded-full animate-pulse" />
+                Currently Live!
+              </h2>
+            ) : (
+              <h2 className="text-3xl font-bold tracking-tighter">
+                Currently Offline
+              </h2>
+            )}
             <p className="mx-auto text-muted-foreground">
               Join us virtually for our live services and events.
             </p>
@@ -84,14 +92,7 @@ export function YoutubeLive() {
                       href={`https://www.youtube.com/watch?v=${liveStream.videoId}`}
                       className="flex items-center space-x-2 hover:text-muted-foreground hover:fill-muted-foreground transition-colors"
                     >
-                      <Image
-                        src={liveStream.thumbnails.default.url}
-                        alt={liveStream.title}
-                        height={liveStream.thumbnails.default.height}
-                        width={liveStream.thumbnails.default.width}
-                        className="h-6 w-6 rounded"
-                      />
-                      <span>{liveStream.title}</span>
+                      {liveStream.title}
                     </Link>
                   </CardTitle>
                 </CardHeader>
