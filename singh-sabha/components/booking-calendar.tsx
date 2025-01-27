@@ -167,7 +167,11 @@ export default function BookingCalendar({
                     <HelpCircle />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom" align="end" className="p-4">
+                <TooltipContent
+                  side="bottom"
+                  align="end"
+                  className="p-4 max-w-md"
+                >
                   <div className="space-y-4">
                     {Object.entries(EventColors).map(([key, color]) => {
                       let description = "";
