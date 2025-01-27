@@ -96,16 +96,6 @@ export default function UpcomingEventsSection({
                               {event.occassion}
                             </CardTitle>
                             <div className="flex flex-wrap gap-2">
-                              {event.eventType?.isSpecial && (
-                                <Badge
-                                  className="text-xs sm:text-sm"
-                                  style={{
-                                    backgroundColor: EventColors.special,
-                                  }}
-                                >
-                                  Special
-                                </Badge>
-                              )}
                               {isGurdwaraEvent(event) &&
                                 !event.eventType?.isSpecial && (
                                   <Badge
