@@ -168,20 +168,47 @@ export default function BookingCalendar({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" align="end" className="p-4">
-                  <div className="space-y-2">
-                    {Object.entries(EventColors).map(([key, color]) => (
-                      <div key={key} className="flex items-center space-x-2">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{
-                            backgroundColor: color,
-                          }}
-                        ></div>
-                        <span className="text-xs sm:text-sm capitalize">
-                          {key.replace(/([A-Z])/g, " $1")}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="space-y-4">
+                    {Object.entries(EventColors).map(([key, color]) => {
+                      let description = "";
+                      switch (key) {
+                        case "regular":
+                          description =
+                            "Regular events are submitted by users. These can include various community-organized activities.";
+                          break;
+                        case "gurdwara":
+                          description =
+                            "Gurdwara events are created by the committee and are official events hosted by the Gurdwara.";
+                          break;
+                        case "special":
+                          description =
+                            "Special events are created by the committee and mark significant occasions, like Vaisakhi, New Year's, or other major celebrations.";
+                          break;
+                        case "private":
+                          description =
+                            "Private events are not public and are intended for personal or limited attendance, such as family gatherings or private functions.";
+                          break;
+                      }
+
+                      return (
+                        <div key={key} className="space-y-1">
+                          <div className="flex items-center space-x-2">
+                            <div
+                              className="w-3 h-3 rounded-full"
+                              style={{
+                                backgroundColor: color,
+                              }}
+                            ></div>
+                            <span className="text-xs sm:text-sm capitalize">
+                              {key.replace(/([A-Z])/g, " $1")}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            {description}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </TooltipContent>
               </Tooltip>
