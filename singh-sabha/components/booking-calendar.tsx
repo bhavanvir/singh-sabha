@@ -278,13 +278,21 @@ export default function BookingCalendar({
       opacity: event.isVerified ? "1" : ".5",
     };
 
-    if (!event.isPublic) newStyle.backgroundColor = EventColors.private;
-
-    if (event.isPublic && isGurdwaraEvent(event))
-      newStyle.backgroundColor = EventColors.gurdwara;
+    switch (true) {
+      case !event.isPublic:
+        newStyle.backgroundColor = EventColors.private;
+        break;
+      case event.eventType.isSpecial:
+        newStyle.backgroundColor = EventColors.special;
+        break;
+      case isGurdwaraEvent(event):
+        newStyle.backgroundColor = EventColors.gurdwara;
+        break;
+      default:
+        newStyle.backgroundColor = EventColors.regular;
+    }
 
     return {
-      className: "",
       style: newStyle,
     };
   }, []);
