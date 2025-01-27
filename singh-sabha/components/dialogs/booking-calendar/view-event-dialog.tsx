@@ -96,10 +96,12 @@ export default function ViewEventDialog({
               </span>
             </div>
           )}
-          <div className="flex flex-row items-start">
-            <StickyNote className="h-4 w-4 mr-1 mt-1" />
-            <p className="whitespace-pre-wrap">{event.note}</p>
-          </div>
+          {event.note && (
+            <div className="flex flex-row items-start">
+              <StickyNote className="h-4 w-4 mr-1 mt-1" />
+              <p className="whitespace-pre-wrap">{event.note}</p>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
