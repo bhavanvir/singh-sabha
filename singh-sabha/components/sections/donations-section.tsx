@@ -102,7 +102,7 @@ export function DonationsSection() {
                   className="relative flex items-center"
                 >
                   <Separator className="flex-1" />
-                  <span className="px-3 text-sm text-gray-500">Or</span>
+                  <span className="px-3 text-sm text-gray-500">OR</span>
                   <Separator className="flex-1" />
                 </motion.div>
 
