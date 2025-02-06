@@ -115,25 +115,26 @@ export default function DailyHukamnama() {
             </span>
           </div>
 
-          <ScrollArea className="h-[calc(100vh-18.25rem)] sm:h-[calc(100vh-11rem)] mt-4 rounded-md border p-4 mb-4">
-            <section className="grid grid-cols-1 gap-4">
-              {hukamnama.hukamnama.map((item, index) => (
-                <div key={index}>
-                  <p className={cn(notoSansGurmukhi.className, "text-xl")}>
-                    {item.line.gurmukhi.unicode}
-                  </p>
-                  <p className="text-md text-muted-foreground italic">
-                    {item.line.transliteration.english.text}
-                  </p>
-                  <p className="text-md text-muted-foreground">
-                    {transLang === "eng"
-                      ? item.line.translation.english.default
-                      : item.line.translation.spanish}
-                  </p>
-                </div>
-              ))}
-            </section>
-          </ScrollArea>
+          <div className="space-y-4 mt-4">
+            {hukamnama.hukamnama.map((item, index) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl border bg-card text-card-foreground shadow"
+              >
+                <p className={cn(notoSansGurmukhi.className, "text-2xl mb-2")}>
+                  {item.line.gurmukhi.unicode}
+                </p>
+                <p className="text-sm text-muted-foreground italic mb-2">
+                  {item.line.transliteration.english.text}
+                </p>
+                <p className="text-base">
+                  {transLang === "eng"
+                    ? item.line.translation.english.default
+                    : item.line.translation.spanish}
+                </p>
+              </div>
+            ))}
+          </div>
         </>
       ) : (
         <div className="h-[calc(100vh-6rem)] flex items-center justify-center text-center">
