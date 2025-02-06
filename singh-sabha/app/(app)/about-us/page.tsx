@@ -72,18 +72,23 @@ export default function History() {
               Gurdwara Singh Sabha Victoria
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <p>
               Established in 1999, Gurdwara Singh Sabha in Victoria is a
               non-profit organization dedicated to promoting Sikh principles and
               providing spiritual, social, and educational support to the
-              community. Guided by the Akal Takht Sahib directive, the Gurdwara
-              focuses on serving the needs of the Sikh community, especially
-              those who are vulnerable, isolated, or at risk. Through services
-              such as langar, a communal meal embodying the Sikh value of
-              equality, and educational programs in Sikh spirituality, ethics,
-              and culture, the gurdwara fosters unity, guidance, and a deeper
-              connection to Sikh teachings.
+              community.
+            </p>
+            <p>
+              Guided by the Akal Takht Sahib directive, the Gurdwara focuses on
+              serving the needs of the Sikh community, especially those who are
+              vulnerable, isolated, or at risk.
+            </p>
+            <p>
+              Through services such as langar, a communal meal embodying the
+              Sikh value of equality, and educational programs in Sikh
+              spirituality, ethics, and culture, the Gurdwara fosters unity,
+              guidance, and a deeper connection to Sikh teachings.
             </p>
           </CardContent>
         </Card>
