@@ -3,9 +3,9 @@ import { Footer } from "@/components/footer";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <AppNavBar />
-      {children}
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
